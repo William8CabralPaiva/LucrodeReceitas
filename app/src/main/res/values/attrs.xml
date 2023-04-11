@@ -8,7 +8,6 @@
 
     <declare-styleable name="BorderInputView">
         <attr name="ei_label" format="string" />
-        <attr name="ei_text" format="string" />
 
         <attr name="ei_color" format="enum">
             <enum name="orange" value="0" />
@@ -19,6 +18,15 @@
             <enum name="text" value="0" />
             <enum name="password" value="1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ProgressRing">
+        <attr name="pr_progress" format="integer" />
+        <attr name="pr_progressbar_color" format="color" />
+        <attr name="pr_background_progressbar_color" format="color" />
+        <attr name="pr_progressbar_width" format="dimension" />
+        <attr name="pr_background_progressbar_width" format="dimension" />
+        <attr name="pr_tick_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="ActionButton">

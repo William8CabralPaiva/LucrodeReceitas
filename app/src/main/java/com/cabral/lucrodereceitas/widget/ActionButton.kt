@@ -1,15 +1,19 @@
 package com.cabral.lucrodereceitas.widget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.cabral.lucrodereceitas.R
 import com.cabral.lucrodereceitas.databinding.ActionButtonBinding
 
@@ -18,6 +22,15 @@ class ActionButton @JvmOverloads constructor(
     attrs: AttributeSet?,
     defStyle: Int = 0
 ) : FrameLayout(context, attrs, defStyle) {
+
+    val DURATION: Long = 750
+    var isLoading = false
+    var defaultColor: Int = 0
+
+    private val buttonShape by lazy { GradientDrawable() }
+
+    @ColorInt
+    private var buttonColor: Int = -1
 
     private val binding = ActionButtonBinding
         .inflate(LayoutInflater.from(context), this, true)
@@ -63,8 +76,7 @@ class ActionButton @JvmOverloads constructor(
                 getColor(R.color.orange)
             }
         }
-        val colorState = ColorStateList.valueOf(color)
-        binding.progressBar.indeterminateTintList = colorState
+        binding.progressRing.setIconColor(color)
         binding.textView.setTextColor(color)
     }
 
@@ -76,6 +88,79 @@ class ActionButton @JvmOverloads constructor(
         getInt(index, -1).let {
             if (it >= 0) enumValues<T>()[it] else default
         }
+
+    fun startLoading() {
+        binding.root.run {
+            if (!isLoading && isEnabled) {
+                isLoading = true
+                isEnabled = false
+
+                val disappear = disappearText()
+                binding.textView.startAnimation(disappear)
+
+            }
+        }
+    }
+
+    fun finishLoading(success: Boolean, backText: Boolean = false) {
+        binding.root.run {
+
+            if (isLoading) {
+                isLoading = false
+                isEnabled = true
+
+                if (!backText) {
+                    binding.progressRing.finishLoading(success)
+                } else {
+
+                    val appear = appearProgress(success)
+                    binding.progressRing.startAnimation(appear)
+                }
+            }
+        }
+    }
+
+    private fun appearProgress(success: Boolean): AlphaAnimation {
+        val appear = AlphaAnimation(1f, 0f)
+        appear.duration = 1350
+
+        appear.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                binding.progressRing.finishLoading(success)
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.textView.isVisible = true
+                binding.progressRing.isVisible = false
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+        })
+        return appear
+    }
+
+
+    private fun disappearText(): AlphaAnimation {
+        val disappear = AlphaAnimation(1f, 0f)
+        disappear.duration = DURATION
+
+        disappear.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.textView.isVisible = false
+                binding.progressRing.showLoading()
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+        })
+        return disappear
+    }
 
     fun abSetOnClickListener(insideFunction: () -> Unit) {
         binding.root.setOnClickListener {

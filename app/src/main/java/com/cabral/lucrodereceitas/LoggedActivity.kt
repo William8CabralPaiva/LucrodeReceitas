@@ -9,7 +9,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.cabral.lucrodereceitas.databinding.ActivityLoggedBinding
 import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class LoggedActivity : AppCompatActivity() {
 

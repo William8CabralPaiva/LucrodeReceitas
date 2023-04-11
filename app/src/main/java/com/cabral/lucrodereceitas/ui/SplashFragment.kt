@@ -27,6 +27,9 @@ class SplashFragment : Fragment() {
             requireActivity().finish()
             findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToActivityLogged())
         }
+        binding.test1.setOnClickListener{
+            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNotLoggedNav())
+        }
     }
 
     companion object {

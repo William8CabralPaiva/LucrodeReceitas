@@ -29,7 +29,7 @@ class BorderInputView @JvmOverloads constructor(
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BorderInputView)
 
-            val hint = typedArray.getText(R.styleable.BorderInputView_ei_text) ?: ""
+            val hint = typedArray.getText(R.styleable.BorderInputView_ei_label) ?: ""
             setLabelText(hint.toString())
 
             val color =

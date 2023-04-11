@@ -6,4 +6,8 @@
     <string name="ingredients">Ingredientes</string>
     <string name="shopping">Compras</string>
     <string name="profile">Perfil</string>
+    <string name="user">Usuário</string>
+    <string name="login">Entrar</string>
+    <string name="password">Senha</string>
+    <string name="ic_cook">Ícone de Cozinheiro</string>
 </resources>
