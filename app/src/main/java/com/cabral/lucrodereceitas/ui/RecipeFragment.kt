@@ -31,10 +31,11 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener {
-            findNavController().navigate(RecipeFragmentDirections.actionRecipeToTest())
+           // findNavController().navigate(RecipeFragmentDirections.actionRecipeToTest())
+            binding.test.finishLoading(false,true)
         }
         binding.test.abSetOnClickListener {
-
+            binding.test.startLoading()
         }
 
     }
