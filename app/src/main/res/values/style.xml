@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ProgressRing">
+        <item name="android:layout_width">28dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="pr_background_progressbar_color">@color/white</item>
+        <item name="pr_background_progressbar_width">1.5dp</item>
+        <item name="pr_progressbar_color">@color/white</item>
+        <item name="pr_progressbar_width">1.5dp</item>
+        <item name="pr_tick_color">@color/white</item>
+    </style>
+</resources>
