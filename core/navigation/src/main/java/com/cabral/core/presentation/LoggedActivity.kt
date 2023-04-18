@@ -15,22 +15,22 @@ class LoggedActivity : AppCompatActivity() {
     private var _binding: ActivityLoggedBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
+//    private lateinit var navController: NavController
+//    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityLoggedBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_logged) as NavHostFragment
-
-        navController = navHostFragment.navController
-
-        binding.bottomNavMain.setupWithNavController(navController)
-
-        appBarConfiguration = AppBarConfiguration(setOf())
+//        val navHostFragment =
+//            supportFragmentManager.findFragmentById(R.id.nav_host_logged) as NavHostFragment
+//
+//        navController = navHostFragment.navController
+//
+//        binding.bottomNavMain.setupWithNavController(navController)
+//
+//        appBarConfiguration = AppBarConfiguration(setOf())
 
     }
 

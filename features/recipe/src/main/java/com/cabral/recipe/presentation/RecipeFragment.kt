@@ -1,4 +1,4 @@
-package com.cabral.lucrodereceitas.ui
+package com.cabral.recipe.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.cabral.lucrodereceitas.databinding.FragmentRecipeBinding
-
+import com.cabral.recipe.databinding.FragmentRecipeBinding
 
 class RecipeFragment : Fragment() {
 
@@ -27,12 +26,12 @@ class RecipeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener {
-           // findNavController().navigate(RecipeFragmentDirections.actionRecipeToTest())
-            binding.test.finishLoading(false,true)
+            // findNavController().navigate(RecipeFragmentDirections.actionRecipeToTest())
+           // binding.test.finishLoading(false, true)
         }
-        binding.test.abSetOnClickListener {
-            binding.test.startLoading()
-        }
+//        binding.test.abSetOnClickListener {
+//            binding.test.startLoading()
+//        }
 
     }
 

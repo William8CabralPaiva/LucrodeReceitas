@@ -63,7 +63,8 @@ dependencies {
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
-//    implementation project(Modules.splash)
-    implementation project(Modules.login)
     implementation project(Modules.arch)
+    //implementation project(Modules.login)
+    //implementation project(Modules.recipe)
+    //implementation project(Modules.splash)
 }
