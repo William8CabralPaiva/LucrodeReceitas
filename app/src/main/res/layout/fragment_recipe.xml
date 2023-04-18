@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.RecipeFragment">
 
-    <com.cabral.lucrodereceitas.widget.ActionButton
+    <com.cabral.arch.widget.ActionButton
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

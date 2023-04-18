@@ -86,52 +86,26 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="activity_logged">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-382" />
-                            <option name="y" value="-395" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="logged_nav">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-370" />
-                            <option name="y" value="-543" />
+                            <option name="x" value="347" />
+                            <option name="y" value="5" />
                           </Point>
                         </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="splashFragment">
+                  <entry key="splash_activity">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-674" />
-                            <option name="y" value="-397" />
+                            <option name="x" value="147" />
+                            <option name="y" value="-1" />
                           </Point>
-                        </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_splashFragment_to_activity_logged">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_splashFragment_to_not_logged_nav">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -141,8 +115,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-638" />
-                            <option name="y" value="-670" />
+                            <option name="x" value="356" />
+                            <option name="y" value="198" />
                           </Point>
                         </option>
                       </LayoutPositions>

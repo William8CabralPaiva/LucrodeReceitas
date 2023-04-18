@@ -14,4 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "LucrodeReceitas"
 include ':app',
-         ':features:splash'
+        ':arch',
+        ':core:domain',
+        ':core:navigation',
+        ':features:splash',
+        ':features:login',
+        ':features:profile',
+        ':features:recipe'

@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.cabral.lucrodereceitas.widget.BorderInputView
+    <com.cabral.arch.widget.BorderInputView
         android:id="@+id/bi_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <com.cabral.lucrodereceitas.widget.BorderInputView
+    <com.cabral.arch.widget.BorderInputView
         android:id="@+id/bi_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bi_user" />
 
-    <com.cabral.lucrodereceitas.widget.ActionButton
+    <com.cabral.arch.widget.ActionButton
         android:id="@+id/bi_enter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

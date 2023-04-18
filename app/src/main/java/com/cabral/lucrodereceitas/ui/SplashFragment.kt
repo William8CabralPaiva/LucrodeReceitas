@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.cabral.lucrodereceitas.databinding.FragmentSplashBinding
 
 class SplashFragment : Fragment() {
@@ -25,10 +24,10 @@ class SplashFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.textView.setOnClickListener {
             requireActivity().finish()
-            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToActivityLogged())
+            //findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToActivityLogged())
         }
-        binding.test1.setOnClickListener{
-            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNotLoggedNav())
+        binding.test1.setOnClickListener {
+            //findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNotLoggedNav())
         }
     }
 

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@+id/splash_activity">
+
+<!--    <activity android:id="@+id/splash_activity"-->
+<!--        android:name="com.cabral.features.splash.presentation.SplashScreenActivity"-->
+<!--        tools:layout="@layout/activity_splash_screen"/>-->
+
+<!--    <include app:graph="@navigation/unlogged_nav"/>-->
+<!--    <include app:graph="@navigation/logged_nav" />-->
+
+</navigation>
