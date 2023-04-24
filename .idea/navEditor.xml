@@ -321,13 +321,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="recipeFragment2">
+                  <entry key="recipeFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="291" />
-                            <option name="y" value="44" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>

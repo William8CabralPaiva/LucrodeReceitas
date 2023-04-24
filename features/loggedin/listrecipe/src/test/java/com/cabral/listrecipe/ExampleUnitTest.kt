@@ -1,4 +1,4 @@
-package com.cabral.xore
+package com.cabral.listrecipe
 
 import org.junit.Test
 

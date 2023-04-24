@@ -1,4 +1,4 @@
-package com.cabral.core
+package com.cabral.design
 
 import org.junit.Test
 
