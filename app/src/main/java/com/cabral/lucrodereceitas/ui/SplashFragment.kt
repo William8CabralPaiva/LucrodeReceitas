@@ -25,6 +25,7 @@ class SplashFragment : Fragment() {
         binding.textView.setOnClickListener {
             requireActivity().finish()
             //findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToActivityLogged())
+            //SplashFragmentDirections.actionSplashFragmentToActivityLogged()
         }
         binding.test1.setOnClickListener {
             //findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToNotLoggedNav())

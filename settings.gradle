@@ -18,6 +18,11 @@ include ':app',
         ':core:domain',
         ':core:navigation',
         ':features:splash',
-        ':features:login',
         ':features:profile',
-        ':features:recipe'
+        ':features:recipe',
+        ':features:loggedout:login',
+        ':features:loggedin:profile',
+        ':features:loggedin:recipe',
+        ':libraries:arch',
+        ':libraries:design'
+include ':features:loggedin:listrecipe'

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_recipe_nav"
+    app:startDestination="@id/list_recipe">
+
+    <fragment
+        android:id="@+id/list_recipe"
+        android:name="com.cabral.listrecipe.ListRecipeFragment"
+        android:label="fragment_list_recipe"
+        tools:layout="@layout/fragment_list_recipe" />
+</navigation>

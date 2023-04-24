@@ -17,10 +17,18 @@
             <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/core/navigation" />
             <option value="$PROJECT_DIR$/features" />
-            <option value="$PROJECT_DIR$/features/login" />
+            <option value="$PROJECT_DIR$/features/loggedin" />
+            <option value="$PROJECT_DIR$/features/loggedin/listrecipe" />
+            <option value="$PROJECT_DIR$/features/loggedin/profile" />
+            <option value="$PROJECT_DIR$/features/loggedin/recipe" />
+            <option value="$PROJECT_DIR$/features/loggedout" />
+            <option value="$PROJECT_DIR$/features/loggedout/login" />
             <option value="$PROJECT_DIR$/features/profile" />
             <option value="$PROJECT_DIR$/features/recipe" />
             <option value="$PROJECT_DIR$/features/splash" />
+            <option value="$PROJECT_DIR$/libraries" />
+            <option value="$PROJECT_DIR$/libraries/arch" />
+            <option value="$PROJECT_DIR$/libraries/design" />
           </set>
         </option>
       </GradleProjectSettings>

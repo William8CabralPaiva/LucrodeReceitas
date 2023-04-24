@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/logged_nav"
+    app:startDestination="@id/recipe">
+
+    <fragment
+        android:id="@+id/recipe"
+        android:name="com.cabral.recipe.presentation.RecipeFragment"
+        android:label="RecipeFragment"
+        tools:layout="@layout/fragment_recipe"
+        >
+        <action
+            android:id="@+id/action_recipeFragment_to_profile"
+            app:destination="@id/profile" />
+        <action
+            android:id="@+id/action_recipe_to_listRecipeFragment2"
+            app:destination="@id/listRecipeFragment2" />
+    </fragment>
+    <include app:graph="@navigation/profile_nav" />
+    <fragment
+        android:id="@+id/listRecipeFragment2"
+        android:name="com.cabral.listrecipe.ListRecipeFragment"
+        android:label="ListRecipeFragment"
+        tools:layout="@layout/fragment_list_recipe"
+        />
+
+</navigation>

@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import com.cabral.core.NavigationUtils
+import com.cabral.core.NavigationActivity
 import com.cabral.features.splash.databinding.ActivitySplashScreenBinding
+import org.koin.android.ext.android.inject
 
 class SplashScreenActivity : AppCompatActivity() {
 
     private var _binding: ActivitySplashScreenBinding? = null
     private val binding get() = _binding!!
+
+    private val navigation: NavigationActivity by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            NavigationUtils.splashToLogin(this)
+            navigation.openActivityLogged(this)
         }, 300)
     }
 
