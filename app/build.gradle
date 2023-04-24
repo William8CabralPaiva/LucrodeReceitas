@@ -69,12 +69,13 @@ dependencies {
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
-    def koin_version ="2.2.3"
+    def koin_version = "2.2.3"
 
     implementation "io.insert-koin:koin-androidx-scope:$koin_version"
     implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
 
     implementation project(Modules.arch)
+    implementation project(Modules.design)
     implementation project(Modules.login)
     implementation project(Modules.navigation)
     implementation project(Modules.profile)

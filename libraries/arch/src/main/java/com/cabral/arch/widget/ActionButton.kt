@@ -70,10 +70,10 @@ class ActionButton @JvmOverloads constructor(
     private fun setTextColors(buttonType: ButtonType) {
         val color = when (buttonType) {
             ButtonType.SHAPE -> {
-                getColor(R.color.white)
+                getColor( com.cabral.design.R.color.white)
             }
             ButtonType.BORDER -> {
-                getColor(R.color.orange)
+                getColor( com.cabral.design.R.color.orange)
             }
         }
         //binding.progressRing.setIconColor(color)

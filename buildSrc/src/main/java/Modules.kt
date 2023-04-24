@@ -8,4 +8,5 @@ object Modules {
     const val arch = ":libraries:arch"
     const val domain = ":core:domain"
     const val navigation = ":core:navigation"
+    const val design = ":libraries:design"
 }

@@ -52,6 +52,7 @@ class BorderInputView @JvmOverloads constructor(
                     biTextInput.inputType = android.text.InputType.TYPE_CLASS_TEXT
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
+
                 BorderInputView.BIInputType.PASSWORD -> {
                     biHint.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
                     biTextInput.inputType = android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
@@ -96,10 +97,10 @@ class BorderInputView @JvmOverloads constructor(
         val colors = when (colorType) {
             ColorType.ORANGE -> {
                 intArrayOf(
-                    getColor(R.color.orange),
-                    getColor(R.color.orange_light),
-                    getColor(R.color.orange),
-                    getColor(R.color.orange_light)
+                    getColor(com.cabral.design.R.color.orange),
+                    getColor(com.cabral.design.R.color.orange_light),
+                    getColor(com.cabral.design.R.color.orange),
+                    getColor(com.cabral.design.R.color.orange_light)
                 )
             }
         }

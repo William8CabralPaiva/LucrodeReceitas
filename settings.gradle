@@ -21,8 +21,8 @@ include ':app',
         ':features:profile',
         ':features:recipe',
         ':features:loggedout:login',
+        ':features:loggedin:listrecipe',
         ':features:loggedin:profile',
         ':features:loggedin:recipe',
         ':libraries:arch',
         ':libraries:design'
-include ':features:loggedin:listrecipe'
