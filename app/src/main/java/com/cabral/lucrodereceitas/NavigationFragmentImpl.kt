@@ -7,7 +7,7 @@ import com.cabral.recipe.presentation.RecipeFragmentDirections
 
 class NavigationFragmentImpl : NavigationFragment {
     override fun openFragment(fragment: Fragment) {
-        val directions = RecipeFragmentDirections.actionRecipeToListRecipeFragment2()
+        val directions = RecipeFragmentDirections.actionRecipeToListRecipeFragment()
         fragment.findNavController().navigate(directions)
     }
 }

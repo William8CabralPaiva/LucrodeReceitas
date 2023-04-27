@@ -15,12 +15,12 @@
             android:id="@+id/action_recipeFragment_to_profile"
             app:destination="@id/profile" />
         <action
-            android:id="@+id/action_recipe_to_listRecipeFragment2"
-            app:destination="@id/listRecipeFragment2" />
+            android:id="@+id/action_recipe_to_listRecipeFragment"
+            app:destination="@id/listRecipeFragment" />
     </fragment>
     <include app:graph="@navigation/profile_nav" />
     <fragment
-        android:id="@+id/listRecipeFragment2"
+        android:id="@+id/listRecipeFragment"
         android:name="com.cabral.listrecipe.ListRecipeFragment"
         android:label="ListRecipeFragment"
         tools:layout="@layout/fragment_list_recipe"

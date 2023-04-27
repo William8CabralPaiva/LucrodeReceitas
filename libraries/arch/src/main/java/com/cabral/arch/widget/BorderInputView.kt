@@ -75,7 +75,7 @@ class BorderInputView @JvmOverloads constructor(
         PASSWORD("password")
     }
 
-    fun setLabelText(text: String) {
+    private fun setLabelText(text: String) {
         binding.run {
             biHint.hint = text
             biTextInput.hint = text

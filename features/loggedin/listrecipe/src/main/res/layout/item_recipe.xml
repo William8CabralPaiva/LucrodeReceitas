@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/white"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    android:layout_marginBottom="8dp"
     android:elevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp">
+        android:background="@color/white"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        >
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/recipe_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubuntu_bold"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nome da Receita" />
@@ -33,10 +39,11 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_name"
             tools:text="Sugestão:" />
 
         <TextView
+            android:id="@+id/recipe_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ubuntu_bold"
@@ -45,14 +52,14 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/recipe_name"
             tools:text="R$ 50,00" />
 
         <ImageView
             android:id="@+id/trash"
-            android:contentDescription="@string/img_trash"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:contentDescription="@string/img_trash"
             android:scaleType="fitXY"
             android:src="@drawable/trash"
             app:layout_constraintBottom_toBottomOf="parent"
