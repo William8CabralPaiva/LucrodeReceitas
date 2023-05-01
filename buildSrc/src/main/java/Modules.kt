@@ -6,7 +6,7 @@ object Modules {
     const val recipe = ":features:loggedin:recipe"
     const val listrecipe = ":features:loggedin:listrecipe"
     const val arch = ":libraries:arch"
-    const val domain = ":core:domain"
-    const val navigation = ":core:navigation"
+    const val domain = ":core:common:domain"
+    const val navigation = ":core:common:navigation"
     const val design = ":libraries:design"
 }
