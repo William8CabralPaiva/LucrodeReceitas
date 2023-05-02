@@ -2,10 +2,8 @@ package com.cabral.core
 
 import android.app.Activity
 
-interface NavigationActivity {
+interface NotLoggedNavigationActivity {
 
     fun openActivityNotLogged(activity: Activity)
-
-    fun openActivityLogged(activity: Activity)
 
 }

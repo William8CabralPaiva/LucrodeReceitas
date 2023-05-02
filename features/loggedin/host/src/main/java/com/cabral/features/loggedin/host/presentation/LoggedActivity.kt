@@ -1,15 +1,15 @@
-package com.cabral.lucrodereceitas.presentation
+package com.cabral.features.loggedin.host.presentation
 
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.IntegerRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import com.cabral.lucrodereceitas.R
-import com.cabral.lucrodereceitas.databinding.ActivityLoggedBinding
+import com.cabral.features.loggedin.host.R
+import com.cabral.features.loggedin.host.databinding.ActivityLoggedBinding
 
 class LoggedActivity : AppCompatActivity() {
 
@@ -31,13 +31,14 @@ class LoggedActivity : AppCompatActivity() {
 
         binding.bottomNavMain.setupWithNavController(navController)
 
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.recipe, com.cabral.profile.R.id.profileFragment))
+        appBarConfiguration =
+            AppBarConfiguration(setOf(R.id.recipe, com.cabral.profile.R.id.profileFragment))
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isTopLevelDestination =
                 appBarConfiguration.topLevelDestinations.contains(destination.id)
 
-           binding.bottomNavMain.isVisible = isTopLevelDestination
+            binding.bottomNavMain.isVisible = isTopLevelDestination
         }
 
     }

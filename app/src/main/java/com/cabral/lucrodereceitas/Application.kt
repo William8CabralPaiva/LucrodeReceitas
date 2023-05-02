@@ -1,7 +1,7 @@
 package com.cabral.lucrodereceitas
 
 import android.app.Application
-import com.cabral.lucrodereceitas.di.NavigationModules
+import com.cabral.features.loggedin.host.di.LoggedNavigationModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.loadKoinModules
@@ -15,7 +15,7 @@ import org.koin.dsl.KoinAppDeclaration
 class Application : Application() {
 
     private val modules by lazy {
-        NavigationModules.modules
+        LoggedNavigationModules.modules
     }
 
     override fun onCreate() {

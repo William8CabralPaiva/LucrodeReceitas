@@ -80,6 +80,7 @@ dependencies {
     implementation project(Modules.navigation)
     implementation project(Modules.profile)
     implementation project(Modules.listrecipe)
+    implementation project(Modules.loggednavigation)
     implementation project(Modules.recipe)
     implementation project(Modules.splash)
 

@@ -26,3 +26,5 @@ include ':app',
         ':features:loggedin:recipe',
         ':libraries:arch',
         ':libraries:design'
+include ':features:loggedin:host'
+include ':features:loggedout:host'

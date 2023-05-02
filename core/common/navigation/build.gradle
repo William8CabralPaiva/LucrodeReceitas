@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -69,7 +70,7 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-scope:$koin_version"
     implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
 
-//    implementation project(Modules.arch)
+    implementation project(Modules.design)
 //    implementation project(Modules.login)
 //    implementation project(Modules.recipe)
 //    implementation project(Modules.splash)
