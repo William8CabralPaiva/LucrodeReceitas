@@ -1,9 +1,9 @@
-package com.cabral.lucrodereceitas.presentation
+package com.cabral.host.presentation
+
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.cabral.features.presentation.LoginFragmentDirections
-import com.cabral.lucrodereceitas.databinding.ActivityNotLoggedBinding
+import com.cabral.features.loggedout.host.databinding.ActivityNotLoggedBinding
 
 class NotLoggedActivity : AppCompatActivity() {
 
