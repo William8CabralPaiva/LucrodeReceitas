@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.cabral.core.NavigationFragment
 import com.cabral.recipe.databinding.FragmentRecipeBinding
-import org.koin.android.ext.android.inject
 
 class RecipeFragment : Fragment() {
 
     private var _binding: FragmentRecipeBinding? = null
     private val binding get() = _binding!!
     //private val activity by lazy { requireActivity() as LoggedActivity }
-
-    private val navigation: NavigationFragment by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +28,6 @@ class RecipeFragment : Fragment() {
         binding.button.setOnClickListener {
             //  findNavController().navigate(RecipeFragmentDirections.actionRecipeToTest())
             //binding.test.finishLoading(false, true)
-            navigation.openFragment(this)
         }
 //        binding.test.abSetOnClickListener {
 //            binding.test.startLoading()

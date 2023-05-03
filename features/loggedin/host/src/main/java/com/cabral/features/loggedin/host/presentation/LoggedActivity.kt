@@ -32,7 +32,7 @@ class LoggedActivity : AppCompatActivity() {
         binding.bottomNavMain.setupWithNavController(navController)
 
         appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.recipe, com.cabral.profile.R.id.profileFragment))
+            AppBarConfiguration(setOf(R.id.listRecipe, com.cabral.profile.R.id.profileFragment))
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isTopLevelDestination =

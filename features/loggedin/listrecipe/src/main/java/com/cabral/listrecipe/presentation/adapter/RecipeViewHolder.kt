@@ -1,4 +1,4 @@
-package com.cabral.listrecipe.adapter
+package com.cabral.listrecipe.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

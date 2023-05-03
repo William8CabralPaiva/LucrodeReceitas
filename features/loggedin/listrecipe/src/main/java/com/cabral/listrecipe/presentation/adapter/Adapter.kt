@@ -1,10 +1,10 @@
-package com.cabral.listrecipe.adapter
+package com.cabral.listrecipe.presentation.adapter
 
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.cabral.listrecipe.adapter.RecipeViewHolder.Companion.typeViewHolder
+import com.cabral.listrecipe.presentation.adapter.RecipeViewHolder.Companion.typeViewHolder
 import com.cabral.listrecipe.data.Recipe
 
 class Adapter(private val context: Context) : ListAdapter<Recipe, RecipeViewHolder>(DIFF_CALLBACK) {

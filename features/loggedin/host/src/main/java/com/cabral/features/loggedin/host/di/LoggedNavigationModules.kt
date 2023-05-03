@@ -1,10 +1,9 @@
 package com.cabral.features.loggedin.host.di
 
+import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.LoggedNavigation
-import com.cabral.core.NavigationFragment
-import com.cabral.core.NotLoggedNavigation
+import com.cabral.features.loggedin.host.navigation.ListRecipeNavigationImpl
 import com.cabral.features.loggedin.host.navigation.LoggedNavigationImpl
-import com.cabral.features.loggedin.host.navigation.NavigationFragmentImpl
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -16,6 +15,6 @@ object LoggedNavigationModules {
     }
 
     private val fragmentModules: Module = module {
-        factory<NavigationFragment> { NavigationFragmentImpl() }
+        factory<ListRecipeNavigation> { ListRecipeNavigationImpl() }
     }
 }
