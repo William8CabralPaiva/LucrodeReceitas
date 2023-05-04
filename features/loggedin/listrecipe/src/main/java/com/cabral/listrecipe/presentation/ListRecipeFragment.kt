@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.listrecipe.presentation.adapter.Adapter
 import com.cabral.listrecipe.data.Recipe
 import com.cabral.listrecipe.databinding.FragmentListRecipeBinding
+import com.cabral.listrecipe.presentation.adapter.SwipeGesture
 import org.koin.android.ext.android.inject
+import java.util.Collections
 
 class ListRecipeFragment : Fragment() {
 
@@ -57,9 +61,13 @@ class ListRecipeFragment : Fragment() {
         val r = Recipe(0, "receita 1", 50.00f)
         val r2 = Recipe(0, "receita 2", 25.10f)
 
-        val a = listOf(r, r2,r, r2,r, r2,r, r2,r, r2,r, r2,r, r2)
+        val list = listOf(r, r2, r, r2, r, r2, r, r2, r, r2, r, r2, r, r2)
 
-        adapter.submitList(a)
+        adapter.submitList(list)
+
+        val dragDrop = SwipeGesture(list)
+        val itemTouchHelper = ItemTouchHelper(dragDrop)
+        itemTouchHelper.attachToRecyclerView(binding.recycleView)
     }
 
 }
