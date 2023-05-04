@@ -31,7 +31,7 @@ class ListRecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //binding.viewFlipper.displayedChild = 1
+        binding.viewFlipper.displayedChild = 1
         initClicks()
         initRecycleView()
     }
