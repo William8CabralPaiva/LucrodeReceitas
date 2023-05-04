@@ -3,4 +3,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="value_format">R$ %s</string>
     <string name="add_recipe">Clique aqui para adicionar a receita</string>
+    <string name="suggestion">Sugestão:</string>
+    <string name="list_recipe">Lista de Receitas</string>
+    <string name="click_in_plus_to_add_recipe">Nenhuma receita encontrada.\n Clique no + para adicionar uma receita</string>
 </resources>

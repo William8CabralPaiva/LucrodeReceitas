@@ -31,7 +31,7 @@ class ListRecipeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewFlipper.displayedChild = 1
+        //binding.viewFlipper.displayedChild = 1
         initClicks()
         initRecycleView()
     }
@@ -57,7 +57,7 @@ class ListRecipeFragment : Fragment() {
         val r = Recipe(0, "receita 1", 50.00f)
         val r2 = Recipe(0, "receita 2", 25.10f)
 
-        val a = listOf(r, r2)
+        val a = listOf(r, r2,r, r2,r, r2,r, r2,r, r2,r, r2,r, r2)
 
         adapter.submitList(a)
     }

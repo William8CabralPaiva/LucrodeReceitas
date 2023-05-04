@@ -3,6 +3,7 @@
 
     <application>
         <activity
+            android:screenOrientation="portrait"
             android:name=".presentation.LoggedActivity"
             android:exported="false" />
     </application>
