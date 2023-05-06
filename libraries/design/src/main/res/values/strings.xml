@@ -8,4 +8,5 @@
     <string name="password">Senha</string>
     <string name="ic_cook">Ícone de Cozinheiro</string>
     <string name="img_trash">Imagem de uma lixeira</string>
+    <string name="value_format">R$ %s</string>
 </resources>

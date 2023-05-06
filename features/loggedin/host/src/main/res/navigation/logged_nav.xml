@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/logged_nav"
-    app:startDestination="@id/listRecipe">
+    app:startDestination="@id/list_recipe">
 
     <fragment
         android:id="@+id/recipe"
@@ -15,10 +15,12 @@
             android:id="@+id/action_recipe_to_profile"
             app:destination="@id/profile" />
     </fragment>
+
     <include app:graph="@navigation/profile_nav" />
+    <include app:graph="@navigation/list_ingredients_nav"/>
 
     <fragment
-        android:id="@+id/listRecipe"
+        android:id="@+id/list_recipe"
         android:name="com.cabral.listrecipe.presentation.ListRecipeFragment"
         android:label="ListRecipeFragment"
         tools:layout="@layout/fragment_list_recipe"
