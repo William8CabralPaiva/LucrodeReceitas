@@ -1,8 +1,8 @@
 package com.cabral.features.loggedin.host.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.IntegerRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -32,7 +32,13 @@ class LoggedActivity : AppCompatActivity() {
         binding.bottomNavMain.setupWithNavController(navController)
 
         appBarConfiguration =
-            AppBarConfiguration(setOf(R.id.listRecipe, com.cabral.profile.R.id.profileFragment))
+            AppBarConfiguration(
+                setOf(
+                    com.cabral.listrecipe.R.id.list_recipe,
+                    com.cabral.listingredients.R.id.list_ingredients,
+                    com.cabral.profile.R.id.profileFragment
+                )
+            )
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val isTopLevelDestination =

@@ -15,16 +15,18 @@ dependencyResolutionManagement {
 rootProject.name = "LucrodeReceitas"
 include ':app',
         ':arch',
-        ':core:common:domain',
         ':core:common:navigation',
         ':features:splash',
         ':features:profile',
         ':features:recipe',
+        ':features:loggedout:host',
         ':features:loggedout:login',
-        ':features:loggedin:listrecipe',
+        ':features:loggedin:host',
+        ':features:loggedin:listingredients',
+        ':features:loggedin:listingredients',
+        ':features:loggedin:listrecipes',
         ':features:loggedin:profile',
         ':features:loggedin:recipe',
         ':libraries:arch',
         ':libraries:design'
-include ':features:loggedin:host'
-include ':features:loggedout:host'
+include ':core:common:domain'

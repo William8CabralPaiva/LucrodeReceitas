@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace 'com.cabral.features.loggedin.host'
+    namespace 'com.cabral.listrecipe'//com.cabral.features.loggedin.listrecipe
     compileSdk 33
 
     defaultConfig {
@@ -29,7 +29,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-
     viewBinding {
         enabled = true
     }
@@ -40,7 +39,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -71,10 +69,6 @@ dependencies {
 
     implementation project(Modules.arch)
     implementation project(Modules.design)
+    implementation project(Modules.domain)
     implementation project(Modules.navigation)
-    implementation project(Modules.login)
-    implementation project(Modules.profile)
-    implementation project(Modules.listIngredients)
-    implementation project(Modules.listRecipe)
-    implementation project(Modules.recipe)
 }
