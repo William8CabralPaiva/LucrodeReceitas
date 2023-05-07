@@ -35,7 +35,7 @@ class LoggedActivity : AppCompatActivity() {
             AppBarConfiguration(
                 setOf(
                     com.cabral.listrecipe.R.id.list_recipe,
-                    com.cabral.listingredients.R.id.list_ingredients,
+                    R.id.list_ingredients,
                     com.cabral.profile.R.id.profileFragment
                 )
             )

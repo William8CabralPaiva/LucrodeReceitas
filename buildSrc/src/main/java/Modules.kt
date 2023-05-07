@@ -5,6 +5,7 @@ object Modules {
     const val login = ":features:loggedout:login"
     const val profile = ":features:loggedin:profile"
     const val recipe = ":features:loggedin:recipe"
+    const val ingredients = ":features:loggedin:ingredient"
     const val listIngredients = ":features:loggedin:listingredients"
     const val listRecipe = ":features:loggedin:listrecipes"
     const val domain = ":core:common:domain"

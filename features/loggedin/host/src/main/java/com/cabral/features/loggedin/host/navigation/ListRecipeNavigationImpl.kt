@@ -5,9 +5,13 @@ import androidx.navigation.fragment.findNavController
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.listrecipe.presentation.ListRecipeFragmentDirections
 
-class ListRecipeNavigationImpl : ListRecipeNavigation {
+internal class ListRecipeNavigationImpl : ListRecipeNavigation {
     override fun openRecipe(fragment: Fragment) {
         val directions = ListRecipeFragmentDirections.actionListRecipeToRecipe()
         fragment.findNavController().navigate(directions)
+    }
+
+    override fun openIngredient(fragment: Fragment) {
+        //todo
     }
 }

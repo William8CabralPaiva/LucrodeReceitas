@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.cabral.arch.SwipeGesture
+import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredients
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.listingredients.R
 import com.cabral.listingredients.databinding.FragmentListIngredientsBinding
 import com.cabral.listingredients.presentation.adapter.Adapter
+import org.koin.android.ext.android.inject
 
 class ListIngredientsFragment : Fragment() {
 
@@ -20,6 +22,8 @@ class ListIngredientsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: Adapter
+
+    private val navigationIngredient: ListIngredientNavigation by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +43,7 @@ class ListIngredientsFragment : Fragment() {
 
     private fun initClicks() {
         binding.addIngredient.setOnClickListener {
-            //  navigationRecipe.openRecipe(this)
+              navigationIngredient.openIngredient(this)
         }
     }
 

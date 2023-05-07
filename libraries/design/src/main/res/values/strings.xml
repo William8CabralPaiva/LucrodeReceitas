@@ -1,6 +1,10 @@
 <resources>
     <string name="recipes">Receitas</string>
+    <string name="ingredient">Ingrediente</string>
     <string name="ingredients">Ingredientes</string>
+    <string name="total_amount">Quantidade total</string>
+    <string name="unit_measurement">Unidade de medida</string>
+    <string name="price">Preço</string>
     <string name="shopping">Compras</string>
     <string name="profile">Perfil</string>
     <string name="user">Usuário</string>
