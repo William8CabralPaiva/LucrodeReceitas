@@ -6,12 +6,10 @@ apply from: "$rootDir/plugins/android-build.gradle"
 
 android {
     namespace 'com.cabral.listingredients'
-    resourcePrefix "listrecipes"
-
+    resourcePrefix "listingredients"
 }
 
 dependencies {
-
 
     implementation project(Modules.arch)
     implementation project(Modules.design)
