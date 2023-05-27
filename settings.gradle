@@ -30,3 +30,4 @@ include ':app',
         ':libraries:arch',
         ':libraries:design'
 include ':core:common:domain'
+include ':features:loggedin:ingredient'

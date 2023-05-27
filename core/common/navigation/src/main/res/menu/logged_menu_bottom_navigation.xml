@@ -5,7 +5,7 @@
         android:icon="@drawable/ic_cookie"
         android:title="@string/recipes" />
     <item
-        android:id="@+id/list_ingredients_nav"
+        android:id="@+id/list_ingredients"
         android:icon="@drawable/ic_shopping_basket"
         android:title="@string/ingredients" />
 <!--    <item-->

@@ -1,0 +1,16 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+apply from: "$rootDir/plugins/android-build.gradle"
+
+android {
+    namespace 'com.cabral.ingredient'
+    resourcePrefix "ingredient"
+}
+
+dependencies {
+
+    implementation project(Modules.arch)
+    implementation project(Modules.design)
+}
