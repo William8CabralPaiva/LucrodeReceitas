@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:ei_label="@string/price"
-            app:ei_type="text"
+            app:ei_type="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
