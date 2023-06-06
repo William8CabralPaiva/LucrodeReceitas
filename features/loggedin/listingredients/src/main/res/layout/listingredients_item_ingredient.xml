@@ -41,7 +41,7 @@
                 android:id="@+id/trash"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:contentDescription="@string/img_trash"
+                android:contentDescription="@string/design_img_trash"
                 android:scaleType="fitXY"
                 android:src="@drawable/trash"
                 app:layout_constraintBottom_toBottomOf="@+id/ingredient_name"

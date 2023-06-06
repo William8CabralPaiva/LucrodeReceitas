@@ -1,16 +1,17 @@
 <resources>
-    <string name="recipes">Receitas</string>
-    <string name="ingredient">Ingrediente</string>
-    <string name="ingredients">Ingredientes</string>
-    <string name="total_amount">Quantidade total</string>
-    <string name="unit_measurement">Unidade de medida</string>
-    <string name="price">Preço</string>
-    <string name="shopping">Compras</string>
-    <string name="profile">Perfil</string>
-    <string name="user">Usuário</string>
-    <string name="login">Entrar</string>
-    <string name="password">Senha</string>
-    <string name="ic_cook">Ícone de Cozinheiro</string>
-    <string name="img_trash">Imagem de uma lixeira</string>
-    <string name="value_format">R$ %s</string>
+    <string name="design_recipes">Receitas</string>
+    <string name="design_ingredient">Ingrediente</string>
+    <string name="design_ingredients">Ingredientes</string>
+    <string name="design_total_amount">Quantidade total</string>
+    <string name="design_unit_measurement">Unidade de medida</string>
+    <string name="design_price">Preço</string>
+    <string name="design_shopping">Compras</string>
+    <string name="design_profile">Perfil</string>
+    <string name="design_user">Usuário</string>
+    <string name="design_login">Entrar</string>
+    <string name="design_password">Senha</string>
+    <string name="design_ic_cook">Ícone de Cozinheiro</string>
+    <string name="design_img_trash">Imagem de uma lixeira</string>
+    <string name="design_value_format">R$ %s</string>
+    <string name="design_ingredient_format">%s %s</string>
 </resources>

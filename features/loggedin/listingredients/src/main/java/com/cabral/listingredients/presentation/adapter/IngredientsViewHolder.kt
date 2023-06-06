@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cabral.core.common.domain.model.Ingredients
-import com.cabral.listingredients.databinding.ItemIngredientBinding
+import com.cabral.listingredients.databinding.ListingredientsItemIngredientBinding
 
 class IngredientsViewHolder(
-    private val binding: ItemIngredientBinding,
+    private val binding: ListingredientsItemIngredientBinding,
     private val context: Context
 ) :
     RecyclerView.ViewHolder(binding.root) {
@@ -22,7 +22,7 @@ class IngredientsViewHolder(
             ingredientName.text = ingredient.name
             ingredientMensuration.text = ingredient.unit
             ingredientValue.text = String.format(
-                context.getString(com.cabral.design.R.string.value_format),
+                context.getString(com.cabral.design.R.string.design_value_format),
                 ingredient.price.toString()
             )
             container.setOnClickListener { onClick(ingredient) }
@@ -36,7 +36,7 @@ class IngredientsViewHolder(
             context: Context,
             index: Int
         ): IngredientsViewHolder {
-            val binding = ItemIngredientBinding.inflate(
+            val binding = ListingredientsItemIngredientBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

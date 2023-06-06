@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:background="#99000000"
-    tools:context=".presentation.IngredientsFragment">
+    tools:context=".presentation.presentation.IngredientsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:drawablePadding="16dp"
             android:fontFamily="@font/bangers"
             android:gravity="center"
-            android:text="@string/ingredients"
+            android:text="@string/design_ingredients"
             android:textColor="@color/orange"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:ei_label="@string/ingredient"
+            app:ei_label="@string/design_ingredient"
             app:ei_type="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,19 +60,19 @@
 
             <com.cabral.arch.widget.BorderInputView
                 android:id="@+id/bi_volume"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                app:ei_label="@string/total_amount"
+                app:ei_label="@string/design_total_amount"
                 app:ei_type="text" />
 
             <com.cabral.arch.widget.BorderInputView
                 android:id="@+id/bi_unit"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:ei_label="@string/unit_measurement"
+                app:ei_label="@string/design_unit_measurement"
                 app:ei_type="text" />
 
         </LinearLayout>
@@ -82,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:ei_label="@string/price"
+            app:ei_label="@string/design_price"
             app:ei_type="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

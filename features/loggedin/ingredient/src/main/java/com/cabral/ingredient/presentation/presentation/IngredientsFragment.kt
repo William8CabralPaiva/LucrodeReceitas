@@ -1,6 +1,5 @@
-package com.cabral.ingredient.presentation
+package com.cabral.ingredient.presentation.presentation
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

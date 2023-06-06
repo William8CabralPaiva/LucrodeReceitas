@@ -34,7 +34,7 @@ class BorderInputView @JvmOverloads constructor(
 
             val color =
                 typedArray.getEnum(R.styleable.BorderInputView_ei_color, ColorType.ORANGE)
-           // setDefaultColor(color)
+            //     setDefaultColor(color)
 
             val BIInputType =
                 typedArray.getEnum(R.styleable.BorderInputView_ei_type, BIInputType.TEXT);
@@ -136,14 +136,26 @@ class BorderInputView @JvmOverloads constructor(
     }
 
     private fun hintTextColor() {
-        binding.biTextInput.setOnFocusChangeListener { _, hasFocus ->
-            if (binding.biTextInput.text?.isEmpty() == true && !hasFocus) {
+        binding.biTextInput.text?.let { input ->
+            binding.biTextInput.setOnFocusChangeListener { _, hasFocus ->
+
+                val color = when {
+                    (input.isNotEmpty() && !hasFocus) -> {
+                        com.cabral.design.R.color.orange
+                    }
+                    !hasFocus -> {
+                        com.cabral.design.R.color.gray_dark
+                    }
+                    else -> {
+                        com.cabral.design.R.color.orange
+                    }
+                }
+
                 binding.biHint.defaultHintTextColor =
-                    ColorStateList.valueOf(getColor(com.cabral.design.R.color.gray_dark))
-            }else if(!hasFocus && binding.biTextInput.text?.isEmpty()==false){
-                binding.biHint.defaultHintTextColor =
-                    ColorStateList.valueOf(getColor(com.cabral.design.R.color.orange))
+                    ColorStateList.valueOf(getColor(color))
+
             }
+
         }
     }
 

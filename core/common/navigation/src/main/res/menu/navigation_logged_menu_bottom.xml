@@ -3,11 +3,11 @@
     <item
         android:id="@+id/list_recipe"
         android:icon="@drawable/ic_cookie"
-        android:title="@string/recipes" />
+        android:title="@string/design_recipes" />
     <item
         android:id="@+id/list_ingredients"
         android:icon="@drawable/ic_shopping_basket"
-        android:title="@string/ingredients" />
+        android:title="@string/design_ingredients" />
 <!--    <item-->
 <!--        android:id="@+id/shopping"-->
 <!--        android:icon="@drawable/ic_profile"-->
@@ -15,5 +15,5 @@
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_profile"
-        android:title="@string/profile" />
+        android:title="@string/design_profile" />
 </menu>
