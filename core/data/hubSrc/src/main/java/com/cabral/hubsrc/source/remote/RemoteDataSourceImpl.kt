@@ -19,21 +19,18 @@ class RemoteDataSourceImpl(
     private val db: FirebaseFirestore = Firebase.firestore,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteDataSource {
-    override suspend fun addUser(user: User): Flow<Unit> {
-        return withContext(dispatcher) {
-            flow {
-                //somente um emit
-                emit(db.collection("user").document().set(user) as Unit)
-            }
-        }
+    override fun addUser(user: User): Flow<Unit> = flow {
+        //somente um emit
+        emit(db.collection("user").document().set(user) as Unit)
     }
 
     override suspend fun addUser2(user: User) {
         withContext(dispatcher) {
             db.collection("user").whereEqualTo("email",user.email).whereEqualTo("password",user.password).get()
                 .addOnFailureListener {  Log.i("resposta","errou") }
-                .addOnSuccessListener { Log.i("resposta","achou") }
-            //db.collection("user").document().set(user)
+                .addOnSuccessListener { Log.i("resposta","achou")
+            }
+            db.collection("user").document().set(user)
         }
     }
 
