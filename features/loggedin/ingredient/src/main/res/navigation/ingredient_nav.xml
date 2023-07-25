@@ -7,7 +7,7 @@
 
     <dialog
         android:id="@+id/ingredient_dialog"
-        android:name="com.cabral.ingredient.presentation.IngredientsFragment"
+        android:name="com.cabral.ingredient.presentation.presentation.IngredientsFragment"
         tools:layout="@layout/fragment_ingredients" />
 
 </navigation>

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 apply from: "$rootDir/plugins/android-build.gradle"
@@ -25,5 +26,8 @@ dependencies {
     implementation project(Modules.notLoggedNavigation)
     implementation project(Modules.recipe)
     implementation project(Modules.splash)
+    implementation project(Modules.hubsrc)
+    implementation platform(Libs.firebase_bom)
+    implementation Libs.firebase_analytics
 
 }

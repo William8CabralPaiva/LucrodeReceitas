@@ -11,3 +11,12 @@ java {
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+dependencies {
+//    implementation platform(Libs.firebase_bom)
+//    implementation Libs.firebase_auth
+//    implementation Libs.firebase_analytics
+//    implementation Libs.services_auth
+//    implementation Libs.firebase_store
+    implementation Libs.coroutines
+}

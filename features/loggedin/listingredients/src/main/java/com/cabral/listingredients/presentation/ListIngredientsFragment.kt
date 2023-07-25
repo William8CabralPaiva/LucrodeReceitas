@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cabral.core.ListIngredientNavigation
-import com.cabral.core.common.domain.model.Ingredients
+import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.listingredients.databinding.FragmentListIngredientsBinding
 import com.cabral.listingredients.presentation.adapter.Adapter
 import org.koin.android.ext.android.inject
@@ -55,8 +55,8 @@ class ListIngredientsFragment : Fragment() {
 
         binding.recycleView.adapter = adapter
 
-        val r = Ingredients(0, "Farinha","20" ,"1 Kg", 20f)
-        val r2 = Ingredients(0, "Ovo","20" ,"12 unidades", 40f)
+        val r = Ingredient(0, "Farinha","20" ,"1 Kg", 20f)
+        val r2 = Ingredient(0, "Ovo","20" ,"12 unidades", 40f)
 
         val list = listOf(r, r2, r, r2, r, r2, r, r2, r, r2, r, r2, r, r2)
 

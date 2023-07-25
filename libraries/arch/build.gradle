@@ -9,8 +9,6 @@ android {
     resourcePrefix "arch"
 }
 
-
 dependencies {
-
     implementation project(Modules.design)
 }

@@ -1,6 +1,6 @@
 package com.cabral.core.common.domain.model
 
-data class Ingredients(
+data class Ingredient(
     val id: Int,
     val name: String,
     val volume: String,

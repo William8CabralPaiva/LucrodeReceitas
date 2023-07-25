@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.cabral.core.common.domain.model.Ingredients
+import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.ingredient.presentation.presentation.adapter.IngredientViewHolder.Companion.typeViewHolder
 
 class Adapter(private val context: Context) :
-    ListAdapter<Ingredients, IngredientViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<Ingredient, IngredientViewHolder>(DIFF_CALLBACK) {
 
-    lateinit var onClickTrash: (Ingredients) -> Unit
+    lateinit var onClickTrash: (Ingredient) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
         return typeViewHolder(parent, context, viewType)
@@ -27,17 +27,17 @@ class Adapter(private val context: Context) :
 
     companion object {
         private val DIFF_CALLBACK =
-            object : DiffUtil.ItemCallback<Ingredients>() {
+            object : DiffUtil.ItemCallback<Ingredient>() {
                 override fun areItemsTheSame(
-                    oldItem: Ingredients,
-                    newItem: Ingredients
+                    oldItem: Ingredient,
+                    newItem: Ingredient
                 ): Boolean {
                     return oldItem.name == newItem.name
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: Ingredients,
-                    newItem: Ingredients
+                    oldItem: Ingredient,
+                    newItem: Ingredient
                 ): Boolean {
                     return oldItem == newItem
                 }

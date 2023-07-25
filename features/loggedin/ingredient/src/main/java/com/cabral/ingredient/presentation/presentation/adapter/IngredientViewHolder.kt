@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.cabral.core.common.domain.model.Ingredients
+import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.ingredient.databinding.ItemIngredientBinding
 
 class IngredientViewHolder(private val binding: ItemIngredientBinding, private val context: Context) :
 RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        ingredient: Ingredients,
-        onClickTrash: (Ingredients) -> Unit
+        ingredient: Ingredient,
+        onClickTrash: (Ingredient) -> Unit
     ) {
         binding.apply {
             name.text = ingredient.name

@@ -10,7 +10,11 @@ android {
 }
 
 dependencies {
-
     implementation project(Modules.arch)
     implementation project(Modules.navigation)
+    implementation platform(Libs.firebase_bom)
+    implementation Libs.firebase_auth
+    implementation Libs.services_auth
+    implementation Libs.firebase_store
+    implementation project(path: ':core:common:domain')
 }

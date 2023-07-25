@@ -13,4 +13,7 @@ object Modules {
     const val design = ":libraries:design"
     const val loggedNavigation =":features:loggedin:host"
     const val notLoggedNavigation =":features:loggedout:host"
+    const val remote =":core:data:remote"
+    const val local =":core:data:local"
+    const val hubsrc =":core:data:hubSrc"
 }

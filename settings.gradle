@@ -31,3 +31,7 @@ include ':app',
         ':libraries:design'
 include ':core:common:domain'
 include ':features:loggedin:ingredient'
+include ':core:data'
+include ':core:data:remote'
+include ':core:data:local'
+include ':core:data:hubSrc'

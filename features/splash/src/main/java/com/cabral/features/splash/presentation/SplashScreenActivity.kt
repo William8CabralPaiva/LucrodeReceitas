@@ -25,8 +25,8 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            navigationLogged.openActivityLogged(this)
-            //navigationNotLogged.openNotLogged(this)
+            //navigationLogged.openActivityLogged(this)
+            navigationNotLogged.openNotLogged(this)
         }, 300)
     }
 

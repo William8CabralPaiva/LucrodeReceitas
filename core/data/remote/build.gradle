@@ -1,0 +1,21 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+apply from: "$rootDir/plugins/android-build.gradle"
+
+android {
+    namespace 'com.cabral.remote'
+    resourcePrefix "remote"
+}
+
+dependencies {
+    implementation project(Modules.arch)
+    implementation project(Modules.domain)
+    implementation platform(Libs.firebase_bom)
+    implementation Libs.services_auth
+    implementation Libs.firebase_auth
+    implementation Libs.firebase_store
+    implementation Libs.coroutines
+
+}
