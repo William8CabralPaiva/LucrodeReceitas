@@ -7,13 +7,13 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.cabral.core.LoggedNavigation
 import com.cabral.core.NotLoggedNavigation
-import com.cabral.features.splash.databinding.ActivitySplashScreenBinding
+import com.cabral.features.splash.databinding.SplashScreenActivityBinding
 import org.koin.android.ext.android.inject
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
 
-    private var _binding: ActivitySplashScreenBinding? = null
+    private var _binding: SplashScreenActivityBinding? = null
     private val binding get() = _binding!!
 
     private val navigationLogged: LoggedNavigation by inject()
@@ -21,7 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        _binding = SplashScreenActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         Handler(Looper.getMainLooper()).postDelayed({

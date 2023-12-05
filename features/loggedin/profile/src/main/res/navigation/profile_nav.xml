@@ -9,5 +9,5 @@
         android:id="@+id/profileFragment"
         android:name="com.cabral.profile.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/profile_fragment" />
 </navigation>

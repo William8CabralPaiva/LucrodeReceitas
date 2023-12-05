@@ -9,7 +9,7 @@
         android:id="@+id/recipe"
         android:name="com.cabral.recipe.presentation.RecipeFragment"
         android:label="RecipeFragment"
-        tools:layout="@layout/fragment_recipe">
+        tools:layout="@layout/recipe_fragment">
         <action
             android:id="@+id/action_recipe_to_profile"
             app:destination="@id/profile" />
@@ -25,7 +25,7 @@
         android:id="@+id/list_recipe"
         android:name="com.cabral.listrecipe.presentation.ListRecipeFragment"
         android:label="ListRecipeFragment"
-        tools:layout="@layout/fragment_list_recipe">
+        tools:layout="@layout/listrecipe_fragment">
 
         <action
             android:id="@+id/action_listRecipe_to_recipe"
@@ -36,7 +36,7 @@
         android:id="@+id/list_ingredients"
         android:name="com.cabral.listingredients.presentation.ListIngredientsFragment"
         android:label="ListIngredientsFragment"
-        tools:layout="@layout/fragment_list_ingredients"
+        tools:layout="@layout/listingredients_fragment"
         >
         <action
             android:id="@+id/action_list_ingredients_to_ingredients"

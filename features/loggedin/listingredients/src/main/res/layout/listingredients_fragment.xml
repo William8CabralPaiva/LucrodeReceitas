@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.ListIngredientsFragment">
 
     <TextView
         android:id="@+id/title"
@@ -14,10 +15,10 @@
         android:drawablePadding="16dp"
         android:fontFamily="@font/bangers"
         android:gravity="center"
-        android:text="@string/list_recipe"
-        android:textColor="@color/orange"
+        android:text="@string/ingredients_title"
+        android:textColor="@color/design_orange"
         android:textSize="24sp"
-        app:drawableStartCompat="@drawable/ic_recipe_list"
+        app:drawableStartCompat="@drawable/ic_list_ingredients"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:background="@color/white"
+        android:background="@color/design_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,9 +41,10 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="16dp"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="@string/click_in_plus_to_add_recipe"
+            android:gravity="start"
+            android:text="@string/click_in_plus_to_add_ingredient"
             android:textAlignment="textStart"
-            android:textColor="@color/gray_light"
+            android:textColor="@color/design_gray_light"
             android:textSize="20sp" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -50,23 +52,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_recipe" />
+            tools:listitem="@layout/listingredients_item_ingredient" />
 
     </ViewFlipper>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_recipe"
+        android:id="@+id/add_ingredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/orange"
+        android:backgroundTint="@color/design_orange"
         android:clickable="true"
-        android:contentDescription="@string/add_recipe"
+        android:contentDescription="@string/add_ingredient"
         android:focusable="true"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
+        app:tint="@color/design_white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

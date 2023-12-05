@@ -23,7 +23,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@color/design_white"
             android:padding="16dp">
 
             <TextView
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
-                android:textColor="@color/orange"
+                android:textColor="@color/design_orange"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -57,7 +57,7 @@
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/ubuntu_bold"
                 android:text="@string/price"
-                android:textColor="@color/black"
+                android:textColor="@color/design_black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/ingredient_name"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
                 android:paddingStart="5dp"
-                android:textColor="@color/green"
+                android:textColor="@color/design_green"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/description_value"
                 app:layout_constraintStart_toEndOf="@+id/description_value"
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/ubuntu_bold"
-                android:textColor="@color/black"
+                android:textColor="@color/design_black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/description_value"
                 app:layout_constraintEnd_toEndOf="parent"

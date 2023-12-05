@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/design_white"
     tools:context=".presentation.LoggedActivity">
 
     <androidx.fragment.app.FragmentContainerView
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/logged_nav" />
+        app:navGraph="@navigation/host_logged_nav" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav_main"
@@ -27,7 +27,7 @@
         android:background="@drawable/bottom_navigation"
         android:elevation="2dp"
         app:itemIconTint="@drawable/menu_navigation_item"
-        app:itemTextColor="@color/white"
+        app:itemTextColor="@color/design_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

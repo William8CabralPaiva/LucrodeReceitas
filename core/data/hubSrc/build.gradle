@@ -11,6 +11,7 @@ android {
 }
 
 dependencies {
+    implementation project(Modules.arch)
     implementation project(Modules.remote)
     implementation project(Modules.domain)
     implementation platform(Libs.firebase_bom)

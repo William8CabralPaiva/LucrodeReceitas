@@ -1,6 +1,6 @@
 package com.cabral.hubsrc.source.remote
 
-import android.util.Log
+import com.cabral.arch.extensions.RecipeThrowable
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.User
@@ -12,7 +12,11 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class RemoteDataSourceImpl(
@@ -21,22 +25,39 @@ class RemoteDataSourceImpl(
 ) : RemoteDataSource {
     override fun addUser(user: User): Flow<Unit> = flow {
         //somente um emit
-        emit(db.collection("user").document().set(user) as Unit)
-    }
+        db.collection("user").document().set(user)
+        emit(Unit)
+    }.flowOn(dispatcher)
 
     override suspend fun addUser2(user: User) {
         withContext(dispatcher) {
-            db.collection("user").whereEqualTo("email",user.email).whereEqualTo("password",user.password).get()
-                .addOnFailureListener {  Log.i("resposta","errou") }
-                .addOnSuccessListener { Log.i("resposta","achou")
-            }
-            db.collection("user").document().set(user)
+            db.collection("user").whereEqualTo("email", user.email)
+                .whereEqualTo("password", user.password).get()
+                .addOnFailureListener {
+                    throw (RecipeThrowable.AddUserThrowableError())
+                }
+                .addOnSuccessListener {
+                    if (it.size() == 0) {
+                        db.collection("user").document().set(user)
+                    } else {
+                        throw (RecipeThrowable.AddUserThrowable())
+                    }
+                }
+
         }
     }
 
-    override fun login(email: String): Flow<User> {
-        TODO("Not yet implemented")
-    }
+    override fun login(user: User): Flow<String> = flow {
+        val result = db.collection("user").whereEqualTo("email", user.email)
+            .whereEqualTo("password", user.password).get()
+
+        if (result.isSuccessful) {
+            emit("Cadastrado")
+        } else {
+            emit("erro")
+        }
+
+    }.flowOn(dispatcher)
 
     override fun getAllRecipe(email: String): Flow<List<Recipe>> {
         TODO("Not yet implemented")

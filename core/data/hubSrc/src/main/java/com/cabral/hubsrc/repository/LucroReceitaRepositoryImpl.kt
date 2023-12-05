@@ -5,11 +5,7 @@ import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.repository.LucroReceitaRepository
 import com.cabral.remote.local.RemoteDataSource
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 
 class LucroReceitaRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
@@ -22,8 +18,8 @@ class LucroReceitaRepositoryImpl(
         return remoteDataSource.addUser2(user)
     }
 
-    override fun login(email: String): Flow<User> {
-        return login(email)
+    override fun login(user: User): Flow<String> {
+       return remoteDataSource.login(user)
     }
 
     override fun getAllRecipe(email: String): Flow<List<Recipe>> {

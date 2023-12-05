@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.AddUserUseCase
+import com.cabral.core.common.domain.usecase.LoginUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val addUserUseCase: AddUserUseCase,
+    private val loginUseCase: LoginUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -30,6 +32,11 @@ class LoginViewModel(
     private val _notifyError = MutableLiveData<Unit>()
     val notifyError: LiveData<Unit> = _notifyError
 
+    fun login(){
+        val user = User("email aqui", "senha aqui")
+        loginUseCase(user).launchIn(viewModelScope)
+    }
+
     fun addUser() {
         val user = User("email aqui", "senha aqui")
 
@@ -38,7 +45,6 @@ class LoginViewModel(
 //            .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
 //            .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
         addUserUseCase(user)
-            .flowOn(dispatcher)
             .catch {
                 _notifyError.postValue(Unit)
             }//exception

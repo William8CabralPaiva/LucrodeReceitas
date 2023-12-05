@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.ingredient.databinding.ItemIngredientBinding
+import com.cabral.ingredient.databinding.IngredientsItemBinding
 
-class IngredientViewHolder(private val binding: ItemIngredientBinding, private val context: Context) :
+class IngredientViewHolder(private val binding: IngredientsItemBinding, private val context: Context) :
 RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
@@ -31,7 +31,7 @@ RecyclerView.ViewHolder(binding.root) {
             context: Context,
             index: Int
         ): IngredientViewHolder {
-            val binding = ItemIngredientBinding.inflate(
+            val binding = IngredientsItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

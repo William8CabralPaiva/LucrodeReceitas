@@ -9,5 +9,5 @@
         android:id="@+id/list_recipe"
         android:name="com.cabral.listrecipe.presentation.ListRecipeFragment"
         android:label="fragment_list_recipe"
-        tools:layout="@layout/fragment_list_recipe" />
+        tools:layout="@layout/listrecipe_fragment" />
 </navigation>

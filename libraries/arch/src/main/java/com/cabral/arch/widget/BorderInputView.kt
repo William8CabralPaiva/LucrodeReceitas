@@ -106,10 +106,10 @@ class BorderInputView @JvmOverloads constructor(
         val colors = when (colorType) {
             ColorType.ORANGE -> {
                 intArrayOf(
-                    getColor(com.cabral.design.R.color.orange),
-                    getColor(com.cabral.design.R.color.orange_light),
-                    getColor(com.cabral.design.R.color.orange),
-                    getColor(com.cabral.design.R.color.orange_light)
+                    getColor(com.cabral.design.R.color.design_orange),
+                    getColor(com.cabral.design.R.color.design_orange_light),
+                    getColor(com.cabral.design.R.color.design_orange),
+                    getColor(com.cabral.design.R.color.design_orange_light)
                 )
             }
         }
@@ -126,8 +126,8 @@ class BorderInputView @JvmOverloads constructor(
         val colors = when (colorType) {
             ColorType.ORANGE -> {
                 intArrayOf(
-                    getColor(com.cabral.design.R.color.orange),
-                    getColor(com.cabral.design.R.color.teal_200),
+                    getColor(com.cabral.design.R.color.design_orange),
+                    getColor(com.cabral.design.R.color.design_teal_200),
                 )
             }
         }
@@ -141,13 +141,13 @@ class BorderInputView @JvmOverloads constructor(
 
                 val color = when {
                     (input.isNotEmpty() && !hasFocus) -> {
-                        com.cabral.design.R.color.orange
+                        com.cabral.design.R.color.design_orange
                     }
                     !hasFocus -> {
-                        com.cabral.design.R.color.gray_dark
+                        com.cabral.design.R.color.design_gray_dark
                     }
                     else -> {
-                        com.cabral.design.R.color.orange
+                        com.cabral.design.R.color.design_orange
                     }
                 }
 

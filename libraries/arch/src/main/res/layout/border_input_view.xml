@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
-        app:boxStrokeColor="@color/orange"
+        app:boxStrokeColor="@color/design_orange"
         app:hintTextAppearance="@style/TextLabel"
-        app:hintTextColor="@color/gray_dark"
+        app:hintTextColor="@color/design_gray_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:placeholderTextColor="@color/orange">
+        app:placeholderTextColor="@color/design_orange">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/bi_text_input"

@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.cabral.arch.extensions.singInLauncher
-import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.LoggedNavigation
-import com.cabral.features.databinding.FragmentLoginBinding
+import com.cabral.features.databinding.LoginFragmentBinding
+import com.cabral.features.extensions.singInLauncher
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -19,12 +17,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
 
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: LoginFragmentBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: LoginViewModel by viewModel()
 
-    private val navigation:LoggedNavigation by inject()
+    private val navigation: LoggedNavigation by inject()
 
     private val gso: GoogleSignInOptions by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
@@ -36,7 +34,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = LoginFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -61,8 +59,9 @@ class LoginFragment : Fragment() {
         }
 
         binding.imageView.setOnClickListener {
-            viewModel.addUser()
-           // navigation.openActivityLogged(requireActivity())
+            // viewModel.addUser()
+            viewModel.login()
+            // navigation.openActivityLogged(requireActivity())
         }
 
     }

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.cabral.arch.SwipeGesture
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
-import com.cabral.listrecipe.databinding.FragmentListRecipeBinding
+import com.cabral.listrecipe.databinding.ListrecipeFragmentBinding
 import com.cabral.listrecipe.presentation.adapter.Adapter
 import org.koin.android.ext.android.inject
 
 class ListRecipeFragment : Fragment() {
 
-    private var _binding: FragmentListRecipeBinding? = null
+    private var _binding: ListrecipeFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: Adapter
@@ -27,7 +27,7 @@ class ListRecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListRecipeBinding.inflate(inflater, container, false)
+        _binding = ListrecipeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

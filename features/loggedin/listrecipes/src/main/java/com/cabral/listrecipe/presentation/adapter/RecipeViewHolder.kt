@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cabral.core.common.domain.model.Recipe
-import com.cabral.listrecipe.databinding.ItemRecipeBinding
+import com.cabral.listrecipe.databinding.ListrecipeItemRecipeBinding
 
-class RecipeViewHolder(private val binding: ItemRecipeBinding, private val context: Context) :
+class RecipeViewHolder(
+    private val binding: ListrecipeItemRecipeBinding,
+    private val context: Context
+) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
@@ -32,7 +35,7 @@ class RecipeViewHolder(private val binding: ItemRecipeBinding, private val conte
             context: Context,
             index: Int
         ): RecipeViewHolder {
-            val binding = ItemRecipeBinding.inflate(
+            val binding = ListrecipeItemRecipeBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

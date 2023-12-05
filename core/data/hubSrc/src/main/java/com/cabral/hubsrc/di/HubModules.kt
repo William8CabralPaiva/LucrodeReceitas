@@ -2,6 +2,7 @@ package com.cabral.hubsrc.di
 
 import com.cabral.core.common.domain.repository.LucroReceitaRepository
 import com.cabral.core.common.domain.usecase.AddUserUseCase
+import com.cabral.core.common.domain.usecase.LoginUseCase
 import com.cabral.hubsrc.repository.LucroReceitaRepositoryImpl
 import com.cabral.hubsrc.source.remote.RemoteDataSourceImpl
 import com.cabral.remote.local.RemoteDataSource
@@ -16,5 +17,6 @@ object HubModules {
         factory<RemoteDataSource> { RemoteDataSourceImpl() }
         factory<LucroReceitaRepository> { LucroReceitaRepositoryImpl(get()) }
         factory { AddUserUseCase(get()) }
+        factory { LoginUseCase(get()) }
     }
 }

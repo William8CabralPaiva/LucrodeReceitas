@@ -1,4 +1,4 @@
-package com.cabral.arch.extensions
+package com.cabral.features.extensions
 
 import android.app.Activity
 import android.content.Intent

@@ -10,7 +10,7 @@ interface RemoteDataSource {
     //TODO ALTERAR FLOW UNIT para suspense
     fun addUser(user: User): Flow<Unit>
     suspend fun addUser2(user: User)
-    fun login(email: String): Flow<User>
+    fun login(user: User): Flow<String>
     fun getAllRecipe(email: String): Flow<List<Recipe>>
     fun getAllIngredients(email: String): Flow<List<Ingredient>>
 }

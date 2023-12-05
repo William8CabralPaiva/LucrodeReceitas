@@ -32,7 +32,7 @@
             android:fontFamily="@font/bangers"
             android:gravity="center"
             android:text="@string/design_ingredients"
-            android:textColor="@color/orange"
+            android:textColor="@color/design_orange"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

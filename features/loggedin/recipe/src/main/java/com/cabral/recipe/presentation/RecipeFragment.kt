@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.cabral.recipe.databinding.FragmentRecipeBinding
+import com.cabral.recipe.databinding.RecipeFragmentBinding
 
-class RecipeFragment : Fragment() {
+class RecipeFragment() : Fragment() {
 
-    private var _binding: FragmentRecipeBinding? = null
+    private var _binding: RecipeFragmentBinding? = null
     private val binding get() = _binding!!
     //private val activity by lazy { requireActivity() as LoggedActivity }
 
@@ -19,7 +19,7 @@ class RecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentRecipeBinding.inflate(inflater, container, false)
+        _binding = RecipeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
