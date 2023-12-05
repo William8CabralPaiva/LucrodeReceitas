@@ -41,11 +41,11 @@ class ActionButton @JvmOverloads constructor(
 
     private fun bindingLayout(attrs: AttributeSet?) {
         attrs?.let {
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ActionButton)
+            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArchActionButton)
 
-            val buttonType = typedArray.getEnum(R.styleable.ActionButton_ab_type, ButtonType.SHAPE)
+            val buttonType = typedArray.getEnum(R.styleable.ArchActionButton_arch_ab_type, ButtonType.SHAPE)
 
-            val buttonText = typedArray.getText(R.styleable.ActionButton_ab_text) ?: ""
+            val buttonText = typedArray.getText(R.styleable.ArchActionButton_arch_ab_text) ?: ""
             binding.textView.text = buttonText
 
             binding.root.background = getShape(buttonType)

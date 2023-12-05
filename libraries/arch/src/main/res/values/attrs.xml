@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <style name="ArchTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/design_orange</item>
         <item name="boxStrokeWidth">2dp</item>
     </style>
 
-    <declare-styleable name="BorderInputView">
-        <attr name="ei_label" format="string" />
+    <declare-styleable name="ArchBorderInputView">
+        <attr name="arch_ei_label" format="string" />
 
-        <attr name="ei_color" format="enum">
+        <attr name="arch_ei_color" format="enum">
             <enum name="orange" value="0" />
             <enum name="blue" value="1" />
         </attr>
 
-        <attr name="ei_type" format="enum">
+        <attr name="arch_ei_type" format="enum">
             <enum name="text" value="0" />
             <enum name="password" value="1" />
             <enum name="number" value="2" />
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="ProgressRing">
-        <attr name="pr_progress" format="integer" />
-        <attr name="pr_progressbar_color" format="color" />
-        <attr name="pr_background_progressbar_color" format="color" />
-        <attr name="pr_progressbar_width" format="dimension" />
-        <attr name="pr_background_progressbar_width" format="dimension" />
-        <attr name="pr_tick_color" format="color" />
+    <declare-styleable name="ArchProgressRing">
+        <attr name="arch_pr_progress" format="integer" />
+        <attr name="arch_pr_progressbar_color" format="color" />
+        <attr name="arch_pr_background_progressbar_color" format="color" />
+        <attr name="arch_pr_progressbar_width" format="dimension" />
+        <attr name="arch_pr_background_progressbar_width" format="dimension" />
+        <attr name="arch_pr_tick_color" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="ActionButton">
-        <attr name="ab_text" format="string" />
-        <attr name="ab_type" format="enum">
+    <declare-styleable name="ArchActionButton">
+        <attr name="arch_ab_text" format="string" />
+        <attr name="arch_ab_type" format="enum">
             <enum name="shape" value="0" />
             <enum name="border" value="1" />
         </attr>
     </declare-styleable>
 
-    <style name="TextLabel" parent="TextAppearance.Design.Hint">
+    <style name="ArchTextLabel" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">14sp</item>
     </style>
 </resources>

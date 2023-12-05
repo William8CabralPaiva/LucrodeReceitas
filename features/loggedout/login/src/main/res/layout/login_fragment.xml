@@ -24,8 +24,8 @@
         android:id="@+id/bi_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ei_label="@string/design_user"
-        app:ei_type="text"
+        app:arch_ei_label="@string/design_user"
+        app:arch_ei_type="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -35,8 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:ei_label="@string/design_password"
-        app:ei_type="password"
+        app:arch_ei_label="@string/design_password"
+        app:arch_ei_type="password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bi_user" />
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        app:ab_text="@string/design_login"
+        app:arch_ab_text="@string/design_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bi_password" />

@@ -11,8 +11,8 @@
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:ab_text="testando"
-        app:ab_type="border"
+        app:arch_ab_text="testando"
+        app:arch_ab_type="border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -27,17 +27,17 @@ class BorderInputView @JvmOverloads constructor(
 
     private fun bindingLayout(attrs: AttributeSet?) {
         attrs?.let {
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BorderInputView)
+            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArchBorderInputView)
 
-            val hint = typedArray.getText(R.styleable.BorderInputView_ei_label) ?: ""
+            val hint = typedArray.getText(R.styleable.ArchBorderInputView_arch_ei_label) ?: ""
             setLabelText(hint.toString())
 
             val color =
-                typedArray.getEnum(R.styleable.BorderInputView_ei_color, ColorType.ORANGE)
+                typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_color, ColorType.ORANGE)
             //     setDefaultColor(color)
 
             val BIInputType =
-                typedArray.getEnum(R.styleable.BorderInputView_ei_type, BIInputType.TEXT);
+                typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_type, BIInputType.TEXT);
             setInputType(BIInputType)
             hintTextColor()
             typedArray.recycle()
@@ -143,9 +143,11 @@ class BorderInputView @JvmOverloads constructor(
                     (input.isNotEmpty() && !hasFocus) -> {
                         com.cabral.design.R.color.design_orange
                     }
+
                     !hasFocus -> {
                         com.cabral.design.R.color.design_gray_dark
                     }
+
                     else -> {
                         com.cabral.design.R.color.design_orange
                     }
