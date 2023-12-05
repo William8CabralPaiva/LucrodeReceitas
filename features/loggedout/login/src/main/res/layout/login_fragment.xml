@@ -15,7 +15,7 @@
         android:layout_marginTop="120dp"
         android:contentDescription="@string/design_ic_cook"
         android:scaleType="center"
-        android:src="@drawable/cook"
+        android:src="@drawable/arch_cook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

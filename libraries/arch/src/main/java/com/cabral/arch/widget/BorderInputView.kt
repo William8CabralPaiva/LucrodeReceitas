@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.cabral.arch.R
-import com.cabral.arch.databinding.BorderInputViewBinding
+import com.cabral.arch.databinding.ArchBorderInputViewBinding
 import com.google.android.material.textfield.TextInputLayout
 
 class BorderInputView @JvmOverloads constructor(
@@ -18,7 +18,7 @@ class BorderInputView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : FrameLayout(context, attrs, defStyle) {
 
-    private val binding = BorderInputViewBinding
+    private val binding = ArchBorderInputViewBinding
         .inflate(LayoutInflater.from(context), this, true)
 
     init {

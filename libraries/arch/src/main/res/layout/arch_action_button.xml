@@ -2,14 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="56dp"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:background="@drawable/ripple_border_orange_button"
-    android:clickable="true"
     android:animateLayoutChanges="true"
+    android:background="@drawable/arch_ripple_border_orange_button"
+    android:clickable="true"
     android:focusable="true">
 
     <TextView
@@ -26,7 +26,20 @@
         android:id="@+id/icon_result"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:src="@drawable/ic_checked"
+        android:src="@drawable/arch_ic_checked"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/design_white"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

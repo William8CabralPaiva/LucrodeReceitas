@@ -60,12 +60,8 @@ class LoginFragment : Fragment() {
 
         binding.imageView.setOnClickListener {
             // viewModel.addUser()
-            //viewModel.login()
-            binding.biEnter.finishLoading(true,false)
-            // navigation.openActivityLogged(requireActivity())
-        }
-        binding.biEnter.abSetOnClickListener {
-            binding.biEnter.startLoading()
+           // viewModel.login()
+            navigation.openActivityLogged(requireActivity())
         }
 
     }

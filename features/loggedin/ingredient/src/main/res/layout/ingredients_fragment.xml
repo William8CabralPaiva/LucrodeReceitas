@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:background="#99000000"
+    android:fitsSystemWindows="true"
     tools:context=".presentation.presentation.IngredientsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:background="@drawable/border_orange"
+            android:background="@drawable/arch_border_orange"
             android:padding="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"

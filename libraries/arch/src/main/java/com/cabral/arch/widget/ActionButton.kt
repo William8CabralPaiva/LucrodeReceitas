@@ -4,10 +4,9 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
@@ -15,7 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.cabral.arch.R
-import com.cabral.arch.databinding.ActionButtonBinding
+import com.cabral.arch.databinding.ArchActionButtonBinding
 
 class ActionButton @JvmOverloads constructor(
     context: Context,
@@ -32,7 +31,7 @@ class ActionButton @JvmOverloads constructor(
     @ColorInt
     private var buttonColor: Int = -1
 
-    private val binding = ActionButtonBinding
+    private val binding = ArchActionButtonBinding
         .inflate(LayoutInflater.from(context), this, true)
 
     init {
@@ -43,12 +42,13 @@ class ActionButton @JvmOverloads constructor(
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArchActionButton)
 
-            val buttonType = typedArray.getEnum(R.styleable.ArchActionButton_arch_ab_type, ButtonType.SHAPE)
+            val buttonType =
+                typedArray.getEnum(R.styleable.ArchActionButton_arch_ab_type, ButtonType.SHAPE)
 
             val buttonText = typedArray.getText(R.styleable.ArchActionButton_arch_ab_text) ?: ""
             binding.textView.text = buttonText
 
-            binding.root.background = getShape(buttonType)
+            binding.container.background = getShape(buttonType)
             setTextColors(buttonType)
 
             typedArray.recycle()
@@ -58,11 +58,11 @@ class ActionButton @JvmOverloads constructor(
     private fun getShape(buttonType: ButtonType): Drawable? {
         val drawable = when (buttonType) {
             ButtonType.SHAPE -> {
-                R.drawable.ripple_shape_orange_button
+                R.drawable.arch_ripple_shape_orange_button
             }
 
             ButtonType.BORDER -> {
-                R.drawable.ripple_border_orange_button
+                R.drawable.arch_ripple_border_orange_button
             }
         }
         return AppCompatResources.getDrawable(context, drawable)
@@ -78,12 +78,12 @@ class ActionButton @JvmOverloads constructor(
                 getColor(com.cabral.design.R.color.design_orange)
             }
         }
-        //binding.progressRing.setIconColor(color)
+        //binding.progressCircularRing.setIconColor(color)
         binding.textView.setTextColor(color)
     }
 
     private fun getColor(@ColorRes color: Int): Int {
-        return ContextCompat.getColor(context, color);
+        return ContextCompat.getColor(context, color)
     }
 
     private inline fun <reified T : Enum<T>> TypedArray.getEnum(index: Int, default: T) =
@@ -91,81 +91,73 @@ class ActionButton @JvmOverloads constructor(
             if (it >= 0) enumValues<T>()[it] else default
         }
 
+    fun teste() {
+        binding.container.isEnabled = true
+        binding.progressCircular.isVisible = false
+        binding.textView.isVisible = true
+        isLoading = false
+
+    }
+
     fun startLoading() {
-        binding.root.run {
+        binding.container.run {
             if (!isLoading && isEnabled) {
                 isLoading = true
                 isEnabled = false
 
-                val disappear = disappearText()
-                binding.textView.startAnimation(disappear)
+                binding.textView.isVisible = false
+                binding.progressCircular.isVisible = true
 
             }
         }
     }
 
-    fun finishLoading(success: Boolean, backText: Boolean = false) {
-        binding.root.run {
+    fun finishLoading(success: Boolean, hideIcon: Boolean = false) {
+        binding.container.run {
+
+            binding.iconResult.setImageDrawable(iconChecked(success))
 
             if (isLoading) {
-                isLoading = false
-                isEnabled = true
-
-                if (!backText) {
-                    //binding.progressRing.finishLoading(success)
-                } else {
-
-                    val appear = appearProgress(success)
-                    //binding.progressRing.startAnimation(appear)
-                }
+                binding.progressCircular.animate().apply {
+                    duration = 350
+                }.withEndAction {
+                    binding.progressCircular.isVisible = false
+                    binding.iconResult.animate().apply {
+                        duration = 350
+                    }.withEndAction {
+                        binding.iconResult.isVisible = true
+                        binding.iconResult.animate().apply {
+                            duration = 750
+                        }.withEndAction {
+                            hideIconShowText(hideIcon)
+                        }.start()
+                    }.start()
+                }.start()
             }
         }
     }
 
-    private fun appearProgress(success: Boolean): AlphaAnimation {
-        val appear = AlphaAnimation(1f, 0f)
-        appear.duration = 1350
-
-        appear.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-                //binding.progressRing.finishLoading(success)
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
+    private fun hideIconShowText(hideIcon: Boolean) {
+        if (hideIcon) {
+            binding.iconResult.isVisible = false
+            android.os.Handler(Looper.getMainLooper()).postDelayed({
                 binding.textView.isVisible = true
-                //binding.progressRing.isVisible = false
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-        })
-        return appear
+                isLoading = false
+                binding.container.isEnabled = true
+            }, 250)
+        }
     }
 
-
-    private fun disappearText(): AlphaAnimation {
-        val disappear = AlphaAnimation(1f, 0f)
-        disappear.duration = DURATION
-
-        disappear.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                binding.textView.isVisible = false
-                //binding.progressRing.showLoading()
-            }
-
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-        })
-        return disappear
+    private fun iconChecked(success: Boolean): Drawable? {
+        return if (success) {
+            AppCompatResources.getDrawable(context, R.drawable.arch_ic_checked)
+        } else {
+            AppCompatResources.getDrawable(context, R.drawable.arch_ic_unchecked)
+        }
     }
 
     fun abSetOnClickListener(insideFunction: () -> Unit) {
-        binding.root.setOnClickListener {
+        binding.container.setOnClickListener {
             insideFunction()
         }
     }
