@@ -4,9 +4,9 @@ import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.repository.LucroReceitaRepository
 import kotlinx.coroutines.flow.Flow
 
-class LoginUseCase(private val repository: LucroReceitaRepository) {
+class AutoLoginUseCase(private val repository: LucroReceitaRepository) {
 
-    operator fun invoke(user: User): Flow<User> {
-        return repository.login(user)
+    operator fun invoke(key: String): Flow<User> {
+        return repository.autoLogin(key)
     }
 }

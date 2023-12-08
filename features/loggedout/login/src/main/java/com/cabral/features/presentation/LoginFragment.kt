@@ -1,12 +1,20 @@
 package com.cabral.features.presentation
 
+import android.app.Application
 import android.os.Bundle
+import android.preference.Preference
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.cabral.arch.EmailUtils
+import com.cabral.arch.PasswordUtils
+import com.cabral.arch.extensions.RecipeThrowable
+import com.cabral.arch.getUserKey
+import com.cabral.arch.saveUserKey
 import com.cabral.core.LoggedNavigation
+import com.cabral.features.R
 import com.cabral.features.databinding.LoginFragmentBinding
 import com.cabral.features.extensions.singInLauncher
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -14,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.prefs.Preferences
 
 class LoginFragment : Fragment() {
 
@@ -25,7 +34,7 @@ class LoginFragment : Fragment() {
     private val navigation: LoggedNavigation by inject()
 
     private val gso: GoogleSignInOptions by lazy {
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
     }
 
     private val gsc: GoogleSignInClient by lazy { GoogleSignIn.getClient(requireActivity(), gso) }
@@ -42,7 +51,10 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val launcher = singInLauncher(successBlock = {
-            this.result.email
+            result?.let {
+                viewModel.googleEmail(it.email, it.displayName)
+            }
+
         })
 
         binding.googleLogin.setOnClickListener {
@@ -50,20 +62,39 @@ class LoginFragment : Fragment() {
             launcher.launch(signInIntent)
         }
 
+        binding.acEnter.abSetOnClickListener {
+            login()
+        }
+
         viewModel.notifySuccess.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "Adicionou", Toast.LENGTH_LONG).show()
-        }
-
-        viewModel.notifyError.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "Falha ao add", Toast.LENGTH_LONG).show()
-        }
-
-        binding.imageView.setOnClickListener {
-            // viewModel.addUser()
-           // viewModel.login()
+            it.key?.let { it1 -> context?.saveUserKey(it1) }
             navigation.openActivityLogged(requireActivity())
         }
 
+        viewModel.notifyError.observe(viewLifecycleOwner) {
+            Toast.makeText(
+                context,
+                getString(R.string.login_check_internet),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+    }
+
+    private fun login() {
+        try {
+            if (EmailUtils.validateEmail(binding.biEmail.getText()) &&
+                PasswordUtils.validatePassword(binding.biPassword.getText())
+            ) {
+                viewModel.login(binding.biEmail.getText(), binding.biPassword.getText())
+            }
+        } catch (e: RecipeThrowable) {
+            if (e is RecipeThrowable.AuthenticateEmail) {
+                binding.biEmail.setError(e.message)
+            } else {
+                binding.biPassword.setError(e.message)
+            }
+        }
     }
 
     override fun onDestroy() {

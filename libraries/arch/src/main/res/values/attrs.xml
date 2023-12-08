@@ -37,6 +37,10 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="ArchRecipeSpinner">
+        <attr name="arch_rs_hint_text" format="string" />
+    </declare-styleable>
+
     <style name="ArchTextLabel" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">14sp</item>
     </style>

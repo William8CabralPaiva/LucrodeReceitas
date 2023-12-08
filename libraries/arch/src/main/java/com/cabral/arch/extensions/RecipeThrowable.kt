@@ -14,8 +14,21 @@ sealed class RecipeThrowable(cause: Throwable?) : Throwable(cause) {
         throwable: Throwable? = null
     ) : RecipeThrowable(throwable)
 
-    data class UnknownThrowable(
-        override val message: String?,
+
+    data class UnknownUserThrowable(
+        override val message: String?= "Usuário não encontrado",
         val throwable: Throwable? = null
     ) : RecipeThrowable(throwable)
+
+    data class AuthenticateEmail(
+        override val message: String,
+        val throwable: Throwable? = null
+    ) : RecipeThrowable(throwable)
+
+    data class AuthenticatePassword(
+        override val message: String,
+        val throwable: Throwable? = null
+    ) : RecipeThrowable(throwable)
+
+
 }

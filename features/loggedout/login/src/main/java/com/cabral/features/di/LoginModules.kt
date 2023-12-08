@@ -1,6 +1,8 @@
 package com.cabral.features.di
 
 import com.cabral.core.common.domain.usecase.AddUserUseCase
+import com.cabral.core.common.domain.usecase.AutoLoginUseCase
+import com.cabral.core.common.domain.usecase.GoogleLoginUseCase
 import com.cabral.core.common.domain.usecase.LoginUseCase
 import com.cabral.features.presentation.LoginViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,7 +16,8 @@ object LoginModules {
         viewModel {
             LoginViewModel(
                 addUserUseCase = AddUserUseCase(get()),
-                loginUseCase = LoginUseCase(get())
+                loginUseCase = LoginUseCase(get()),
+                googleLoginUseCase = GoogleLoginUseCase(get())
             )
         }
     }

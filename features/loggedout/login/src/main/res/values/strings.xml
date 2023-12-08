@@ -1,3 +1,4 @@
 <resources>
     <string name="login_web_client_id">816571225632-r9qun0l6ruk36flqfds8dmictdg5uk8g.apps.googleusercontent.com</string>
+    <string name="login_check_internet">Ocorreu um erro com a conexão, verifique sua internet</string>
 </resources>

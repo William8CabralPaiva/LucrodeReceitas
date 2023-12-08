@@ -1,6 +1,8 @@
 package com.cabral.core.common.domain.model
 
 data class User(
-    val email: String,
-    val password: String
+    var email: String? = null,
+    var name:String? = null,
+    var password: String? = null,
+    var key: String? = null
 )

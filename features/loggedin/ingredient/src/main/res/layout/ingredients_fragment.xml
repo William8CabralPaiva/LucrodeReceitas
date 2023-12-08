@@ -68,13 +68,13 @@
                 app:arch_ei_label="@string/design_total_amount"
                 app:arch_ei_type="text" />
 
-            <com.cabral.arch.widget.BorderInputView
+            <com.cabral.arch.widget.RecipeSpinner
                 android:id="@+id/bi_unit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:arch_ei_label="@string/design_unit_measurement"
-                app:arch_ei_type="text" />
+                app:arch_rs_hint_text="@string/design_unit_measurement"
+                app:arch_ei_type="text"/>
 
         </LinearLayout>
 

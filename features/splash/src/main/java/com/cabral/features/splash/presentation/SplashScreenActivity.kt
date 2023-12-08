@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import com.cabral.arch.getUserKey
 import com.cabral.core.LoggedNavigation
 import com.cabral.core.NotLoggedNavigation
 import com.cabral.features.splash.databinding.SplashScreenActivityBinding
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
 
     private var _binding: SplashScreenActivityBinding? = null
+
+    private val viewModel: SplashScreenViewModel by viewModel()
     private val binding get() = _binding!!
 
     private val navigationLogged: LoggedNavigation by inject()
@@ -24,10 +28,19 @@ class SplashScreenActivity : AppCompatActivity() {
         _binding = SplashScreenActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            //navigationLogged.openActivityLogged(this)
-            navigationNotLogged.openNotLogged(this)
-        }, 300)
+        initObservers()
+        viewModel.getUserLogged(this.getUserKey())
+    }
+
+    private fun initObservers() {
+        viewModel.notifyLogged.observe(this) {
+            if (it) {
+                //navigationLogged.openActivityLogged(this)
+                navigationNotLogged.openNotLogged(this)
+            } else {
+                navigationNotLogged.openNotLogged(this)
+            }
+        }
     }
 
     override fun onDestroy() {

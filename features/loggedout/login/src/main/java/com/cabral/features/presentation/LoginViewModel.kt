@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.AddUserUseCase
+import com.cabral.core.common.domain.usecase.AutoLoginUseCase
+import com.cabral.core.common.domain.usecase.GoogleLoginUseCase
 import com.cabral.core.common.domain.usecase.LoginUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -16,15 +19,15 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginViewModel(
     private val addUserUseCase: AddUserUseCase,
     private val loginUseCase: LoginUseCase,
+    private val googleLoginUseCase: GoogleLoginUseCase,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    //state flow respostas de back
-    //shared flow botao navegar, botao devolve toast, não salva na memoria
 
     private val _notifySuccess = MutableLiveData<User>()
     val notifySuccess: LiveData<User> = _notifySuccess
@@ -32,13 +35,33 @@ class LoginViewModel(
     private val _notifyError = MutableLiveData<Unit>()
     val notifyError: LiveData<Unit> = _notifyError
 
-    fun login(){
-        val user = User("email aqui", "senha aqui")
-        loginUseCase(user).launchIn(viewModelScope)
+    fun login(email: String, password: String) {
+        val user = User(email = email, password = password)
+
+        loginUseCase(user)
+            .catch {
+                _notifyError.postValue(Unit)
+            }.onEach {
+                SingletonUser.getInstance().setUser(it)
+                _notifySuccess.postValue(user)
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun googleEmail(email: String?, name: String?) {
+        if (email != null && name != null) {
+            googleLoginUseCase(email, name)
+                .catch {
+                    _notifyError.postValue(Unit)
+                }.onEach {
+                    SingletonUser.getInstance().setUser(it)
+                    _notifySuccess.postValue(it)
+                }.launchIn(viewModelScope)
+        }
     }
 
     fun addUser() {
-        val user = User("email aqui", "senha aqui")
+        val user = User(email = "dasdsa", password = "dasds")
 
 //        db.collection("cities").document()
 //            .set(user)
@@ -55,12 +78,12 @@ class LoginViewModel(
     }
 
     fun addUser2() {
-        val user = User("Porchat", "tubuzeira")
+        val user = User(email = "Porchat", password = "tubuzeira")
         viewModelScope.launch {
             //liga loading
             runCatching { addUserUseCase.invoke2(user) }
-                .onFailure {  }
-                .onSuccess {  }
+                .onFailure { }
+                .onSuccess { }
                 .also {
                     //desliga load
                 }

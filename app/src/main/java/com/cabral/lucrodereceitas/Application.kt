@@ -1,8 +1,11 @@
 package com.cabral.lucrodereceitas
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import com.cabral.features.di.LoginModules
 import com.cabral.features.loggedin.host.di.LoggedNavigationModules
+import com.cabral.features.splash.di.SplashModules
 import com.cabral.host.di.NotLoggedNavigationModule
 import com.cabral.hubsrc.di.HubModules
 import org.koin.android.ext.koin.androidContext
@@ -20,7 +23,8 @@ class Application : Application() {
     private val modules by lazy {
         LoggedNavigationModules.modules +
                 NotLoggedNavigationModule.modules +
-                LoginModules.modules+
+                SplashModules.modules +
+                LoginModules.modules +
                 HubModules.modules
     }
 

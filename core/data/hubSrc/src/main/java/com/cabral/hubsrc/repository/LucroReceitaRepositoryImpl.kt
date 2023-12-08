@@ -18,8 +18,16 @@ class LucroReceitaRepositoryImpl(
         return remoteDataSource.addUser2(user)
     }
 
-    override fun login(user: User): Flow<String> {
-       return remoteDataSource.login(user)
+    override fun login(user: User): Flow<User> {
+        return remoteDataSource.login(user)
+    }
+
+    override fun autoLogin(key: String): Flow<User> {
+        return remoteDataSource.autoLogin(key)
+    }
+
+    override fun googleLogin(email: String, name: String): Flow<User> {
+        return remoteDataSource.googleLogin(email, name)
     }
 
     override fun getAllRecipe(email: String): Flow<List<Recipe>> {

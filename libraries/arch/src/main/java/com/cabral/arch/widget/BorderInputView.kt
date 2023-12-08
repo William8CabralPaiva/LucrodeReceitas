@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import com.cabral.arch.R
 import com.cabral.arch.databinding.ArchBorderInputViewBinding
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class BorderInputView @JvmOverloads constructor(
@@ -40,6 +42,7 @@ class BorderInputView @JvmOverloads constructor(
                 typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_type, BIInputType.TEXT);
             setInputType(BIInputType)
             hintTextColor()
+            changeText()
             typedArray.recycle()
         }
 
@@ -127,7 +130,6 @@ class BorderInputView @JvmOverloads constructor(
             ColorType.ORANGE -> {
                 intArrayOf(
                     getColor(com.cabral.design.R.color.design_orange),
-                    getColor(com.cabral.design.R.color.design_teal_200),
                 )
             }
         }
@@ -175,6 +177,35 @@ class BorderInputView @JvmOverloads constructor(
             e.printStackTrace()
         }
     }
+
+    fun getText(): String {
+        return binding.biTextInput.text.toString()
+    }
+
+    fun getHint(): TextInputLayout {
+        return binding.biHint
+    }
+
+    fun getTextInput(): TextInputEditText {
+        return binding.biTextInput
+    }
+
+    private fun changeText() {
+        binding.biTextInput.doOnTextChanged { _, _, _, _ ->
+            binding.biHint.run {
+                isErrorEnabled = false
+                error = null
+            }
+        }
+    }
+
+    fun setError(errorText: String?) {
+        binding.biHint.run {
+            isErrorEnabled = true
+            error = errorText
+        }
+    }
+
 
     private fun getColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(context, color);

@@ -21,10 +21,10 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.cabral.arch.widget.BorderInputView
-        android:id="@+id/bi_user"
+        android:id="@+id/bi_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:arch_ei_label="@string/design_user"
+        app:arch_ei_label="@string/design_email"
         app:arch_ei_type="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,10 +39,10 @@
         app:arch_ei_type="password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bi_user" />
+        app:layout_constraintTop_toBottomOf="@+id/bi_email" />
 
     <com.cabral.arch.widget.ActionButton
-        android:id="@+id/bi_enter"
+        android:id="@+id/ac_enter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -59,6 +59,6 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bi_enter" />
+        app:layout_constraintTop_toBottomOf="@id/ac_enter" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
