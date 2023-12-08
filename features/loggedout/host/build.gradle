@@ -11,10 +11,11 @@ android {
 }
 
 dependencies {
-
     implementation project(Modules.arch)
     implementation project(Modules.design)
     implementation project(Modules.navigation)
     implementation project(Modules.login)
     implementation project(Modules.recipe)
+    implementation project(Modules.registerUser)
+    implementation project(Modules.forgotpassword)
 }

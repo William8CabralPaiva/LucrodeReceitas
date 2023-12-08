@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/unlogged_nav"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.cabral.features.presentation.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/login_fragment">
+        <action
+            android:id="@+id/loginfragment_to_userfragment"
+            app:destination="@id/loggedout_hostRegisterUserFragment" />
+        <action
+            android:id="@+id/loginfragment_to_forgotpasswordfragment"
+            app:destination="@id/loggedout_hostForgotPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loggedout_hostRegisterUserFragment"
+        android:name="com.cabral.registeruser.presentation.RegisterUserFragment"
+        tools:layout="@layout/fragment_register_user"
+        android:label="RegisterUserFragment" />
+    <fragment
+        android:id="@+id/loggedout_hostForgotPasswordFragment"
+        android:name="com.cabral.forgotpassword.presentation.ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password"
+        android:label="ForgotPasswordFragment" />
+</navigation>

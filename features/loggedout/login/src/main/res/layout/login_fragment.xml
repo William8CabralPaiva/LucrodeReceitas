@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,57 +9,90 @@
     android:fitsSystemWindows="true"
     tools:context=".presentation.LoginFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:contentDescription="@string/design_ic_cook"
-        android:scaleType="center"
-        android:src="@drawable/arch_cook"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.cabral.arch.widget.BorderInputView
-        android:id="@+id/bi_email"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:arch_ei_label="@string/design_email"
-        app:arch_ei_type="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        android:layout_height="wrap_content">
 
-    <com.cabral.arch.widget.BorderInputView
-        android:id="@+id/bi_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:arch_ei_label="@string/design_password"
-        app:arch_ei_type="password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bi_email" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:contentDescription="@string/design_ic_cook"
+            android:scaleType="center"
+            android:src="@drawable/arch_cook"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.cabral.arch.widget.ActionButton
-        android:id="@+id/ac_enter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        app:arch_ab_text="@string/design_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bi_password" />
+        <com.cabral.arch.widget.BorderInputView
+            android:id="@+id/bi_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:arch_ei_label="@string/design_email"
+            app:arch_ei_type="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_login"
-        app:colorScheme="dark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ac_enter" />
+        <com.cabral.arch.widget.BorderInputView
+            android:id="@+id/bi_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:arch_ei_label="@string/design_password"
+            app:arch_ei_type="password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bi_email" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.cabral.arch.widget.ActionButton
+            android:id="@+id/ac_enter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:arch_ab_text="@string/design_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bi_password" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:colorScheme="dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ac_enter" />
+
+        <TextView
+            android:id="@+id/forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:linksClickable="true"
+            android:text="@string/login_forgot_password"
+            android:textColor="@color/design_orange"
+            android:fontFamily="@font/ubuntu"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/google_login" />
+
+        <TextView
+            android:id="@+id/register_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:linksClickable="true"
+            android:text="@string/login_register_user"
+            android:textColor="@color/design_orange"
+            android:fontFamily="@font/ubuntu"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/forgot_password" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

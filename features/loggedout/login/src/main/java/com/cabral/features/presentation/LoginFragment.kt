@@ -1,8 +1,6 @@
 package com.cabral.features.presentation
 
-import android.app.Application
 import android.os.Bundle
-import android.preference.Preference
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +9,9 @@ import androidx.fragment.app.Fragment
 import com.cabral.arch.EmailUtils
 import com.cabral.arch.PasswordUtils
 import com.cabral.arch.extensions.RecipeThrowable
-import com.cabral.arch.getUserKey
 import com.cabral.arch.saveUserKey
 import com.cabral.core.LoggedNavigation
+import com.cabral.core.NotLoggedNavigation
 import com.cabral.features.R
 import com.cabral.features.databinding.LoginFragmentBinding
 import com.cabral.features.extensions.singInLauncher
@@ -22,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.prefs.Preferences
 
 class LoginFragment : Fragment() {
 
@@ -32,6 +29,8 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModel()
 
     private val navigation: LoggedNavigation by inject()
+
+    private val navigationNotLogged: NotLoggedNavigation by inject()
 
     private val gso: GoogleSignInOptions by lazy {
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
@@ -50,6 +49,27 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initListeners()
+        initObservers()
+
+    }
+
+    private fun initObservers() {
+        viewModel.notifySuccess.observe(viewLifecycleOwner) {
+            it.key?.let { it1 -> context?.saveUserKey(it1) }
+            navigation.openActivityLogged(requireActivity())
+        }
+
+        viewModel.notifyError.observe(viewLifecycleOwner) {
+            Toast.makeText(
+                context,
+                getString(R.string.login_check_internet),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun initListeners() {
         val launcher = singInLauncher(successBlock = {
             result?.let {
                 viewModel.googleEmail(it.email, it.displayName)
@@ -66,19 +86,13 @@ class LoginFragment : Fragment() {
             login()
         }
 
-        viewModel.notifySuccess.observe(viewLifecycleOwner) {
-            it.key?.let { it1 -> context?.saveUserKey(it1) }
-            navigation.openActivityLogged(requireActivity())
+        binding.forgotPassword.setOnClickListener {
+            navigationNotLogged.openForgotPassword(this)
         }
 
-        viewModel.notifyError.observe(viewLifecycleOwner) {
-            Toast.makeText(
-                context,
-                getString(R.string.login_check_internet),
-                Toast.LENGTH_LONG
-            ).show()
+        binding.registerUser.setOnClickListener {
+            navigationNotLogged.openUserRegister(this)
         }
-
     }
 
     private fun login() {

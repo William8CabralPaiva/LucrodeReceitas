@@ -16,4 +16,6 @@ object Modules {
     const val remote =":core:data:remote"
     const val local =":core:data:local"
     const val hubsrc =":core:data:hubSrc"
+    const val registerUser = ":features:loggedout:registeruser"
+    const val forgotpassword = ":features:loggedout:forgotpassword"
 }
