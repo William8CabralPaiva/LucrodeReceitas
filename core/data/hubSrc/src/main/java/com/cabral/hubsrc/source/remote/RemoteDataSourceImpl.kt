@@ -25,35 +25,43 @@ class RemoteDataSourceImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteDataSource {
     override fun addUser(user: User): Flow<Unit> = flow {
+        user.name?.let { name ->
+            user.email?.let { email ->
+                val userRegister = UserRegister(name, email)
+                val result = db.collection("user").whereEqualTo("email", email).get().await()
 
-        val result = db.collection("user").whereEqualTo("email", user.email).get().await()
+                if (result.documents.isEmpty()) {
+                    val collection = db.collection("user")
+                    val newDocument = collection.document()
+                    val generatedId = newDocument.id
+                    db.collection("user").document(generatedId).set(userRegister)
 
-        if (result.documents.isEmpty()) {
-            val collection = db.collection("user")
-            val newDocument = collection.document()
-            val generatedId = newDocument.id
-            db.collection("user").document(generatedId).set(user)
+                    val addUser = db.collection("user").document(generatedId).get().await()
 
-            val addUser = db.collection("user").document(generatedId).get().await()
-
-            addUser.also {
-                if (!user.email.isNullOrEmpty()) {
-                    auth.createUserWithEmailAndPassword(user.email!!, user.password!!).await()
-                        .also {
-                            if (!it!!.user?.email.isNullOrEmpty()) {
-                                emit(Unit)
-                            } else {
-                                throw UserThrowable.AddUserErrorThrowable()
+                    addUser.also {
+                        if (!user.email.isNullOrEmpty()) {
+                            user.password?.let { password ->
+                                auth.createUserWithEmailAndPassword(
+                                    userRegister.email,
+                                    password
+                                ).await()
+                                    .also {
+                                        if (!it.user?.email.isNullOrEmpty()) {
+                                            emit(Unit)
+                                        } else {
+                                            throw UserThrowable.AddUserErrorThrowable()
+                                        }
+                                    }
                             }
+                        } else {
+                            throw UserThrowable.AddUserErrorThrowable()
                         }
+                    }
                 } else {
-                    throw UserThrowable.AddUserErrorThrowable()
+                    throw UserThrowable.UserAlreadyRegisterPasswordThrowable()
                 }
             }
-        } else {
-            throw UserThrowable.UserAlreadyRegisterPasswordThrowable()
         }
-
 
     }.flowOn(dispatcher)
 
@@ -76,47 +84,72 @@ class RemoteDataSourceImpl(
 //    }
 
     override fun login(user: User): Flow<User> = flow {
-        val signIn =
-            auth.signInWithEmailAndPassword(user.email!!, user.password!!).await()//TODO TIRAR !!
-        if (signIn.user != null) {
-            val result = db.collection("user").whereEqualTo("email", user.email)
-                .whereEqualTo("password", user.password).get().await()
+        user.email?.let { email ->
+            user.password?.let { password ->
+                val signIn =
+                    auth.signInWithEmailAndPassword(email, password).await()
+                if (signIn.user != null) {
+                    val result = db.collection("user").whereEqualTo("email", user.email)
+                        .whereEqualTo("password", user.password).get().await()
 
-            if (result.documents.isNotEmpty()) {
-                for (document in result.documents) {
-                    user.key = document.id
-                }
+                    if (result.documents.isNotEmpty()) {
+                        for (document in result.documents) {
+                            user.key = document.id
+                        }
 
-                if (!user.key.isNullOrEmpty()) {
-                    emit(user)
+                        if (!user.key.isNullOrEmpty()) {
+                            emit(user)
+                        }
+                    } else {
+                        throw UserThrowable.UnknownUserThrowable()
+                    }
+                } else {
+                    throw UserThrowable.UnknownUserThrowable()
                 }
-            } else {
-                throw UserThrowable.UnknownUserThrowable()
             }
-        } else {
-            throw UserThrowable.UnknownUserThrowable()
-
         }
 
     }.flowOn(dispatcher)
 
     override fun autoLogin(key: String): Flow<User> = flow<User> {
         val user = User()
-        val signIn =
-            auth.signInWithEmailAndPassword(user.email!!, user.password!!).await()//TODO TIRAR !!
-        if (signIn.user != null) {
-            val result = db.collection("user").document(key).get().await()
-            result.getByUserKey(user).also {
-                if (!user.email.isNullOrEmpty()) {
-                    user.key = key
-                    emit(user)
-                } else {
-                    throw UserThrowable.UnknownUserThrowable()
+        val result = db.collection("user").document(key).get().await()
+        result.getByUserKey(user).also {
+            if (!user.email.isNullOrEmpty()) {
+                user.key = key
+                user.email?.let { email ->
+                    user.password?.let { password ->
+                        val signIn =
+                            auth.signInWithEmailAndPassword(email, password).await()
+                        if (signIn.user != null) {
+                            emit(user)
+                        } else {
+                            throw UserThrowable.UnknownUserThrowable()
+                        }
+                        emit(user)
+                    }
                 }
+            } else {
+                throw UserThrowable.UnknownUserThrowable()
             }
-        } else {
-            throw UserThrowable.UnknownUserThrowable()
         }
+
+//        val user = User()
+//        val signIn =
+//            auth.signInWithEmailAndPassword(user.email, user.password).await()
+//        if (signIn.user != null) {
+//            val result = db.collection("user").document(key).get().await()
+//            result.getByUserKey(user).also {
+//                if (!user.email.isNullOrEmpty()) {
+//                    user.key = key
+//                    emit(user)
+//                } else {
+//                    throw UserThrowable.UnknownUserThrowable()
+//                }
+//            }
+//        } else {
+//            throw UserThrowable.UnknownUserThrowable()
+//        }
 
     }.flowOn(dispatcher)
 
@@ -164,7 +197,7 @@ class RemoteDataSourceImpl(
         }
     }
 
-    override fun getAllRecipe(email: String): Flow<List<Recipe>>  {
+    override fun getAllRecipe(email: String): Flow<List<Recipe>> {
         TODO()
     }
 
