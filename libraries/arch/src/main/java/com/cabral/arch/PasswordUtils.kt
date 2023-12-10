@@ -1,33 +1,37 @@
 package com.cabral.arch
 
-import com.cabral.arch.extensions.RecipeThrowable
+import com.cabral.arch.extensions.UserThrowable
 
 object PasswordUtils {
-    fun validatePassword(password: String): Boolean {
+    fun validatePassword(password: String?): Boolean {
         val size = 8
-        val hasUpperCase = password.any { it.isUpperCase() }
-        val hasLowerCase = password.any { it.isLowerCase() }
-        val hasNumber = password.any { it.isDigit() }
-        val hasEspecialCharacter = password.any { it.isLetterOrDigit().not() }
+        if(password!=null) {
+            val hasUpperCase = password.any { it.isUpperCase() }
+            val hasLowerCase = password.any { it.isLowerCase() }
+            val hasNumber = password.any { it.isDigit() }
+            val hasEspecialCharacter = password.any { it.isLetterOrDigit().not() }
 
-        if (password.length < size) {
-            throw RecipeThrowable.AuthenticatePassword("A senha deve ter pelo menos $size caracteres.")
-        }
+            if (password.length < size) {
+                throw UserThrowable.AuthenticatePasswordThrowable("A senha deve ter pelo menos $size caracteres.")
+            }
 
-        if (!hasUpperCase) {
-            throw RecipeThrowable.AuthenticatePassword("A senha deve conter pelo menos uma letra maiúscula.")
-        }
+            if (!hasUpperCase) {
+                throw UserThrowable.AuthenticatePasswordThrowable("A senha deve conter pelo menos uma letra maiúscula.")
+            }
 
-        if (!hasLowerCase) {
-            throw RecipeThrowable.AuthenticatePassword("A senha deve conter pelo menos uma letra minúscula.")
-        }
+            if (!hasLowerCase) {
+                throw UserThrowable.AuthenticatePasswordThrowable("A senha deve conter pelo menos uma letra minúscula.")
+            }
 
-        if (!hasNumber) {
-            throw RecipeThrowable.AuthenticatePassword("A senha deve conter pelo menos um número.")
-        }
+            if (!hasNumber) {
+                throw UserThrowable.AuthenticatePasswordThrowable("A senha deve conter pelo menos um número.")
+            }
 
-        if (!hasEspecialCharacter) {
-            throw RecipeThrowable.AuthenticatePassword("A senha deve conter pelo menos um caractere especial.")
+            if (!hasEspecialCharacter) {
+                throw UserThrowable.AuthenticatePasswordThrowable("A senha deve conter pelo menos um caractere especial.")
+            }
+        }else{
+            throw UserThrowable.AuthenticatePasswordThrowable("A senha deve ter pelo menos $size caracteres.")
         }
 
         return true

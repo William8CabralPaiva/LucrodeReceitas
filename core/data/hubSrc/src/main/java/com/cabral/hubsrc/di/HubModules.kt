@@ -1,11 +1,12 @@
 package com.cabral.hubsrc.di
 
-import com.cabral.core.common.domain.repository.LucroReceitaRepository
+import com.cabral.core.common.domain.repository.UserRepository
 import com.cabral.core.common.domain.usecase.AddUserUseCase
 import com.cabral.core.common.domain.usecase.AutoLoginUseCase
+import com.cabral.core.common.domain.usecase.ForgotPasswordUseCase
 import com.cabral.core.common.domain.usecase.GoogleLoginUseCase
 import com.cabral.core.common.domain.usecase.LoginUseCase
-import com.cabral.hubsrc.repository.LucroReceitaRepositoryImpl
+import com.cabral.hubsrc.repository.UserRepositoryImpl
 import com.cabral.hubsrc.source.remote.RemoteDataSourceImpl
 import com.cabral.remote.local.RemoteDataSource
 import org.koin.core.module.Module
@@ -17,10 +18,11 @@ object HubModules {
 
     private val loginModules: Module = module {
         factory<RemoteDataSource> { RemoteDataSourceImpl() }
-        factory<LucroReceitaRepository> { LucroReceitaRepositoryImpl(get()) }
+        factory<UserRepository> { UserRepositoryImpl(get()) }
         factory { AddUserUseCase(get()) }
         factory { LoginUseCase(get()) }
         factory { AutoLoginUseCase(get()) }
         factory { GoogleLoginUseCase(get()) }
+        factory { ForgotPasswordUseCase(get()) }
     }
 }

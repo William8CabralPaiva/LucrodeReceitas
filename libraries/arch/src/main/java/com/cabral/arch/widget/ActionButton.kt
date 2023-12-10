@@ -91,14 +91,6 @@ class ActionButton @JvmOverloads constructor(
             if (it >= 0) enumValues<T>()[it] else default
         }
 
-    fun teste() {
-        binding.container.isEnabled = true
-        binding.progressCircular.isVisible = false
-        binding.textView.isVisible = true
-        isLoading = false
-
-    }
-
     fun startLoading() {
         binding.container.run {
             if (!isLoading && isEnabled) {

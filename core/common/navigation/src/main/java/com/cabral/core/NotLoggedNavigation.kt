@@ -8,6 +8,4 @@ interface NotLoggedNavigation {
 
     fun openUserRegister(fragment: Fragment)
 
-    fun openForgotPassword(fragment: Fragment)
-
 }

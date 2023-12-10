@@ -2,6 +2,7 @@ package com.cabral.features.di
 
 import com.cabral.core.common.domain.usecase.AddUserUseCase
 import com.cabral.core.common.domain.usecase.AutoLoginUseCase
+import com.cabral.core.common.domain.usecase.ForgotPasswordUseCase
 import com.cabral.core.common.domain.usecase.GoogleLoginUseCase
 import com.cabral.core.common.domain.usecase.LoginUseCase
 import com.cabral.features.presentation.LoginViewModel
@@ -17,7 +18,8 @@ object LoginModules {
             LoginViewModel(
                 addUserUseCase = AddUserUseCase(get()),
                 loginUseCase = LoginUseCase(get()),
-                googleLoginUseCase = GoogleLoginUseCase(get())
+                googleLoginUseCase = GoogleLoginUseCase(get()),
+                forgotPasswordUseCase = ForgotPasswordUseCase(get())
             )
         }
     }

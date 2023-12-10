@@ -3,4 +3,8 @@
     <string name="login_check_internet">Ocorreu um erro com a conexão, verifique sua internet</string>
     <string name="login_forgot_password">Esqueceu a senha?</string>
     <string name="login_register_user">Cadastre um usuário</string>
+    <string name="login_redefine_password">Caso você tenha um email cadastrado, verifique seu email</string>
+    <string name="login_sending_email">Enviando Email</string>
+    <string name="login_redefine_password_email_title">Sua senha do Lucro de Receitas foi redefinida</string>
+    <string name="login_redefine_password_email_msg">Sua senha foi redefinida para %1$s \n. Por favor, use a nova senha para acessar sua conta</string>
 </resources>

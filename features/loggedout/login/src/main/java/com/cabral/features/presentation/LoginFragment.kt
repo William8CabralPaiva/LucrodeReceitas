@@ -1,5 +1,6 @@
 package com.cabral.features.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cabral.arch.EmailUtils
 import com.cabral.arch.PasswordUtils
-import com.cabral.arch.extensions.RecipeThrowable
+import com.cabral.arch.extensions.UserThrowable
 import com.cabral.arch.saveUserKey
 import com.cabral.core.LoggedNavigation
 import com.cabral.core.NotLoggedNavigation
@@ -20,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class LoginFragment : Fragment() {
 
@@ -67,6 +69,15 @@ class LoginFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
         }
+
+        viewModel.notifyForgotPassword.observe(viewLifecycleOwner) {
+            Toast.makeText(context, getString(R.string.login_redefine_password), Toast.LENGTH_LONG)
+                .show()
+        }
+
+        viewModel.notifyErrorForgotPassword.observe(viewLifecycleOwner){
+            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun initListeners() {
@@ -87,12 +98,15 @@ class LoginFragment : Fragment() {
         }
 
         binding.forgotPassword.setOnClickListener {
-            navigationNotLogged.openForgotPassword(this)
+            forgotPassword()
         }
 
         binding.registerUser.setOnClickListener {
             navigationNotLogged.openUserRegister(this)
         }
+    }
+    private fun forgotPassword() {
+        viewModel.forgotPassword(binding.biEmail.getText())
     }
 
     private fun login() {
@@ -102,8 +116,8 @@ class LoginFragment : Fragment() {
             ) {
                 viewModel.login(binding.biEmail.getText(), binding.biPassword.getText())
             }
-        } catch (e: RecipeThrowable) {
-            if (e is RecipeThrowable.AuthenticateEmail) {
+        } catch (e: UserThrowable) {
+            if (e is UserThrowable.AuthenticateEmailThrowable) {
                 binding.biEmail.setError(e.message)
             } else {
                 binding.biPassword.setError(e.message)

@@ -17,5 +17,4 @@ dependencies {
     implementation project(Modules.login)
     implementation project(Modules.recipe)
     implementation project(Modules.registerUser)
-    implementation project(Modules.forgotpassword)
 }

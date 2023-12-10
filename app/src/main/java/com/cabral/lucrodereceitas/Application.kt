@@ -8,6 +8,7 @@ import com.cabral.features.loggedin.host.di.LoggedNavigationModules
 import com.cabral.features.splash.di.SplashModules
 import com.cabral.host.di.NotLoggedNavigationModule
 import com.cabral.hubsrc.di.HubModules
+import com.cabral.registeruser.di.RegisterUserModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.loadKoinModules
@@ -25,7 +26,8 @@ class Application : Application() {
                 NotLoggedNavigationModule.modules +
                 SplashModules.modules +
                 LoginModules.modules +
-                HubModules.modules
+                HubModules.modules+
+                RegisterUserModule.modules
     }
 
     override fun onCreate() {

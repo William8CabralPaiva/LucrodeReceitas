@@ -13,18 +13,10 @@
         <action
             android:id="@+id/loginfragment_to_userfragment"
             app:destination="@id/loggedout_hostRegisterUserFragment" />
-        <action
-            android:id="@+id/loginfragment_to_forgotpasswordfragment"
-            app:destination="@id/loggedout_hostForgotPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/loggedout_hostRegisterUserFragment"
         android:name="com.cabral.registeruser.presentation.RegisterUserFragment"
-        tools:layout="@layout/fragment_register_user"
+        tools:layout="@layout/register_user_fragment"
         android:label="RegisterUserFragment" />
-    <fragment
-        android:id="@+id/loggedout_hostForgotPasswordFragment"
-        android:name="com.cabral.forgotpassword.presentation.ForgotPasswordFragment"
-        tools:layout="@layout/fragment_forgot_password"
-        android:label="ForgotPasswordFragment" />
 </navigation>

@@ -27,6 +27,7 @@ dependencies {
     implementation project(Modules.recipe)
     implementation project(Modules.splash)
     implementation project(Modules.hubsrc)
+    implementation project(Modules.registerUser)
     implementation platform(Libs.firebase_bom)
     implementation Libs.firebase_analytics
 

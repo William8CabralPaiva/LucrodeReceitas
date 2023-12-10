@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="16dp"
+            android:fontFamily="@font/bangers"
+            android:gravity="center"
+            android:text="@string/register_user_create_register"
+            android:textColor="@color/design_orange"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.cabral.arch.widget.BorderInputView
+            android:id="@+id/bi_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:arch_ei_label="@string/design_name"
+            android:layout_marginTop="32dp"
+            app:arch_ei_type="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <com.cabral.arch.widget.BorderInputView
+            android:id="@+id/bi_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:arch_ei_label="@string/design_email"
+            app:arch_ei_type="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bi_name" />
+
+        <com.cabral.arch.widget.BorderInputView
+            android:id="@+id/bi_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:arch_ei_label="@string/design_password"
+            app:arch_ei_type="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bi_email" />
+
+        <com.cabral.arch.widget.BorderInputView
+            android:id="@+id/bi_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:arch_ei_label="@string/design_confirm_password"
+            app:arch_ei_type="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bi_password" />
+
+        <com.cabral.arch.widget.ActionButton
+            android:id="@+id/ab_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            app:arch_ab_text="@string/register_user_register"
+            app:arch_ab_type="shape"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bi_confirm_password" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

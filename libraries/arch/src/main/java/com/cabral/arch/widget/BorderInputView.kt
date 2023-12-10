@@ -3,6 +3,7 @@ package com.cabral.arch.widget
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
+import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -13,6 +14,7 @@ import com.cabral.arch.R
 import com.cabral.arch.databinding.ArchBorderInputViewBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+
 
 class BorderInputView @JvmOverloads constructor(
     context: Context,
@@ -58,7 +60,8 @@ class BorderInputView @JvmOverloads constructor(
 
                 BorderInputView.BIInputType.PASSWORD -> {
                     biHint.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
-                    biTextInput.inputType = android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    biTextInput.inputType =
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                 }
 
                 BorderInputView.BIInputType.NUMBER -> {
@@ -90,7 +93,7 @@ class BorderInputView @JvmOverloads constructor(
     private fun setLabelText(text: String) {
         binding.run {
             biHint.hint = text
-            biTextInput.hint = text
+            //biTextInput.hint = text
         }
     }
 
@@ -178,7 +181,7 @@ class BorderInputView @JvmOverloads constructor(
         }
     }
 
-    fun getText(): String {
+    fun getText(): String? {
         return binding.biTextInput.text.toString()
     }
 

@@ -1,4 +1,6 @@
 <resources>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register_user_create_register">Crie seu Cadastro</string>
+    <string name="register_user_register">Cadastrar</string>
+    <string name="register_user_already_exists">Usuário ja Cadastrado</string>
+    <string name="register_user_success">Usuário criado com Sucesso!</string>
 </resources>

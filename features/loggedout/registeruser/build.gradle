@@ -7,13 +7,14 @@ apply from: "$rootDir/plugins/android-build.gradle"
 
 android {
     namespace 'com.cabral.registeruser'
-    resourcePrefix "registeruser"
+    resourcePrefix "register_user"
 }
 
 dependencies {
     implementation project(Modules.arch)
     implementation project(Modules.navigation)
     implementation platform(Libs.firebase_bom)
+    implementation project(Modules.domain)
     implementation Libs.firebase_auth
     implementation Libs.services_auth
     implementation Libs.firebase_store

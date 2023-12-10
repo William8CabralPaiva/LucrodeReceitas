@@ -20,9 +20,4 @@ internal class NotLoggedNavigationImpl : NotLoggedNavigation {
         val directions = LoginFragmentDirections.loginfragmentToUserfragment()
         fragment.findNavController().navigate(directions)
     }
-
-    override fun openForgotPassword(fragment: Fragment) {
-        val directions = LoginFragmentDirections.loginfragmentToForgotpasswordfragment()
-        fragment.findNavController().navigate(directions)
-    }
 }
