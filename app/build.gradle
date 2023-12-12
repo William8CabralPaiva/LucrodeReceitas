@@ -21,6 +21,7 @@ dependencies {
     implementation project(Modules.login)
     implementation project(Modules.navigation)
     implementation project(Modules.profile)
+    implementation project(Modules.ingredients)
     implementation project(Modules.listRecipe)
     implementation project(Modules.loggedNavigation)
     implementation project(Modules.notLoggedNavigation)

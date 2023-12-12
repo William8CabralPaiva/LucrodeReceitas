@@ -1,4 +1,4 @@
-package com.cabral.ingredient.presentation.presentation.adapter
+package com.cabral.ingredient.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,22 +7,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.ingredient.databinding.IngredientsItemBinding
 
-class IngredientViewHolder(private val binding: IngredientsItemBinding, private val context: Context) :
-RecyclerView.ViewHolder(binding.root) {
+class IngredientViewHolder(
+    private val binding: IngredientsItemBinding,
+    private val context: Context
+) :
+    RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
         ingredient: Ingredient,
-        onClickTrash: (Ingredient) -> Unit
+        onClickTrash: (Ingredient) -> Unit,
+        onClickEdit: (Ingredient) -> Unit,
     ) {
         binding.apply {
             name.text = ingredient.name
-           volume.text = String.format(
-               context.getString(com.cabral.design.R.string.design_ingredient_format),
-               ingredient.volume,
-               ingredient.unit
-           )
+            volume.text = String.format(
+                context.getString(com.cabral.design.R.string.design_ingredient_format),
+                ingredient.volume.intNumber(),
+                ingredient.unit
+            )
+            edit.setOnClickListener { onClickEdit(ingredient) }
             trash.setOnClickListener { onClickTrash(ingredient) }
         }
+    }
+
+    private fun Float?.intNumber(): String {
+        this?.let {
+            if (this % 1 == 0f) {
+                return this.toInt().toString()
+            }
+        }
+        return this.toString()
     }
 
     companion object {

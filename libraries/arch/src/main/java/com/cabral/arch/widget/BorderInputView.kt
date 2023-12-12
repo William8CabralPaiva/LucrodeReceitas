@@ -140,6 +140,10 @@ class BorderInputView @JvmOverloads constructor(
         return ColorStateList(states, colors)
     }
 
+    fun setFocus() {
+        binding.biTextInput.requestFocus()
+    }
+
     private fun hintTextColor() {
         binding.biTextInput.text?.let { input ->
             binding.biTextInput.setOnFocusChangeListener { _, hasFocus ->

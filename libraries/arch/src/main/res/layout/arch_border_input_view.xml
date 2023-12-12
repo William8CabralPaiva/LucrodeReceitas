@@ -12,7 +12,7 @@
         android:layout_marginVertical="8dp"
         app:boxStrokeColor="@color/design_orange"
         app:hintTextAppearance="@style/ArchTextLabel"
-        app:hintTextColor="@color/design_gray_dark"
+        app:hintTextColor="@color/design_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

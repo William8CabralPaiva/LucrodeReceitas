@@ -9,4 +9,5 @@
         <item name="arch_pr_progressbar_width">1.5dp</item>
         <item name="arch_pr_tick_color">@color/design_white</item>
     </style>
+
 </resources>

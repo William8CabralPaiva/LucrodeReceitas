@@ -5,9 +5,9 @@
     app:startDestination="@id/ingredient_dialog"
     android:id="@+id/ingredient_nav">
 
-    <dialog
+    <fragment
         android:id="@+id/ingredient_dialog"
-        android:name="com.cabral.ingredient.presentation.presentation.IngredientsFragment"
+        android:name="com.cabral.ingredient.presentation.IngredientsFragment"
         tools:layout="@layout/ingredients_fragment" />
 
 </navigation>

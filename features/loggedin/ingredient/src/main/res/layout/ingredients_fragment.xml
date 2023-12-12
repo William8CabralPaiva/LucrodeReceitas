@@ -1,115 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:background="#99000000"
+    android:layout_height="match_parent"
+    android:background="@color/design_white"
     android:fitsSystemWindows="true"
-    tools:context=".presentation.presentation.IngredientsFragment">
+    android:padding="@dimen/arch_default_margin"
+    tools:context=".presentation.IngredientsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/round_dialog"
-        android:padding="16dp">
+        android:layout_marginBottom="@dimen/arch_default_margin"
+        app:layout_constraintBottom_toTopOf="@+id/ab_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/click_here_to_close_modal"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_close"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/title" />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:drawablePadding="16dp"
-            android:fontFamily="@font/bangers"
-            android:gravity="center"
-            android:text="@string/design_ingredients"
-            android:textColor="@color/design_orange"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.cabral.arch.widget.BorderInputView
-            android:id="@+id/bi_ingredient"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:arch_ei_label="@string/design_ingredient"
-            app:arch_ei_type="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title" />
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bi_ingredient">
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:drawablePadding="@dimen/arch_default_margin"
+                android:fontFamily="@font/bangers"
+                android:gravity="center"
+                android:text="@string/design_ingredients"
+                android:textColor="@color/design_orange"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.cabral.arch.widget.BorderInputView
-                android:id="@+id/bi_volume"
-                android:layout_width="0dp"
+                android:id="@+id/bi_ingredient"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                app:arch_ei_label="@string/design_total_amount"
-                app:arch_ei_type="text" />
+                android:layout_marginVertical="@dimen/arch_default_margin"
+                app:arch_ei_label="@string/design_ingredient"
+                app:arch_ei_type="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
 
-            <com.cabral.arch.widget.RecipeSpinner
-                android:id="@+id/bi_unit"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:arch_rs_hint_text="@string/design_unit_measurement"
-                app:arch_ei_type="text"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bi_ingredient">
 
-        </LinearLayout>
+                <com.cabral.arch.widget.BorderInputView
+                    android:id="@+id/bi_volume"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    app:arch_ei_label="@string/design_total_amount"
+                    app:arch_ei_type="number" />
 
-        <com.cabral.arch.widget.BorderInputView
-            android:id="@+id/bi_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:arch_ei_label="@string/design_price"
-            app:arch_ei_type="number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                <com.cabral.arch.widget.RecipeSpinner
+                    android:id="@+id/bi_unit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:arch_ei_type="text"
+                    app:arch_rs_hint_text="@string/design_unit_measurement" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/arch_border_orange"
-            android:padding="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bi_price" />
+            </LinearLayout>
 
-        <com.cabral.arch.widget.ActionButton
-            android:id="@+id/ab_add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:arch_ab_text="@string/add"
-            app:arch_ab_type="shape"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycleView" />
+            <com.cabral.arch.widget.BorderInputView
+                android:id="@+id/bi_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/arch_default_margin"
+                app:arch_ei_label="@string/design_price"
+                app:arch_ei_type="number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <com.cabral.arch.widget.ActionButton
+                android:id="@+id/ab_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/arch_default_margin"
+                app:arch_ab_text="@string/ingredient_add"
+                app:arch_ab_type="shape"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bi_price" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/arch_default_margin"
+                android:background="@drawable/arch_border_orange"
+                android:minHeight="200dp"
+                android:padding="@dimen/arch_default_margin"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ab_add" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <com.cabral.arch.widget.ActionButton
+        android:id="@+id/ab_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:arch_ab_text="@string/ingredient_save"
+        app:arch_ab_type="shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

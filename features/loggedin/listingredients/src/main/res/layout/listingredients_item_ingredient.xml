@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/design_white"
-            android:padding="16dp">
+            android:padding="@dimen/arch_default_margin">
 
             <TextView
                 android:id="@+id/ingredient_name"
@@ -43,7 +43,7 @@
                 android:layout_height="25dp"
                 android:contentDescription="@string/design_img_trash"
                 android:scaleType="fitXY"
-                android:src="@drawable/trash"
+                android:src="@drawable/design_trash"
                 app:layout_constraintBottom_toBottomOf="@+id/ingredient_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1"

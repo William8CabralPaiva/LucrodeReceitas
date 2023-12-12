@@ -55,8 +55,8 @@ class ListIngredientsFragment : Fragment() {
 
         binding.recycleView.adapter = adapter
 
-        val r = Ingredient(0, "Farinha", "20", "1 Kg", 20f)
-        val r2 = Ingredient(0, "Ovo", "20", "12 unidades", 40f)
+        val r = Ingredient(0, "Farinha", 20f, "1 Kg", 20f)
+        val r2 = Ingredient(0, "Ovo", 20f, "12 unidades", 40f)
 
         val list = listOf(r, r2, r, r2, r, r2, r, r2, r, r2, r, r2, r, r2)
 

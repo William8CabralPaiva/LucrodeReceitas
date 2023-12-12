@@ -6,41 +6,56 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/volume"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginVertical="@dimen/arch_default_margin"
         android:fontFamily="@font/ubuntu_bold"
-        android:textColor="@color/design_black"
+        android:textColor="@color/design_green"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Farinha" />
+        tools:text="2 kg" />
 
     <TextView
-        android:id="@+id/volume"
-        android:layout_width="wrap_content"
+        android:id="@+id/name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/arch_default_margin"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:fontFamily="@font/ubuntu_bold"
-        android:paddingStart="5dp"
-        android:textColor="@color/design_green"
+        android:textColor="@color/design_black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/name"
-        app:layout_constraintStart_toEndOf="@+id/name"
-        app:layout_constraintTop_toTopOf="@+id/name"
-        tools:text="2 kg" />
+        app:layout_constraintBottom_toBottomOf="@+id/volume"
+        app:layout_constraintEnd_toStartOf="@+id/edit"
+        app:layout_constraintStart_toEndOf="@+id/volume"
+        app:layout_constraintTop_toTopOf="@+id/volume"
+        tools:text="Farinha" />
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:contentDescription="@string/design_img_edit"
+        android:scaleType="fitXY"
+        android:layout_marginEnd="@dimen/arch_default_margin"
+        android:src="@drawable/design_edit"
+        app:layout_constraintBottom_toBottomOf="@+id/trash"
+        app:layout_constraintEnd_toStartOf="@+id/trash"
+        app:layout_constraintTop_toTopOf="@+id/trash" />
+
 
     <ImageView
         android:id="@+id/trash"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginEnd="32dp"
         android:contentDescription="@string/design_img_trash"
         android:scaleType="fitXY"
-        android:src="@drawable/trash"
-        app:layout_constraintBottom_toBottomOf="@+id/name"
+        android:src="@drawable/design_trash"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

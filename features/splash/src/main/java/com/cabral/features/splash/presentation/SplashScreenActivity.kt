@@ -35,8 +35,8 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun initObservers() {
         viewModel.notifyLogged.observe(this) {
             if (it) {
-                //navigationLogged.openActivityLogged(this)
-                navigationNotLogged.openNotLogged(this)
+                navigationLogged.openActivityLogged(this)
+                //navigationNotLogged.openNotLogged(this)
             } else {
                 navigationNotLogged.openNotLogged(this)
             }

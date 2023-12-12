@@ -1,6 +1,5 @@
 package com.cabral.features.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class LoginFragment : Fragment() {
 
@@ -57,26 +55,37 @@ class LoginFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewModel.notifySuccess.observe(viewLifecycleOwner) {
-            it.key?.let { it1 -> context?.saveUserKey(it1) }
-            navigation.openActivityLogged(requireActivity())
-        }
+        viewModel.run {
 
-        viewModel.notifyError.observe(viewLifecycleOwner) {
-            Toast.makeText(
-                context,
-                getString(R.string.login_check_internet),
-                Toast.LENGTH_LONG
-            ).show()
-        }
+            notifySuccess.observe(viewLifecycleOwner) {
+                it.key?.let { it1 -> context?.saveUserKey(it1) }
+                navigation.openActivityLogged(requireActivity())
+            }
 
-        viewModel.notifyForgotPassword.observe(viewLifecycleOwner) {
-            Toast.makeText(context, getString(R.string.login_redefine_password), Toast.LENGTH_LONG)
-                .show()
-        }
+            notifyStartLoading.observe(viewLifecycleOwner) {
+                binding.acEnter.startLoading()
+            }
 
-        viewModel.notifyErrorForgotPassword.observe(viewLifecycleOwner){
-            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            notifyError.observe(viewLifecycleOwner) {
+                Toast.makeText(
+                    context,
+                    it,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            notifyForgotPassword.observe(viewLifecycleOwner) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.login_redefine_password),
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+            }
+
+            notifyErrorForgotPassword.observe(viewLifecycleOwner) {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -105,6 +114,7 @@ class LoginFragment : Fragment() {
             navigationNotLogged.openUserRegister(this)
         }
     }
+
     private fun forgotPassword() {
         viewModel.forgotPassword(binding.biEmail.getText())
     }

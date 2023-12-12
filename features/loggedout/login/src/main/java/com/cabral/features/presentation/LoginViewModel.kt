@@ -31,8 +31,11 @@ class LoginViewModel(
     private val _notifySuccess = MutableLiveData<User>()
     val notifySuccess: LiveData<User> = _notifySuccess
 
-    private val _notifyError = MutableLiveData<Unit>()
-    val notifyError: LiveData<Unit> = _notifyError
+    private val _notifyStartLoading = MutableLiveData<Unit>()
+    val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
+
+    private val _notifyError = MutableLiveData<String>()
+    val notifyError: LiveData<String> = _notifyError
 
     private val _notifyForgotPassword = MutableLiveData<Unit>()
     val notifyForgotPassword: LiveData<Unit> = _notifyForgotPassword
@@ -43,9 +46,10 @@ class LoginViewModel(
     fun login(email: String?, password: String?) {
         val user = User(email = email, password = password)
 
+        //_notifyStartLoading.postValue(Unit)
         loginUseCase(user)
             .catch {
-                _notifyError.postValue(Unit)
+                _notifyError.postValue(it.message)
             }.onEach {
                 SingletonUser.getInstance().setUser(it)
                 _notifySuccess.postValue(user)
@@ -57,7 +61,7 @@ class LoginViewModel(
         if (email != null && name != null) {
             googleLoginUseCase(email, name)
                 .catch {
-                    _notifyError.postValue(Unit)
+                    _notifyError.postValue(it.message)
                 }.onEach {
                     SingletonUser.getInstance().setUser(it)
                     _notifySuccess.postValue(it)
