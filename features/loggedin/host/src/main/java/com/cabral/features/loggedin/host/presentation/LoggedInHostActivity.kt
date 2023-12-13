@@ -9,11 +9,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.cabral.features.loggedin.host.R
-import com.cabral.features.loggedin.host.databinding.HostLoggedActivityBinding
+import com.cabral.features.loggedin.host.databinding.LoggedinHostActivityBinding
 
-class LoggedActivity : AppCompatActivity() {
+class LoggedInHostActivity : AppCompatActivity() {
 
-    private var _binding: HostLoggedActivityBinding? = null
+    private var _binding: LoggedinHostActivityBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var navController: NavController
@@ -21,7 +21,7 @@ class LoggedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = HostLoggedActivityBinding.inflate(layoutInflater)
+        _binding = LoggedinHostActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navHostFragment =

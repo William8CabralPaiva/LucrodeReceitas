@@ -18,4 +18,6 @@
     <string name="design_img_edit">Imagem de um lápis</string>
     <string name="design_value_format">R$ %s</string>
     <string name="design_ingredient_format">%s %s</string>
+    <string name="design_yes">Sim</string>
+    <string name="design_no">Não</string>
 </resources>

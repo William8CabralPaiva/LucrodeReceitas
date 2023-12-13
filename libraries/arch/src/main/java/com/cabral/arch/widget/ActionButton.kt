@@ -140,6 +140,10 @@ class ActionButton @JvmOverloads constructor(
         }
     }
 
+    fun setText(text:String){
+        binding.textView.text = text
+    }
+
     private fun iconChecked(success: Boolean): Drawable? {
         return if (success) {
             AppCompatResources.getDrawable(context, R.drawable.arch_ic_checked)

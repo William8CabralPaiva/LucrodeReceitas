@@ -1,5 +1,11 @@
 <resources>
     <string name="ingredient_click_here_to_close_modal">Clique aqui para fechar a modal</string>
     <string name="ingredient_add">Adicionar</string>
+    <string name="ingredient_edit">Editar</string>
     <string name="ingredient_save">Salvar</string>
+    <string name="ingredient_delete_in_edit">Não é possível deletar durante a exclusão</string>
+    <string name="ingredient_delete_title">Aviso de Exclusão!</string>
+    <string name="ingredient_delete_message">Deseja deletar o item %1$s ?</string>
+    <string name="ingredient_edit_title">Aviso de Alteração!</string>
+    <string name="ingredient_edit_message">Deseja alterar o item %1$s ?</string>
 </resources>

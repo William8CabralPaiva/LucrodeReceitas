@@ -101,6 +101,10 @@ class BorderInputView @JvmOverloads constructor(
         binding.biTextInput.setText(text)
     }
 
+    fun clearInputText() {
+        binding.biTextInput.setText("")
+    }
+
     private fun controlColors(colorType: ColorType): ColorStateList {
         val states = arrayOf(
             intArrayOf(android.R.attr.state_enabled), // enabled

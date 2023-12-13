@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.cabral.arch.extensions.intNumber
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.ingredient.databinding.IngredientsItemBinding
 
@@ -28,15 +29,6 @@ class IngredientViewHolder(
             edit.setOnClickListener { onClickEdit(ingredient) }
             trash.setOnClickListener { onClickTrash(ingredient) }
         }
-    }
-
-    private fun Float?.intNumber(): String {
-        this?.let {
-            if (this % 1 == 0f) {
-                return this.toInt().toString()
-            }
-        }
-        return this.toString()
     }
 
     companion object {

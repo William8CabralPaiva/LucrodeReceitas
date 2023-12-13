@@ -16,11 +16,10 @@ import com.cabral.arch.databinding.ArchRecipeSpinnerBinding
 class RecipeSpinner @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
-    defStyle: Int = 0
+    defStyle: Int = 0, p: Any
 ) : FrameLayout(context, attrs, defStyle) {
 
-    private val binding = ArchRecipeSpinnerBinding
-        .inflate(LayoutInflater.from(context), this, true)
+    private val binding = p
 
     init {
         bindingLayout(attrs)
@@ -39,6 +38,14 @@ class RecipeSpinner @JvmOverloads constructor(
 
     fun getSpinner(): AutoCompleteTextView {
         return binding.spinner
+    }
+
+    fun clearInputText() {
+        return binding.spinner.setText("")
+    }
+
+    fun setInputText(text: String) {
+        return binding.spinner.setText(text)
     }
 
     private fun changeText() {

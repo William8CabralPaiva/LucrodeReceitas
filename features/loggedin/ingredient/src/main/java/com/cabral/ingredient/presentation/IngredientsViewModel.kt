@@ -17,15 +17,41 @@ class IngredientsViewModel() : ViewModel() {
     private val _notifySuccessAdd = MutableLiveData<Int>()
     val notifySuccessAdd: LiveData<Int> = _notifySuccessAdd
 
+    private val _notifySuccessEdit = MutableLiveData<Int?>()
+    val notifySuccessEdit: LiveData<Int?> = _notifySuccessEdit
+
+    private val _notifyEditMode = MutableLiveData<Boolean>()
+    val notifyEditMode: LiveData<Boolean> = _notifyEditMode
+
     private var countItem = 0
 
-    fun addIngredient(name: String?, volume: String?, unit: String?, price: String?) {
+    private var editPosition: Int? = null
+    private var editMode = false
+
+    fun getEditMode(): Boolean {
+        return editMode
+    }
+
+    fun addOrEditIngredient(name: String?, volume: String?, unit: String?, price: String?) {
         try {
             val ingredient = validateField(name, volume, unit, price)
             if (ingredient != null) {
-                listIngredient.add(ingredient)
-                _notifySuccessAdd.postValue(ingredient.id)
-                countItem += 1
+
+                if (editMode) {
+                    editPosition?.let {
+                        ingredient.id = it
+                        listIngredient[it] = ingredient
+                    }
+
+                    _notifySuccessEdit.postValue(editPosition).also {
+                        setEditMode(false, null)
+                    }
+
+                } else {
+                    listIngredient.add(ingredient)
+                    _notifySuccessAdd.postValue(ingredient.id)
+                    countItem += 1
+                }
             }
         } catch (t: IngredientThrowable) {
             _notifyErrorAdd.postValue(t)
@@ -75,6 +101,16 @@ class IngredientsViewModel() : ViewModel() {
             price.toFloat()
         )
 
+    }
+
+    fun setEditMode(_editMode: Boolean, ingredient: Ingredient?) {
+        editPosition = if (ingredient == null) {
+            null
+        } else {
+            listIngredient.indexOf(ingredient)
+        }
+        editMode = _editMode
+        _notifyEditMode.postValue(editMode)
     }
 
     private fun validateUnit(unit: String?): UnitMeasureType? {
