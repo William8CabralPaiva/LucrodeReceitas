@@ -11,7 +11,7 @@ object ListIngredientsModule {
 
     private val viewModelModules: Module = module {
         viewModel {
-            ListIngredientsViewModel(get())
+            ListIngredientsViewModel(get(),get())
         }
     }
 }

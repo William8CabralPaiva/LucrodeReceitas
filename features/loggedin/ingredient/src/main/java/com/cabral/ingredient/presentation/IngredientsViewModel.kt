@@ -5,17 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cabral.arch.extensions.IngredientThrowable
-import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.UnitMeasureType
 import com.cabral.core.common.domain.usecase.AddIngredientUseCase
-import com.cabral.core.common.domain.usecase.AddUserUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 class IngredientsViewModel(
-    private val addIngredientUseCase: AddIngredientUseCase,
+    private val addIngredientUseCase: AddIngredientUseCase
 ) : ViewModel() {
 
     val listIngredient = mutableListOf<Ingredient>()
@@ -32,19 +30,26 @@ class IngredientsViewModel(
     private val _notifyEditMode = MutableLiveData<Boolean>()
     val notifyEditMode: LiveData<Boolean> = _notifyEditMode
 
+    private val _notifySuccess = MutableLiveData<Unit>()
+    val notifySuccess: LiveData<Unit> = _notifySuccess
+
+
+    private val _notifyError = MutableLiveData<String>()
+    val notifyError: LiveData<String> = _notifyError
+
     private var countItem = 0
 
     private var editPosition: Int? = null
     private var editMode = false
 
-     fun save(){
-         addIngredientUseCase(listIngredient)
-             .catch {
-                // _notifyError.postValue(it.message)
-             }.onEach {
-                // _notifySuccess.postValue(user)
-             }
-             .launchIn(viewModelScope)
+    fun save() {
+        addIngredientUseCase(listIngredient)
+            .catch {
+                _notifyError.postValue(it.message)
+            }.onEach {
+                _notifySuccess.postValue(Unit)
+            }
+            .launchIn(viewModelScope)
     }
 
     fun addOrEditIngredient(name: String?, volume: String?, unit: String?, price: String?) {

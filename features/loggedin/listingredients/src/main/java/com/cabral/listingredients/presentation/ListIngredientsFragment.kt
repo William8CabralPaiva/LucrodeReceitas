@@ -38,9 +38,11 @@ class ListIngredientsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycleView()
         initObservers()
         initClicks()
+        navigationIngredient.hasItemAddOnIngredient(this,viewLifecycleOwner){
+            viewModel.getAllIngredients()
+        }
     }
 
 
@@ -52,7 +54,6 @@ class ListIngredientsFragment : Fragment() {
 
     private fun initObservers() {
         viewModel.run {
-            getAllIngredients()
 
             notifyStartLoading.observe(viewLifecycleOwner){
                 binding.viewFlipper.displayedChild = 0
@@ -64,12 +65,22 @@ class ListIngredientsFragment : Fragment() {
 
             notifyListIngredient.observe(viewLifecycleOwner){
                 binding.viewFlipper.displayedChild = 2
-                adapter.submitList(it)
+                initAdapter()
             }
+
+            notifySuccessRemove.observe(viewLifecycleOwner){
+                it.deleteItem()
+            }
+
+            notifyError.observe(viewLifecycleOwner){
+
+            }
+
+
         }
     }
 
-    private fun initRecycleView() {
+    private fun initAdapter() {
         adapter = Adapter(requireContext()).apply {
             onClick = {
                 Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
@@ -81,15 +92,20 @@ class ListIngredientsFragment : Fragment() {
                         ListIngredientR.string.listingredients_remove_warning,
                         it1
                     ){
-                        viewModel.removeIngredientById(it.id)
-                        adapter.notifyItemRemoved(it.id)
+                        viewModel.deleteIngredient(it)
                     }
                 }
             }
         }
 
         binding.recycleView.adapter = adapter
+        adapter.submitList(viewModel.listIngredient)
+    }
 
+    private fun Ingredient.deleteItem() {
+        viewModel.listIngredient.remove(viewModel.listIngredient[0])
+        val position = viewModel.listIngredient.indexOf(this)
+        adapter.notifyItemRemoved(position)
     }
 
     private fun showAlertDialog(

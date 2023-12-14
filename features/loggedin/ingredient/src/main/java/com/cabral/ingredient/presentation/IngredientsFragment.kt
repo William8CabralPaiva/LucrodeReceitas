@@ -13,11 +13,13 @@ import androidx.fragment.app.Fragment
 import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.CustomAlertDialog
+import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.allUnitMeasure
 import com.cabral.core.common.domain.model.listMeasure
 import com.cabral.ingredient.databinding.IngredientsFragmentBinding
 import com.cabral.ingredient.presentation.adapter.Adapter
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 import com.cabral.ingredient.R as IngredientR
@@ -32,6 +34,8 @@ class IngredientsFragment : Fragment() {
 
     private lateinit var adapterIngredient: Adapter
 
+    private val navigationIngredient: ListIngredientNavigation by inject()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,12 +43,6 @@ class IngredientsFragment : Fragment() {
         _binding = IngredientsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -94,6 +92,10 @@ class IngredientsFragment : Fragment() {
                     getString(IngredientR.string.ingredient_add)
                 }
                 binding.abAdd.setText(buttonText)
+            }
+
+            notifySuccess.observe(viewLifecycleOwner){
+                navigationIngredient.backStackActionHasItemAdd(this@IngredientsFragment)
             }
 
         }
@@ -224,9 +226,8 @@ class IngredientsFragment : Fragment() {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            IngredientsFragment()
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }

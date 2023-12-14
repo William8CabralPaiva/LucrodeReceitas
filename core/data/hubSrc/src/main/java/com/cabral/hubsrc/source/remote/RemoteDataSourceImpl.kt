@@ -277,9 +277,29 @@ class RemoteDataSourceImpl(
         emit(Unit)
     }.flowOn(dispatcher)
 
-    override fun deleteIngredient(ingredient: Ingredient): Flow<Unit> {
-        TODO("Not yet implemented")
-    }
+    override fun deleteIngredient(ingredient: Ingredient): Flow<Unit> = flow {
+        SingletonUser.getInstance().getKey()?.let { key ->
+            ingredient.keyDocument?.let { keyDocument ->
+                val document = db.collection("user").document(key).collection("ingredients")
+                    .document(keyDocument)
+
+                document.delete().await()
+
+                val result = document.get().result
+
+                if (!result.exists()) {
+                    //TODO  remover a referencia a esse ingrediente nas receitas
+                    emit(Unit)
+                } else {
+                    GenericThrowable.FailThrowable()
+                }
+
+
+            }
+
+        }
+
+    }.flowOn(dispatcher)
 
     override fun changeIngredient(ingredient: Ingredient): Flow<Unit> {
         TODO("Not yet implemented")

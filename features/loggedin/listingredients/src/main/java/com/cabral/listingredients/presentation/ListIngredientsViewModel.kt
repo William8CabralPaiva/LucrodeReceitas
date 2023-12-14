@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
+import com.cabral.core.common.domain.usecase.DeleteIngredientUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 
 class ListIngredientsViewModel(
-    private val listIngredientUseCase: ListIngredientUseCase
+    private val listIngredientUseCase: ListIngredientUseCase,
+    private val removeIngredientUseCase: DeleteIngredientUseCase
 ) : ViewModel() {
 
     private val _notifyStartLoading = MutableLiveData<Unit>()
@@ -25,7 +26,18 @@ class ListIngredientsViewModel(
     private val _notifyEmptyList = MutableLiveData<Unit>()
     val notifyEmptyList: LiveData<Unit> = _notifyEmptyList
 
-    private var listIngredient = mutableListOf<Ingredient?>()
+    private val _notifySuccessRemove = MutableLiveData<Ingredient>()
+    val notifySuccessRemove: LiveData<Ingredient> = _notifySuccessRemove
+
+    private val _notifyError = MutableLiveData<String>()
+    val notifyError: LiveData<String> = _notifyError
+
+
+    var listIngredient = mutableListOf<Ingredient?>()
+
+    init {
+        getAllIngredients()
+    }
 
     fun getAllIngredients() {
         listIngredientUseCase()
@@ -43,10 +55,14 @@ class ListIngredientsViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun removeIngredientById(id: Int) {
-        val ingredient = listIngredient.first { ingredient -> ingredient?.id == id }
-        ingredient?.let {
-            listIngredient.remove(ingredient)
-        }
+    fun deleteIngredient(ingredient: Ingredient) {
+        removeIngredientUseCase(ingredient)
+            .catch {
+                _notifySuccessRemove.postValue(ingredient)
+            }.onEach {
+                _notifySuccessRemove.postValue(ingredient)
+            }
+            .launchIn(viewModelScope)
     }
+
 }
