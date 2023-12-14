@@ -1,14 +1,13 @@
 package com.cabral.lucrodereceitas
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import com.cabral.features.di.LoginModules
-import com.cabral.features.loggedin.host.di.LoggedNavigationModules
-import com.cabral.features.splash.di.SplashModules
+import com.cabral.features.di.LoginModule
+import com.cabral.features.loggedin.host.di.LoggedNavigationModule
+import com.cabral.features.splash.di.SplashModule
 import com.cabral.host.di.NotLoggedNavigationModule
-import com.cabral.hubsrc.di.HubModules
-import com.cabral.ingredient.di.IngredientModules
+import com.cabral.hubsrc.di.HubModule
+import com.cabral.ingredient.di.IngredientModule
+import com.cabral.listingredients.di.ListIngredientsModule
 import com.cabral.registeruser.di.RegisterUserModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -23,13 +22,14 @@ import org.koin.dsl.KoinAppDeclaration
 class Application : Application() {
 
     private val modules by lazy {
-        LoggedNavigationModules.modules +
+        LoggedNavigationModule.modules +
                 NotLoggedNavigationModule.modules +
-                SplashModules.modules +
-                LoginModules.modules +
-                HubModules.modules+
+                SplashModule.modules +
+                LoginModule.modules +
+                HubModule.modules+
                 RegisterUserModule.modules +
-                IngredientModules.modules
+                IngredientModule.modules+
+                ListIngredientsModule.modules
     }
 
     override fun onCreate() {

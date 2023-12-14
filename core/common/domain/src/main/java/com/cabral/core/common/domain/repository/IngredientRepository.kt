@@ -4,8 +4,8 @@ import com.cabral.core.common.domain.model.Ingredient
 import kotlinx.coroutines.flow.Flow
 
 interface IngredientRepository {
-
-    fun addIngredient(ingredient: List<Ingredient>): Flow<Unit>
+    fun getAllIngredients(): Flow<List<Ingredient>>
+    fun addIngredient(listIngredient: List<Ingredient>): Flow<Unit>
 
     fun deleteIngredient(ingredient: Ingredient): Flow<Unit>
 

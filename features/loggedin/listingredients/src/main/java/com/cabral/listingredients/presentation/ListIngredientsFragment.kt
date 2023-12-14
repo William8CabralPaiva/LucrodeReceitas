@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
+import com.cabral.design.R
 import com.cabral.listingredients.databinding.ListingredientsFragmentBinding
 import com.cabral.listingredients.presentation.adapter.Adapter
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.cabral.listingredients.R as ListIngredientR
 
 class ListIngredientsFragment : Fragment() {
 
@@ -20,6 +25,8 @@ class ListIngredientsFragment : Fragment() {
     private lateinit var adapter: Adapter
 
     private val navigationIngredient: ListIngredientNavigation by inject()
+
+    private val viewModel: ListIngredientsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +39,8 @@ class ListIngredientsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecycleView()
+        initObservers()
         initClicks()
-        binding.viewFlipper.displayedChild = 1
     }
 
 
@@ -43,25 +50,68 @@ class ListIngredientsFragment : Fragment() {
         }
     }
 
+    private fun initObservers() {
+        viewModel.run {
+            getAllIngredients()
+
+            notifyStartLoading.observe(viewLifecycleOwner){
+                binding.viewFlipper.displayedChild = 0
+            }
+
+            notifyEmptyList.observe(viewLifecycleOwner){
+                binding.viewFlipper.displayedChild = 1
+            }
+
+            notifyListIngredient.observe(viewLifecycleOwner){
+                binding.viewFlipper.displayedChild = 2
+                adapter.submitList(it)
+            }
+        }
+    }
+
     private fun initRecycleView() {
         adapter = Adapter(requireContext()).apply {
             onClick = {
                 Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
             }
             onClickTrash = {
-                Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
+                it.name?.let { it1 ->
+                    showAlertDialog(
+                        ListIngredientR.string.listingredients_remove_modal_title,
+                        ListIngredientR.string.listingredients_remove_warning,
+                        it1
+                    ){
+                        viewModel.removeIngredientById(it.id)
+                        adapter.notifyItemRemoved(it.id)
+                    }
+                }
             }
         }
 
         binding.recycleView.adapter = adapter
 
-        val r = Ingredient(0, "Farinha", 20f, "1 Kg", 20f)
-        val r2 = Ingredient(0, "Ovo", 20f, "12 unidades", 40f)
+    }
 
-        val list = listOf(r, r2, r, r2, r, r2, r, r2, r, r2, r, r2, r, r2)
+    private fun showAlertDialog(
+        @StringRes titleRes: Int,
+        @StringRes messageRes: Int,
+        item: String,
+        positiveFunction: () -> Unit
+    ) {
+        context?.let {
+            val title =String.format(getString(titleRes), item)
+            val message = String.format(getString(messageRes), item)
+            CustomAlertDialog.Builder(requireContext())
+                .title(title)
+                .message(message)
+                .negativeButton(getString(R.string.design_no))
+                .positiveButton(getString(R.string.design_yes))
+                .positiveFunction {
+                    positiveFunction()
+                }
 
-        adapter.submitList(list)
-
+                .build().show()
+        }
     }
 
 }

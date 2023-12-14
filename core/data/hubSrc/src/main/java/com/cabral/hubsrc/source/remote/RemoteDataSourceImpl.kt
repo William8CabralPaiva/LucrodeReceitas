@@ -1,15 +1,24 @@
 package com.cabral.hubsrc.source.remote
 
+import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.arch.extensions.UserThrowable
+import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Ingredient
+import com.cabral.core.common.domain.model.IngredientRegister
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.model.UserRegister
+import com.cabral.core.common.domain.model.toIngredient
+import com.cabral.core.common.domain.model.toIngredientRegister
+import com.cabral.core.common.domain.model.toUserRegister
 import com.cabral.remote.local.RemoteDataSource
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +36,7 @@ class RemoteDataSourceImpl(
     override fun addUser(user: User): Flow<Unit> = flow {
         user.name?.let { name ->
             user.email?.let { email ->
-                val userRegister = UserRegister(name, email)
+                val userRegister = user.toUserRegister()
                 val result = db.collection("user").whereEqualTo("email", email).get().await()
 
                 if (result.documents.isEmpty()) {
@@ -41,17 +50,19 @@ class RemoteDataSourceImpl(
                     addUser.also {
                         if (!user.email.isNullOrEmpty()) {
                             user.password?.let { password ->
-                                auth.createUserWithEmailAndPassword(
-                                    userRegister.email,
-                                    password
-                                ).await()
-                                    .also {
-                                        if (!it.user?.email.isNullOrEmpty()) {
-                                            emit(Unit)
-                                        } else {
-                                            throw UserThrowable.AddUserErrorThrowable()
+                                userRegister.email?.let { userEmail ->
+                                    auth.createUserWithEmailAndPassword(
+                                        userEmail,
+                                        password
+                                    ).await()
+                                        .also {
+                                            if (!it.user?.email.isNullOrEmpty()) {
+                                                emit(Unit)
+                                            } else {
+                                                throw UserThrowable.AddUserErrorThrowable()
+                                            }
                                         }
-                                    }
+                                }
                             }
                         } else {
                             throw UserThrowable.AddUserErrorThrowable()
@@ -197,22 +208,80 @@ class RemoteDataSourceImpl(
         }
     }
 
-    override fun getAllRecipe(email: String): Flow<List<Recipe>> {
+    private fun DocumentSnapshot.convertToIngredientRegister(
+        id: Int
+    ): Ingredient {
+        val ingredient = Ingredient(0)
+
+        data?.forEach { map ->
+            when (map.key) {
+                "id" -> ingredient.id = id
+                "name" -> ingredient.name = map.value as String?
+                "volume" -> ingredient.volume = map.value as Float?
+                "unit" -> ingredient.unit = map.value as String?
+                "price" -> ingredient.price = map.value as Float?
+                "keyDocument" -> ingredient.keyDocument = map.value as String?
+            }
+        }
+        return ingredient
+    }
+
+    override fun getAllRecipe(): Flow<List<Recipe>> {
         TODO()
     }
 
-    override fun getAllIngredients(email: String): Flow<List<Ingredient>> {
-        TODO("Not yet implemented")
-//        val list = emptyList<Ingredient>().toMutableList()
-//
-//        db.collection("ingredients")
-//            .get()
-//            .addOnSuccessListener { result ->
-//                for (document in result) {
-//                    list.add(result as Ingredient)
-//                }
-//
-//            }
+    override fun getAllIngredients(): Flow<List<Ingredient>> = flow<List<Ingredient>> {
+        SingletonUser.getInstance().getKey()?.let { key ->
+            val query = db.collection("user").document(key).collection("ingredients").get()
+            query.await()
+            val list = mutableListOf<Ingredient>()
 
+            if (query.isSuccessful) {
+                var id = 0;
+                for (document in query.result.documents) {
+                    val auxIngredient = document.toObject(IngredientRegister::class.java)
+
+                    val ingredient = auxIngredient?.toIngredient(id)
+                    ingredient?.let {
+                        list.add(it)
+                        id += 1
+                    }
+                }
+                emit(list)
+            } else {
+                throw GenericThrowable.FailThrowable()
+            }
+        }
+
+    }.flowOn(dispatcher)
+
+    override fun addIngredient(listIngredient: List<Ingredient>): Flow<Unit> = flow {
+
+        SingletonUser.getInstance().getKey()?.let { key ->
+            val batch = db.batch()
+
+            val documentReferences = mutableListOf<DocumentReference>()
+
+            listIngredient.forEach {
+                val newDocument =
+                    db.collection("user").document(key).collection("ingredients").document()
+                val generatedId = newDocument.id
+                it.keyDocument = generatedId
+                documentReferences.add(newDocument)
+                batch.set(newDocument, it.toIngredientRegister())
+            }
+            batch.commit().await()
+
+        }
+
+        emit(Unit)
+    }.flowOn(dispatcher)
+
+    override fun deleteIngredient(ingredient: Ingredient): Flow<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override fun changeIngredient(ingredient: Ingredient): Flow<Unit> {
+        TODO("Not yet implemented")
     }
 }

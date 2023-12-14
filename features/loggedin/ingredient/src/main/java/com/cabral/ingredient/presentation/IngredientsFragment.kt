@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.cabral.arch.extensions.IngredientThrowable
-import com.cabral.arch.extensions.intNumber
+import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.allUnitMeasure
@@ -121,7 +121,7 @@ class IngredientsFragment : Fragment() {
             }
 
             abSave.abSetOnClickListener {
-
+                viewModel.save()
             }
 
         }
@@ -138,7 +138,11 @@ class IngredientsFragment : Fragment() {
                             name
                         ) { it.deleteItem() }
                     } else {
-                        Toast.makeText(context, getString(IngredientR.string.ingredient_delete_in_edit), Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            getString(IngredientR.string.ingredient_delete_in_edit),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
 
                 }
@@ -155,6 +159,12 @@ class IngredientsFragment : Fragment() {
         }
         binding.recycleView.adapter = adapterIngredient
         adapterIngredient.submitList(viewModel.listIngredient)
+    }
+
+    private fun disableAllInput(){
+        binding.run {
+            //biIngredient.
+        }
     }
 
     private fun Ingredient.deleteItem() {
@@ -179,8 +189,8 @@ class IngredientsFragment : Fragment() {
                 biUnit.setInputText(unit)
             }
 
-            biPrice.setInputText(price.intNumber())
-            biVolume.setInputText(volume.intNumber())
+            biPrice.setInputText(price.removeEndZero())
+            biVolume.setInputText(volume.removeEndZero())
         }
     }
 

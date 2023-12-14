@@ -9,7 +9,6 @@ import com.cabral.arch.PasswordUtils
 import com.cabral.arch.extensions.UserThrowable
 import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.User
-import com.cabral.core.common.domain.model.UserRegister
 import com.cabral.core.common.domain.usecase.AddUserUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
@@ -40,7 +39,7 @@ class RegisterUserViewModel(
             PasswordUtils.validatePassword(password) &&
             equalPassword(password, confirmPassword)
         ) {
-            val user = User(email,name,password)
+            val user = User(email, name, password)
             addUserUseCase(user)
                 .onStart {
                     _notifyStartLoading.postValue(Unit)
@@ -55,7 +54,7 @@ class RegisterUserViewModel(
     }
 
     private fun String?.validateName(): Boolean {
-        if(this!=null) {
+        if (this != null) {
             if (trim().length > 1) {
                 return true
             }
@@ -64,7 +63,7 @@ class RegisterUserViewModel(
     }
 
     private fun equalPassword(password: String?, confirmPassword: String?): Boolean {
-        if (password !=null && password == confirmPassword) {
+        if (password != null && password == confirmPassword) {
             return true
         }
         throw UserThrowable.NotEqualPasswordThrowable()

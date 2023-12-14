@@ -1,4 +1,4 @@
-package com.cabral.features.loggedin.host.navigation
+package com.cabral.features.loggedin.host.di.navigation
 
 import android.app.Activity
 import android.content.Intent

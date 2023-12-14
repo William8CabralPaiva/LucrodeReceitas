@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.cabral.arch.extensions.intNumber
+import com.cabral.arch.extensions.removeEndZero
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.ingredient.databinding.IngredientsItemBinding
 
@@ -23,7 +23,7 @@ class IngredientViewHolder(
             name.text = ingredient.name
             volume.text = String.format(
                 context.getString(com.cabral.design.R.string.design_ingredient_format),
-                ingredient.volume.intNumber(),
+                ingredient.volume.removeEndZero(),
                 ingredient.unit
             )
             edit.setOnClickListener { onClickEdit(ingredient) }

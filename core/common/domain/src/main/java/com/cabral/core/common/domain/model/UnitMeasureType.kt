@@ -52,3 +52,11 @@ fun listMeasure(list: List<UnitMeasureType>): List<String> {
     }
     return stringList
 }
+
+fun getUnitMeasureByUnit(unit: String?): UnitMeasureType {
+    return UnitMeasureType.values().first { enum -> enum.unit == unit }
+}
+
+fun getUnitMeasureByType(type: String?): UnitMeasureType {
+    return UnitMeasureType.values().first { enum -> enum.type == type }
+}

@@ -16,10 +16,11 @@ import com.cabral.arch.databinding.ArchRecipeSpinnerBinding
 class RecipeSpinner @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet?,
-    defStyle: Int = 0, p: Any
+    defStyle: Int = 0
 ) : FrameLayout(context, attrs, defStyle) {
 
-    private val binding = p
+    private val binding = ArchRecipeSpinnerBinding
+        .inflate(LayoutInflater.from(context), this, true)
 
     init {
         bindingLayout(attrs)

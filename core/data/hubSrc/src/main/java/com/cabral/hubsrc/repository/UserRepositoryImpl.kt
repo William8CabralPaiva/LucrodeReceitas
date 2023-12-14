@@ -27,12 +27,4 @@ class UserRepositoryImpl(
     override suspend fun forgotPassword(email: String) {
         remoteDataSource.forgotPassword(email)
     }
-
-//    override fun getAllRecipe(email: String): Flow<List<Recipe>> {
-//        return getAllRecipe(email)
-//    }
-//
-//    override fun getAllIngredients(email: String): Flow<List<Ingredient>> {
-//        return getAllIngredients(email)
-//    }
 }

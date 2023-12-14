@@ -1,4 +1,4 @@
-package com.cabral.features.loggedin.host.navigation
+package com.cabral.features.loggedin.host.di.navigation
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController

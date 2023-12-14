@@ -8,16 +8,20 @@ import kotlinx.coroutines.flow.Flow
 class IngredientRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : IngredientRepository {
-    override fun addIngredient(ingredient: List<Ingredient>): Flow<Unit> {
-        TODO("Not yet implemented")
+    override fun getAllIngredients(): Flow<List<Ingredient>> {
+        return remoteDataSource.getAllIngredients()
+    }
+
+    override fun addIngredient(listIngredient: List<Ingredient>): Flow<Unit> {
+        return remoteDataSource.addIngredient(listIngredient)
     }
 
     override fun deleteIngredient(ingredient: Ingredient): Flow<Unit> {
-        TODO("Not yet implemented")
+        return remoteDataSource.deleteIngredient(ingredient)
     }
 
     override fun changeIngredient(ingredient: Ingredient): Flow<Unit> {
-        TODO("Not yet implemented")
+        return remoteDataSource.changeIngredient(ingredient)
     }
 
 }

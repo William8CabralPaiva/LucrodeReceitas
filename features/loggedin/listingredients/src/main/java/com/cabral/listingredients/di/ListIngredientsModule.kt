@@ -1,16 +1,17 @@
-package com.cabral.features.splash.di
+package com.cabral.listingredients.di
 
-import com.cabral.features.splash.presentation.SplashScreenViewModel
+import com.cabral.listingredients.presentation.ListIngredientsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-object SplashModules {
+object ListIngredientsModule {
+
     val modules get() = listOf(viewModelModules)
 
     private val viewModelModules: Module = module {
         viewModel {
-            SplashScreenViewModel(get())
+            ListIngredientsViewModel(get())
         }
     }
 }
