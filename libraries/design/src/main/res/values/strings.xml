@@ -3,7 +3,12 @@
     <string name="design_ingredient">Ingrediente</string>
     <string name="design_ingredients">Ingredientes</string>
     <string name="design_total_amount">Quantidade total</string>
+    <string name="design_amount">Quantidade</string>
     <string name="design_unit_measurement">Unidade de medida</string>
+    <string name="design_add_ingredients">Adicionar ingrediente</string>
+    <string name="design_how_many_units">Rende qts Unidades</string>
+    <string name="design_expected_profit">Lucro esperado</string>
+    <string name="design_recipe_name">Nome da Receita</string>
     <string name="design_price">Preço</string>
     <string name="design_shopping">Compras</string>
     <string name="design_profile">Perfil</string>
@@ -12,6 +17,8 @@
     <string name="design_login">Entrar</string>
     <string name="design_name">Nome</string>
     <string name="design_password">Senha</string>
+    <string name="design_add">Adicionar</string>
+    <string name="design_edit">Editar</string>
     <string name="design_confirm_password">Confirme sua senha</string>
     <string name="design_ic_cook">Ícone de Cozinheiro</string>
     <string name="design_img_trash">Imagem de uma lixeira</string>
@@ -20,4 +27,10 @@
     <string name="design_ingredient_format">%1$s %2$s</string>
     <string name="design_yes">Sim</string>
     <string name="design_no">Não</string>
+
+    <string name="design_delete_in_edit">Não é possível deletar durante a exclusão</string>
+    <string name="design_delete_title">Aviso de Exclusão!</string>
+    <string name="design_delete_message">Deseja deletar o item %1$s ?</string>
+    <string name="design_edit_title">Aviso de Alteração!</string>
+    <string name="design_edit_message">Deseja alterar o item %1$s ?</string>
 </resources>

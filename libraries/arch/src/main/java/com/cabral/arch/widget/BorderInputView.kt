@@ -3,12 +3,15 @@ package com.cabral.arch.widget
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
+import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.cabral.arch.R
 import com.cabral.arch.databinding.ArchBorderInputViewBinding
@@ -24,6 +27,8 @@ class BorderInputView @JvmOverloads constructor(
 
     private val binding = ArchBorderInputViewBinding
         .inflate(LayoutInflater.from(context), this, true)
+
+    private var drawable: Drawable? = null
 
     init {
         bindingLayout(attrs)
@@ -41,10 +46,16 @@ class BorderInputView @JvmOverloads constructor(
             //     setDefaultColor(color)
 
             val BIInputType =
-                typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_type, BIInputType.TEXT);
+                typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_type, BIInputType.TEXT)
             setInputType(BIInputType)
             hintTextColor()
             changeText()
+
+            val drawableTop =
+                typedArray.getDrawable(R.styleable.ArchBorderInputView_arch_drawable_top)
+
+            setDrawableTop(drawableTop)
+
             typedArray.recycle()
         }
 
@@ -54,7 +65,7 @@ class BorderInputView @JvmOverloads constructor(
         binding.run {
             when (BIInputType) {
                 BorderInputView.BIInputType.TEXT -> {
-                    biTextInput.inputType = android.text.InputType.TYPE_CLASS_TEXT
+                    biTextInput.inputType = InputType.TYPE_CLASS_TEXT
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
 
@@ -65,9 +76,9 @@ class BorderInputView @JvmOverloads constructor(
                 }
 
                 BorderInputView.BIInputType.NUMBER -> {
-                    biTextInput.inputType = android.text.InputType.TYPE_CLASS_NUMBER or
-                            android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL or
-                            android.text.InputType.TYPE_NUMBER_FLAG_SIGNED
+                    biTextInput.inputType = InputType.TYPE_CLASS_NUMBER or
+                            InputType.TYPE_NUMBER_FLAG_DECIMAL or
+                            InputType.TYPE_NUMBER_FLAG_SIGNED
 
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
@@ -90,10 +101,22 @@ class BorderInputView @JvmOverloads constructor(
         NUMBER("number")
     }
 
+    private fun setDrawableTop(drawableTop: Drawable?) {
+        drawableTop?.let {
+            drawable = drawableTop
+            binding.biTextInput.setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                drawableTop,
+                null
+            )
+        }
+    }
+
     private fun setLabelText(text: String) {
         binding.run {
             biHint.hint = text
-            //biTextInput.hint = text
+            biTextInput.hint = text
         }
     }
 
@@ -169,6 +192,11 @@ class BorderInputView @JvmOverloads constructor(
                 binding.biHint.defaultHintTextColor =
                     ColorStateList.valueOf(getColor(color))
 
+                drawable?.let {
+                    val drawableWrap = DrawableCompat.wrap(it).mutate()
+                    DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, color))
+                }
+
             }
 
         }
@@ -189,7 +217,7 @@ class BorderInputView @JvmOverloads constructor(
         }
     }
 
-    fun getText(): String? {
+    fun getText(): String {
         return binding.biTextInput.text.toString()
     }
 
@@ -210,6 +238,12 @@ class BorderInputView @JvmOverloads constructor(
         }
     }
 
+    fun setTextChangedListener(insideFunction: () -> Unit) {
+        binding.biTextInput.addTextChangedListener {
+            insideFunction()
+        }
+    }
+
     fun setError(errorText: String?) {
         binding.biHint.run {
             isErrorEnabled = true
@@ -219,6 +253,6 @@ class BorderInputView @JvmOverloads constructor(
 
 
     private fun getColor(@ColorRes color: Int): Int {
-        return ContextCompat.getColor(context, color);
+        return ContextCompat.getColor(context, color)
     }
 }

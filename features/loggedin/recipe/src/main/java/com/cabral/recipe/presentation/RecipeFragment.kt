@@ -7,13 +7,19 @@ import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import com.cabral.core.ListIngredientNavigation
+import com.cabral.core.ListRecipeNavigation
 import com.cabral.recipe.databinding.RecipeFragmentBinding
+import org.koin.android.ext.android.inject
 
 class RecipeFragment() : Fragment() {
 
     private var _binding: RecipeFragmentBinding? = null
     private val binding get() = _binding!!
     //private val activity by lazy { requireActivity() as LoggedActivity }
+
+    private val navigation: ListRecipeNavigation by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,23 +31,16 @@ class RecipeFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
-            //  findNavController().navigate(RecipeFragmentDirections.actionRecipeToTest())
-            //binding.test.finishLoading(false, true)
+        
+        binding.abSave.abSetOnClickListener {
+            navigation.openAddEditIngredient(this)
         }
-//        binding.test.abSetOnClickListener {
-//            binding.test.startLoading()
-//        }
 
     }
+
 
     private fun getColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(requireContext(), color);
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance() = RecipeFragment()
-    }
 }

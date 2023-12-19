@@ -8,6 +8,8 @@ import com.cabral.host.di.NotLoggedNavigationModule
 import com.cabral.hubsrc.di.HubModule
 import com.cabral.ingredient.di.IngredientModule
 import com.cabral.listingredients.di.ListIngredientsModule
+import com.cabral.listrecipe.di.ListRecipeModule
+import com.cabral.recipe.di.RecipeModule
 import com.cabral.registeruser.di.RegisterUserModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -26,10 +28,12 @@ class Application : Application() {
                 NotLoggedNavigationModule.modules +
                 SplashModule.modules +
                 LoginModule.modules +
-                HubModule.modules+
+                HubModule.modules +
                 RegisterUserModule.modules +
-                IngredientModule.modules+
-                ListIngredientsModule.modules
+                IngredientModule.modules +
+                ListIngredientsModule.modules +
+                ListRecipeModule.modules +
+                RecipeModule.modules
     }
 
     override fun onCreate() {

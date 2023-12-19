@@ -41,6 +41,10 @@ class RecipeSpinner @JvmOverloads constructor(
         return binding.spinner
     }
 
+    fun getText(): String? {
+        return binding.spinner.text.toString()
+    }
+
     fun clearInputText() {
         return binding.spinner.setText("")
     }

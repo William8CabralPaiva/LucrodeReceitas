@@ -6,6 +6,7 @@
     </style>
 
     <declare-styleable name="ArchBorderInputView">
+        <attr name="arch_drawable_top" format="reference" />
         <attr name="arch_ei_label" format="string" />
 
         <attr name="arch_ei_color" format="enum">
@@ -30,6 +31,7 @@
     </declare-styleable>
 
     <declare-styleable name="ArchActionButton">
+        <attr name="arch_ab_enabled" format="boolean" />
         <attr name="arch_ab_text" format="string" />
         <attr name="arch_ab_type" format="enum">
             <enum name="shape" value="0" />

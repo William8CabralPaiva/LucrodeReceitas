@@ -22,7 +22,6 @@ import com.cabral.ingredient.presentation.adapter.Adapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
-import com.cabral.ingredient.R as IngredientR
 
 
 class IngredientsFragment : Fragment() {
@@ -87,9 +86,9 @@ class IngredientsFragment : Fragment() {
 
             notifyEditMode.observe(viewLifecycleOwner) {
                 val buttonText = if (it) {
-                    getString(IngredientR.string.ingredient_edit)
+                    getString(DesignR.string.design_edit)
                 } else {
-                    getString(IngredientR.string.ingredient_add)
+                    getString(DesignR.string.design_add)
                 }
                 binding.abAdd.setText(buttonText)
             }
@@ -135,14 +134,14 @@ class IngredientsFragment : Fragment() {
                 it.name?.let { name ->
                     if (!viewModel.getEditMode()) {
                         showAlertDialog(
-                            IngredientR.string.ingredient_delete_title,
-                            IngredientR.string.ingredient_delete_message,
+                            DesignR.string.design_delete_title,
+                            DesignR.string.design_delete_message,
                             name
                         ) { it.deleteItem() }
                     } else {
                         Toast.makeText(
                             context,
-                            getString(IngredientR.string.ingredient_delete_in_edit),
+                            getString(DesignR.string.design_delete_in_edit),
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -152,8 +151,8 @@ class IngredientsFragment : Fragment() {
             onClickEdit = {
                 it.name?.let { name ->
                     showAlertDialog(
-                        IngredientR.string.ingredient_edit_title,
-                        IngredientR.string.ingredient_edit_message,
+                        DesignR.string.design_edit_title,
+                        DesignR.string.design_edit_message,
                         name
                     ) { it.editItem() }
                 }

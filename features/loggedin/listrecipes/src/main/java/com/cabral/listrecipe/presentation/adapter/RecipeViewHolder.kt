@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.cabral.arch.extensions.removeEndZero
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.listrecipe.databinding.ListrecipeItemRecipeBinding
 
@@ -22,7 +23,7 @@ class RecipeViewHolder(
             recipeName.text = recipe.name
             recipePrice.text = String.format(
                 context.getString(com.cabral.design.R.string.design_value_format),
-                recipe.price.toString()
+                recipe.price.removeEndZero()
             )
             container.setOnClickListener { onClick(recipe) }
             trash.setOnClickListener { onClickTrash(recipe) }

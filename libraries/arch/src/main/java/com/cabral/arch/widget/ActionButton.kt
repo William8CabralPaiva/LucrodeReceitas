@@ -51,6 +51,10 @@ class ActionButton @JvmOverloads constructor(
             binding.container.background = getShape(buttonType)
             setTextColors(buttonType)
 
+            val enabledButton =
+                typedArray.getBoolean(R.styleable.ArchActionButton_arch_ab_enabled, true)
+            abSetEnabled(enabledButton)
+
             typedArray.recycle()
         }
     }
@@ -140,8 +144,18 @@ class ActionButton @JvmOverloads constructor(
         }
     }
 
-    fun setText(text:String){
+    fun setText(text: String) {
         binding.textView.text = text
+    }
+
+    fun abSetEnabled(enabled: Boolean) {
+        isEnabled = enabled
+        if (enabled) {
+            binding.container.alpha = 1f
+        } else {
+            binding.container.alpha = 0.3f
+        }
+        binding.container.isEnabled = isEnabled
     }
 
     private fun iconChecked(success: Boolean): Drawable? {

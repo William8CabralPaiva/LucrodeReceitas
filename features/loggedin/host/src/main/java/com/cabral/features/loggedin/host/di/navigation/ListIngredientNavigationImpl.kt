@@ -22,25 +22,32 @@ internal class ListIngredientNavigationImpl : ListIngredientNavigation {
         }
     }
 
-    override fun hasItemAddOnIngredient(fragment: Fragment, lifecycleOwner: LifecycleOwner, insideFunction: () -> Unit) {
+    override fun hasItemAddOnIngredient(
+        fragment: Fragment,
+        lifecycleOwner: LifecycleOwner,
+        insideFunction: () -> Unit
+    ) {
         fragment.findNavController().run {
+
+            val navBackStackEntry = currentBackStackEntry
 
             val observer = LifecycleEventObserver { _, event ->
                 val isSortingApplied =
-                    currentBackStackEntry?.savedStateHandle?.contains(Redirection.HAS_ADD_ITEM)?:false
+                    navBackStackEntry?.savedStateHandle?.contains(Redirection.HAS_ADD_ITEM)
+                        ?: false
 
                 if (event == Lifecycle.Event.ON_RESUME && isSortingApplied) {
-                   insideFunction()
+                    insideFunction()
 
-                    currentBackStackEntry?.savedStateHandle?.remove<Boolean>(Redirection.HAS_ADD_ITEM)
+                    navBackStackEntry?.savedStateHandle?.remove<Boolean>(Redirection.HAS_ADD_ITEM)
                 }
             }
 
-            currentBackStackEntry?.lifecycle?.addObserver(observer)
+            navBackStackEntry?.lifecycle?.addObserver(observer)
             lifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
 
                 if (event == Lifecycle.Event.ON_DESTROY) {
-                    currentBackStackEntry?.lifecycle?.removeObserver(observer)
+                    navBackStackEntry?.lifecycle?.removeObserver(observer)
                 }
 
             })

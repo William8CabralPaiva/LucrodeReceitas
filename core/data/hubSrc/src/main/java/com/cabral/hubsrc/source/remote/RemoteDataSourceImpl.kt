@@ -6,10 +6,12 @@ import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.IngredientRegister
 import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.model.RecipeRegister
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.model.UserRegister
 import com.cabral.core.common.domain.model.toIngredient
 import com.cabral.core.common.domain.model.toIngredientRegister
+import com.cabral.core.common.domain.model.toRecipe
 import com.cabral.core.common.domain.model.toUserRegister
 import com.cabral.remote.local.RemoteDataSource
 import com.google.firebase.auth.FirebaseAuth
@@ -226,9 +228,30 @@ class RemoteDataSourceImpl(
         return ingredient
     }
 
-    override fun getAllRecipe(): Flow<List<Recipe>> {
-        TODO()
-    }
+    override fun getAllRecipe(): Flow<List<Recipe>> = flow {
+        SingletonUser.getInstance().getKey()?.let { key ->
+            val query = db.collection("user").document(key).collection("recipes").get()
+            query.await()
+            val list = mutableListOf<Recipe>()
+
+            if (query.isSuccessful) {
+                var id = 0;
+                for (document in query.result.documents) {
+                    val auxRecipe = document.toObject(RecipeRegister::class.java)
+
+                    val recipe = auxRecipe?.toRecipe(id)
+                    recipe?.let {
+                        list.add(it)
+                        id += 1
+                    }
+                }
+                emit(list)
+            } else {
+                throw GenericThrowable.FailThrowable()
+            }
+        }
+
+    }.flowOn(dispatcher)
 
     override fun getAllIngredients(): Flow<List<Ingredient>> = flow<List<Ingredient>> {
         SingletonUser.getInstance().getKey()?.let { key ->

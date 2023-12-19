@@ -11,11 +11,11 @@
         android:label="RecipeFragment"
         tools:layout="@layout/recipe_fragment">
         <action
-            android:id="@+id/action_recipe_to_profile"
-            app:destination="@id/profile" />
-        <action
             android:id="@+id/action_recipe_to_ingredient_nav"
             app:destination="@id/ingredient_nav" />
+        <action
+            android:id="@+id/recipe_to_add_edit_ingredient"
+            app:destination="@id/loggedin_hostRecipeaddeditingredientfragment" />
     </fragment>
 
     <include app:graph="@navigation/ingredient_nav" />
@@ -42,6 +42,12 @@
             android:id="@+id/action_list_ingredients_to_ingredients"
             app:destination="@id/ingredient_nav" />
     </fragment>
+    <fragment
+        android:id="@+id/loggedin_hostRecipeaddeditingredientfragment"
+        android:name="com.cabral.recipe.presentation.RecipeAddEditIngredientFragment"
+        android:label="RecipeAddEditIngredientFragment"
+        tools:layout="@layout/recipe_add_edit_ingredient_fragment"
+        />
 
 
 </navigation>
