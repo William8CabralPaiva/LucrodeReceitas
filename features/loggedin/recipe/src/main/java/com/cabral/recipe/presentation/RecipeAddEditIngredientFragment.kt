@@ -1,7 +1,6 @@
 package com.cabral.recipe.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.core.view.isNotEmpty
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.cabral.arch.extensions.removeEndZero
-import com.cabral.arch.widget.ActionButton
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
-import com.cabral.recipe.adapter.Adapter
+import com.cabral.recipe.adapter.IngredientAdapter
 import com.cabral.recipe.databinding.RecipeAddEditIngredientFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
@@ -28,7 +24,7 @@ class RecipeAddEditIngredientFragment : Fragment() {
     private var _binding: RecipeAddEditIngredientFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapterIngredient: Adapter
+    private lateinit var ingredientAdapterIngredient: IngredientAdapter
 
     private val viewModel: RecipeAddEditIngredientFragmentViewModel by viewModel()
 
@@ -55,7 +51,7 @@ class RecipeAddEditIngredientFragment : Fragment() {
 
             notifyAddIngredient.observe(viewLifecycleOwner) {
                 it?.id?.let { ingredient ->
-                    adapterIngredient.notifyItemInserted(ingredient)
+                    ingredientAdapterIngredient.notifyItemInserted(ingredient)
                     clearFields()
                 }
             }
@@ -74,11 +70,11 @@ class RecipeAddEditIngredientFragment : Fragment() {
             }
 
             notifyRemoveIngredient.observe(viewLifecycleOwner) {
-                adapterIngredient.notifyItemRemoved(it)
+                ingredientAdapterIngredient.notifyItemRemoved(it)
             }
 
             notifySuccessEdit.observe(viewLifecycleOwner){
-                adapterIngredient.notifyItemChanged(it)
+                ingredientAdapterIngredient.notifyItemChanged(it)
             }
         }
     }
@@ -161,7 +157,7 @@ class RecipeAddEditIngredientFragment : Fragment() {
     }
 
     private fun prepareAdapter() {
-        adapterIngredient = Adapter(requireContext()).apply {
+        ingredientAdapterIngredient = IngredientAdapter(requireContext()).apply {
             onClickTrash = {
                 it.name?.let { name ->
                     if (!viewModel.getEditMode()) {
@@ -190,8 +186,8 @@ class RecipeAddEditIngredientFragment : Fragment() {
                 }
             }
         }
-        binding.recycleView.adapter = adapterIngredient
-        adapterIngredient.submitList(viewModel.addListIngredient)
+        binding.recycleView.adapter = ingredientAdapterIngredient
+        ingredientAdapterIngredient.submitList(viewModel.addListIngredient)
     }
 
     private fun Ingredient.editItem() {

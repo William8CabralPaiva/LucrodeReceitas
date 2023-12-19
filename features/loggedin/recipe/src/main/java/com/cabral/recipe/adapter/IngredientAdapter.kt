@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.recipe.adapter.IngredientViewHolder.Companion.typeViewHolder
 
-class Adapter(private val context: Context) :
+class IngredientAdapter(private val context: Context) :
     ListAdapter<Ingredient, IngredientViewHolder>(DIFF_CALLBACK) {
 
     lateinit var onClickTrash: (Ingredient) -> Unit
