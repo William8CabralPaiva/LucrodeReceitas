@@ -6,13 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
-import com.cabral.arch.SwipeGesture
 import com.cabral.core.ListRecipeNavigation
-import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.core.common.domain.model.Recipe
 import com.cabral.listrecipe.databinding.ListrecipeFragmentBinding
-import com.cabral.listrecipe.presentation.adapter.Adapter
+import com.cabral.listrecipe.presentation.adapter.RecipeAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,7 +17,7 @@ class ListRecipeFragment : Fragment() {
     private var _binding: ListrecipeFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: Adapter
+    private lateinit var adapter: RecipeAdapter
 
     private val navigationRecipe: ListRecipeNavigation by inject()
 
@@ -62,7 +58,7 @@ class ListRecipeFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = Adapter(requireContext()).apply {
+        adapter = RecipeAdapter(requireContext()).apply {
             onClick = {
                 Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
             }

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.listrecipe.presentation.adapter.RecipeViewHolder.Companion.typeViewHolder
 
-class Adapter(private val context: Context) : ListAdapter<Recipe, RecipeViewHolder>(DIFF_CALLBACK) {
+class RecipeAdapter(private val context: Context) : ListAdapter<Recipe, RecipeViewHolder>(DIFF_CALLBACK) {
 
     lateinit var onClick: (Recipe) -> Unit
     lateinit var onClickTrash: (Recipe) -> Unit
