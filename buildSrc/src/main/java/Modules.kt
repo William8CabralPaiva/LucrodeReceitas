@@ -6,7 +6,6 @@ object Modules {
     const val profile = ":features:loggedin:profile"
     const val recipe = ":features:loggedin:recipe"
     const val ingredients = ":features:loggedin:ingredient"
-    const val listIngredients = ":features:loggedin:listingredients"
     const val domain = ":core:common:domain"
     const val navigation = ":core:common:navigation"
     const val design = ":libraries:design"

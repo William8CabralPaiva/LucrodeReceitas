@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.cabral.arch.Redirection
 import com.cabral.core.ListIngredientNavigation
-import com.cabral.listingredients.presentation.ListIngredientsFragmentDirections
+import com.cabral.ingredient.presentation.ListIngredientsFragmentDirections
 
 internal class ListIngredientNavigationImpl : ListIngredientNavigation {
     override fun openIngredient(fragment: Fragment) {

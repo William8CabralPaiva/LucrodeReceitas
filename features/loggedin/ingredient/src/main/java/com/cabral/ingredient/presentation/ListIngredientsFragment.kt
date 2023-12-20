@@ -1,4 +1,4 @@
-package com.cabral.listingredients.presentation
+package com.cabral.ingredient.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,15 +11,15 @@ import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
-import com.cabral.listingredients.databinding.ListingredientsFragmentBinding
-import com.cabral.listingredients.presentation.adapter.ListIngredientAdapter
+import com.cabral.ingredient.databinding.IngredientsListFragmentBinding
+import com.cabral.ingredient.presentation.adapter.ListIngredientAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.cabral.listingredients.R as ListIngredientR
+import com.cabral.ingredient.R as IngredientR
 
 class ListIngredientsFragment : Fragment() {
 
-    private var _binding: ListingredientsFragmentBinding? = null
+    private var _binding: IngredientsListFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: ListIngredientAdapter
@@ -32,7 +32,7 @@ class ListIngredientsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ListingredientsFragmentBinding.inflate(inflater, container, false)
+        _binding = IngredientsListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -40,7 +40,7 @@ class ListIngredientsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initClicks()
-        navigationIngredient.hasItemAddOnIngredient(this,viewLifecycleOwner){
+        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
             viewModel.getAllIngredients()
         }
     }
@@ -55,24 +55,24 @@ class ListIngredientsFragment : Fragment() {
     private fun initObservers() {
         viewModel.run {
 
-            notifyStartLoading.observe(viewLifecycleOwner){
+            notifyStartLoading.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 0
             }
 
-            notifyEmptyList.observe(viewLifecycleOwner){
+            notifyEmptyList.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 1
             }
 
-            notifyListIngredient.observe(viewLifecycleOwner){
+            notifyListIngredient.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 2
                 initAdapter()
             }
 
-            notifySuccessRemove.observe(viewLifecycleOwner){
+            notifySuccessRemove.observe(viewLifecycleOwner) {
                 it.deleteItem()
             }
 
-            notifyError.observe(viewLifecycleOwner){
+            notifyError.observe(viewLifecycleOwner) {
 
             }
 
@@ -88,10 +88,10 @@ class ListIngredientsFragment : Fragment() {
             onClickTrash = {
                 it.name?.let { it1 ->
                     showAlertDialog(
-                        ListIngredientR.string.listingredients_remove_modal_title,
-                        ListIngredientR.string.listingredients_remove_warning,
+                        IngredientR.string.ingredients_remove_modal_title,
+                        IngredientR.string.ingredients_warning_remove,
                         it1
-                    ){
+                    ) {
                         viewModel.deleteIngredient(it)
                     }
                 }
@@ -115,7 +115,7 @@ class ListIngredientsFragment : Fragment() {
         positiveFunction: () -> Unit
     ) {
         context?.let {
-            val title =String.format(getString(titleRes), item)
+            val title = String.format(getString(titleRes), item)
             val message = String.format(getString(messageRes), item)
             CustomAlertDialog.Builder(requireContext())
                 .title(title)

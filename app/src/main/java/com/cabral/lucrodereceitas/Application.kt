@@ -7,7 +7,7 @@ import com.cabral.features.splash.di.SplashModule
 import com.cabral.host.di.NotLoggedNavigationModule
 import com.cabral.hubsrc.di.HubModule
 import com.cabral.ingredient.di.IngredientModule
-import com.cabral.listingredients.di.ListIngredientsModule
+import com.cabral.ingredient.di.ListIngredientsModule
 import com.cabral.recipe.di.RecipeModule
 import com.cabral.registeruser.di.RegisterUserModule
 import org.koin.android.ext.koin.androidContext

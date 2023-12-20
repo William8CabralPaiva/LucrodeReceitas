@@ -1,11 +1,11 @@
-package com.cabral.listingredients.presentation.adapter
+package com.cabral.ingredient.presentation.adapter
 
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.listingredients.presentation.adapter.ListIngredientsViewHolder.Companion.typeViewHolder
+import com.cabral.ingredient.presentation.adapter.ListIngredientsViewHolder.Companion.typeViewHolder
 
 class ListIngredientAdapter(private val context: Context) :
     ListAdapter<Ingredient, ListIngredientsViewHolder>(DIFF_CALLBACK) {

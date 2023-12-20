@@ -1,8 +1,0 @@
-<resources>
-    <string name="listingredients">Preço:</string>
-    <string name="listingredients_title">Lista de Ingredients</string>
-    <string name="listingredients_click_in_plus_to_add_ingredient">Nenhum ingrediente encontrado.\n Clique no + para adicionar um ingrediente</string>
-    <string name="listingredients_add_ingredient">Clique aqui para adicionar um ingrediente</string>
-    <string name="listingredients_remove_modal_title">Deseja remover o item %1$s?</string>
-    <string name="listingredients_remove_warning">O item %1$s será removido de todas as receitas.</string>
-</resources>

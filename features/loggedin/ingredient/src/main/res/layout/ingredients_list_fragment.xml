@@ -15,10 +15,10 @@
         android:drawablePadding="@dimen/arch_default_margin"
         android:fontFamily="@font/bangers"
         android:gravity="center"
-        android:text="@string/listingredients_title"
+        android:text="@string/ingredients_list_title"
         android:textColor="@color/design_orange"
         android:textSize="24sp"
-        app:drawableStartCompat="@drawable/ic_list_ingredients"
+        app:drawableStartCompat="@drawable/ingredients_list_ic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,7 @@
             android:layout_marginHorizontal="@dimen/arch_default_margin"
             android:fontFamily="@font/ubuntu_medium"
             android:gravity="start"
-            android:text="@string/listingredients_click_in_plus_to_add_ingredient"
+            android:text="@string/ingredients_click_in_plus_to_add_it"
             android:textAlignment="textStart"
             android:textColor="@color/design_gray_light"
             android:textSize="20sp" />
@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/listingredients_item_ingredient" />
+            tools:listitem="@layout/ingredients_item_list" />
 
     </ViewFlipper>
 
@@ -73,7 +73,7 @@
         android:layout_marginBottom="@dimen/arch_default_margin"
         android:backgroundTint="@color/design_orange"
         android:clickable="true"
-        android:contentDescription="@string/listingredients_add_ingredient"
+        android:contentDescription="@string/ingredients_add"
         android:focusable="true"
         android:src="@drawable/design_ic_add"
         app:layout_constraintBottom_toBottomOf="parent"

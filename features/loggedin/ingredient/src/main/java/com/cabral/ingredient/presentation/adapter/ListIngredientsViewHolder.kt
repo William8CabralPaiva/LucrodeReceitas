@@ -1,4 +1,4 @@
-package com.cabral.listingredients.presentation.adapter
+package com.cabral.ingredient.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.listingredients.databinding.ListingredientsItemIngredientBinding
+import com.cabral.ingredient.databinding.IngredientsItemListBinding
 import com.cabral.design.R as DesignR
 
 class ListIngredientsViewHolder(
-    private val binding: ListingredientsItemIngredientBinding,
+    private val binding: IngredientsItemListBinding,
     private val context: Context
 ) :
     RecyclerView.ViewHolder(binding.root) {
@@ -42,7 +42,7 @@ class ListIngredientsViewHolder(
             context: Context,
             index: Int
         ): ListIngredientsViewHolder {
-            val binding = ListingredientsItemIngredientBinding.inflate(
+            val binding = IngredientsItemListBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
