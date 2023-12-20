@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/logged_nav"
+    app:startDestination="@+id/list_recipe_nav">
+
+    <fragment
+        android:id="@+id/list_ingredients"
+        android:name="com.cabral.listingredients.presentation.ListIngredientsFragment"
+        android:label="ListIngredientsFragment"
+        tools:layout="@layout/listingredients_fragment"
+        >
+        <action
+            android:id="@+id/action_list_ingredients_to_ingredients"
+            app:destination="@id/ingredient_nav" />
+    </fragment>
+
+    <include app:graph="@navigation/recipe_nav"/>
+    <include app:graph="@navigation/ingredient_nav" />
+    <include app:graph="@navigation/profile_nav" />
+
+
+</navigation>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/list_recipe"
+        android:id="@+id/list_recipe_nav"
         android:icon="@drawable/ic_cookie"
         android:title="@string/design_recipes" />
     <item
