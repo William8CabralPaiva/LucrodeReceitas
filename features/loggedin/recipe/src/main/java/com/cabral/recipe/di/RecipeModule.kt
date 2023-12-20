@@ -1,5 +1,6 @@
 package com.cabral.recipe.di
 
+import com.cabral.recipe.presentation.ListRecipeViewModel
 import com.cabral.recipe.presentation.RecipeAddEditIngredientFragmentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
@@ -13,5 +14,6 @@ object RecipeModule {
         viewModel {
             RecipeAddEditIngredientFragmentViewModel(get())
         }
+        viewModel { ListRecipeViewModel(get()) }
     }
 }
