@@ -5,16 +5,6 @@
     android:id="@+id/logged_nav"
     app:startDestination="@+id/list_recipe_nav">
 
-    <fragment
-        android:id="@+id/list_ingredients"
-        android:name="com.cabral.ingredient.presentation.ListIngredientsFragment"
-        android:label="ListIngredientsFragment"
-        tools:layout="@layout/ingredients_list_fragment"
-        >
-        <action
-            android:id="@+id/action_list_ingredients_to_ingredients"
-            app:destination="@id/ingredient_nav" />
-    </fragment>
 
     <include app:graph="@navigation/recipe_nav"/>
     <include app:graph="@navigation/ingredients_nav" />
