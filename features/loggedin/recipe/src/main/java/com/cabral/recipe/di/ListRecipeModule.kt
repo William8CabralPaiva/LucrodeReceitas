@@ -1,6 +1,6 @@
-package com.cabral.listrecipe.di
+package com.cabral.recipe.di
 
-import com.cabral.listrecipe.presentation.ListRecipeViewModel
+import com.cabral.recipe.presentation.ListRecipeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

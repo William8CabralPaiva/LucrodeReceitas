@@ -1,4 +1,4 @@
-package com.cabral.listrecipe.presentation
+package com.cabral.recipe.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cabral.core.ListRecipeNavigation
-import com.cabral.listrecipe.databinding.ListrecipeFragmentBinding
-import com.cabral.listrecipe.presentation.adapter.RecipeAdapter
+import com.cabral.recipe.adapter.RecipeAdapter
+import com.cabral.recipe.databinding.ListrecipeFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

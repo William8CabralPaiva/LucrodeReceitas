@@ -23,7 +23,6 @@ dependencies {
     implementation project(Modules.profile)
     implementation project(Modules.ingredients)
     implementation project(Modules.listIngredients)
-    implementation project(Modules.listRecipe)
     implementation project(Modules.loggedNavigation)
     implementation project(Modules.notLoggedNavigation)
     implementation project(Modules.recipe)

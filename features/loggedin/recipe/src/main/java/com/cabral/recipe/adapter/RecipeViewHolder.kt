@@ -1,4 +1,4 @@
-package com.cabral.listrecipe.presentation.adapter
+package com.cabral.recipe.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.core.common.domain.model.Recipe
-import com.cabral.listrecipe.databinding.ListrecipeItemRecipeBinding
+import com.cabral.recipe.databinding.ListrecipeItemRecipeBinding
 
 class RecipeViewHolder(
     private val binding: ListrecipeItemRecipeBinding,
