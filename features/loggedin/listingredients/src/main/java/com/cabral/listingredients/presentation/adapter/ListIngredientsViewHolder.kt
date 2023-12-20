@@ -9,7 +9,7 @@ import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.listingredients.databinding.ListingredientsItemIngredientBinding
 import com.cabral.design.R as DesignR
 
-class IngredientsViewHolder(
+class ListIngredientsViewHolder(
     private val binding: ListingredientsItemIngredientBinding,
     private val context: Context
 ) :
@@ -41,13 +41,13 @@ class IngredientsViewHolder(
             parent: ViewGroup,
             context: Context,
             index: Int
-        ): IngredientsViewHolder {
+        ): ListIngredientsViewHolder {
             val binding = ListingredientsItemIngredientBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-            return IngredientsViewHolder(binding, context)
+            return ListIngredientsViewHolder(binding, context)
 
         }
     }

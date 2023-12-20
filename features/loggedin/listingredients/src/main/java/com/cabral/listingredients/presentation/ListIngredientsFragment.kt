@@ -12,7 +12,7 @@ import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
 import com.cabral.listingredients.databinding.ListingredientsFragmentBinding
-import com.cabral.listingredients.presentation.adapter.Adapter
+import com.cabral.listingredients.presentation.adapter.ListIngredientAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.listingredients.R as ListIngredientR
@@ -22,7 +22,7 @@ class ListIngredientsFragment : Fragment() {
     private var _binding: ListingredientsFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: Adapter
+    private lateinit var adapter: ListIngredientAdapter
 
     private val navigationIngredient: ListIngredientNavigation by inject()
 
@@ -81,7 +81,7 @@ class ListIngredientsFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = Adapter(requireContext()).apply {
+        adapter = ListIngredientAdapter(requireContext()).apply {
             onClick = {
                 Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
             }

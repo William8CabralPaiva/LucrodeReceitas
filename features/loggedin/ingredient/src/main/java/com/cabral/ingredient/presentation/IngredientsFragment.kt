@@ -18,7 +18,7 @@ import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.allUnitMeasure
 import com.cabral.core.common.domain.model.listMeasure
 import com.cabral.ingredient.databinding.IngredientsFragmentBinding
-import com.cabral.ingredient.presentation.adapter.Adapter
+import com.cabral.ingredient.presentation.adapter.IngredientAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
@@ -31,7 +31,7 @@ class IngredientsFragment : Fragment() {
 
     private val viewModel: IngredientsViewModel by viewModel()
 
-    private lateinit var adapterIngredient: Adapter
+    private lateinit var adapterIngredient: IngredientAdapter
 
     private val navigationIngredient: ListIngredientNavigation by inject()
 
@@ -129,7 +129,7 @@ class IngredientsFragment : Fragment() {
     }
 
     private fun prepareAdapter() {
-        adapterIngredient = Adapter(requireContext()).apply {
+        adapterIngredient = IngredientAdapter(requireContext()).apply {
             onClickTrash = {
                 it.name?.let { name ->
                     if (!viewModel.getEditMode()) {

@@ -1,25 +1,25 @@
-package com.cabral.ingredient.presentation.adapter
+package com.cabral.listingredients.presentation.adapter
 
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.ingredient.presentation.adapter.IngredientViewHolder.Companion.typeViewHolder
+import com.cabral.listingredients.presentation.adapter.ListIngredientsViewHolder.Companion.typeViewHolder
 
-class Adapter(private val context: Context) :
-    ListAdapter<Ingredient, IngredientViewHolder>(DIFF_CALLBACK) {
+class ListIngredientAdapter(private val context: Context) :
+    ListAdapter<Ingredient, ListIngredientsViewHolder>(DIFF_CALLBACK) {
 
+    lateinit var onClick: (Ingredient) -> Unit
     lateinit var onClickTrash: (Ingredient) -> Unit
-    lateinit var onClickEdit: (Ingredient) -> Unit
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListIngredientsViewHolder {
         return typeViewHolder(parent, context, viewType)
     }
 
-    override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ListIngredientsViewHolder, position: Int) {
         val news = getItem(position)
-        holder.bind(news, onClickTrash, onClickEdit)
+        holder.bind(news, onClick, onClickTrash)
     }
 
     override fun getItemViewType(position: Int): Int {
