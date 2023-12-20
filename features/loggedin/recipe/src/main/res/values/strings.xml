@@ -1,8 +1,8 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="recipe_item_already_add">Este item ja foi adicionado</string>
-    <string name="listrecipe_add_recipe">Clique aqui para adicionar a receita</string>
-    <string name="listrecipe_suggestion">Sugestão:</string>
-    <string name="listrecipe_list_recipe">Lista de Receitas</string>
-    <string name="listrecipe_click_in_plus_to_add_recipe">Nenhuma receita encontrada.\n Clique no + para adicionar uma receita</string>
+    <string name="recipe_add_recipe">Clique aqui para adicionar a receita</string>
+    <string name="recipe_suggestion">Sugestão:</string>
+    <string name="recipe_list">Lista de Receitas</string>
+    <string name="recipe_click_in_plus_to_add_recipe">Nenhuma receita encontrada.\n Clique no + para adicionar uma receita</string>
 </resources>

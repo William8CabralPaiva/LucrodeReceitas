@@ -14,7 +14,7 @@
         android:drawablePadding="@dimen/arch_default_margin"
         android:fontFamily="@font/bangers"
         android:gravity="center"
-        android:text="@string/listrecipe_list_recipe"
+        android:text="@string/recipe_list"
         android:textColor="@color/design_orange"
         android:textSize="24sp"
         app:drawableStartCompat="@drawable/listrecipe_ic_recipe_list"
@@ -49,7 +49,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/arch_default_margin"
             android:fontFamily="@font/ubuntu_medium"
-            android:text="@string/listrecipe_click_in_plus_to_add_recipe"
+            android:text="@string/recipe_click_in_plus_to_add_recipe"
             android:textAlignment="textStart"
             android:textColor="@color/design_gray_light"
             android:textSize="20sp" />
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/listrecipe_item_recipe" />
+            tools:listitem="@layout/recipe_item_list" />
 
     </ViewFlipper>
 
@@ -71,7 +71,7 @@
         android:layout_marginBottom="@dimen/arch_default_margin"
         android:backgroundTint="@color/design_orange"
         android:clickable="true"
-        android:contentDescription="@string/listrecipe_add_recipe"
+        android:contentDescription="@string/recipe_add_recipe"
         android:focusable="true"
         android:src="@drawable/design_ic_add"
         app:layout_constraintBottom_toBottomOf="parent"

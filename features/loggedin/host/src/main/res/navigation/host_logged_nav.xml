@@ -25,7 +25,7 @@
         android:id="@+id/list_recipe"
         android:name="com.cabral.recipe.presentation.ListRecipeFragment"
         android:label="ListRecipeFragment"
-        tools:layout="@layout/listrecipe_fragment">
+        tools:layout="@layout/recipe_list_fragment">
 
         <action
             android:id="@+id/action_listRecipe_to_recipe"

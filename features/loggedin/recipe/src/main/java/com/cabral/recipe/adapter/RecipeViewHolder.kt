@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.core.common.domain.model.Recipe
-import com.cabral.recipe.databinding.ListrecipeItemRecipeBinding
+import com.cabral.recipe.databinding.RecipeItemListBinding
 
 class RecipeViewHolder(
-    private val binding: ListrecipeItemRecipeBinding,
+    private val binding: RecipeItemListBinding,
     private val context: Context
 ) :
     RecyclerView.ViewHolder(binding.root) {
@@ -36,7 +36,7 @@ class RecipeViewHolder(
             context: Context,
             index: Int
         ): RecipeViewHolder {
-            val binding = ListrecipeItemRecipeBinding.inflate(
+            val binding = RecipeItemListBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

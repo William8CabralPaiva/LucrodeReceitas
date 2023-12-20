@@ -8,13 +8,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.recipe.adapter.RecipeAdapter
-import com.cabral.recipe.databinding.ListrecipeFragmentBinding
+import com.cabral.recipe.databinding.RecipeListFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListRecipeFragment : Fragment() {
 
-    private var _binding: ListrecipeFragmentBinding? = null
+    private var _binding: RecipeListFragmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: RecipeAdapter
@@ -28,7 +28,7 @@ class ListRecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = ListrecipeFragmentBinding.inflate(inflater, container, false)
+        _binding = RecipeListFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

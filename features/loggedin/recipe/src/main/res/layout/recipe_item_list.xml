@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/ubuntu"
-                android:text="@string/listrecipe_suggestion"
+                android:text="@string/recipe_suggestion"
                 android:textColor="@color/design_orange"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
