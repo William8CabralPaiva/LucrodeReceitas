@@ -24,6 +24,11 @@
         <action
             android:id="@+id/recipe_to_add_edit_ingredient"
             app:destination="@id/loggedin_hostRecipeaddeditingredientfragment" />
+        <argument
+            android:name="currentRecipe"
+            app:argType="com.cabral.model.RecipeArgs" />
+
+
     </fragment>
 
     <fragment
