@@ -9,11 +9,13 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.fragment.navArgs
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
+import com.cabral.model.toRecipe
 import com.cabral.recipe.adapter.IngredientAdapter
 import com.cabral.recipe.databinding.RecipeAddEditIngredientFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -28,6 +30,8 @@ class RecipeAddEditIngredientFragment : Fragment() {
 
     private val viewModel: RecipeAddEditIngredientFragmentViewModel by viewModel()
 
+    private val args: RecipeAddEditIngredientFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +43,13 @@ class RecipeAddEditIngredientFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
+        initArgs()
+    }
+
+    private fun initArgs() {
+        args.currentRecipe?.let {
+            viewModel.recipe = it.toRecipe()
+        }
     }
 
     private fun initObservers() {
@@ -73,7 +84,7 @@ class RecipeAddEditIngredientFragment : Fragment() {
                 ingredientAdapterIngredient.notifyItemRemoved(it)
             }
 
-            notifySuccessEdit.observe(viewLifecycleOwner){
+            notifySuccessEdit.observe(viewLifecycleOwner) {
                 ingredientAdapterIngredient.notifyItemChanged(it)
             }
         }
@@ -187,7 +198,7 @@ class RecipeAddEditIngredientFragment : Fragment() {
             }
         }
         binding.recycleView.adapter = ingredientAdapterIngredient
-        ingredientAdapterIngredient.submitList(viewModel.addListIngredient)
+        ingredientAdapterIngredient.submitList(viewModel.recipe.ingredientList)
     }
 
     private fun Ingredient.editItem() {

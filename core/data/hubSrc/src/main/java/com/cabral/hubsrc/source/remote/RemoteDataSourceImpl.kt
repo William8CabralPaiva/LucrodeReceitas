@@ -12,15 +12,15 @@ import com.cabral.core.common.domain.model.UserRegister
 import com.cabral.core.common.domain.model.toIngredient
 import com.cabral.core.common.domain.model.toIngredientRegister
 import com.cabral.core.common.domain.model.toRecipe
+import com.cabral.core.common.domain.model.toRecipeRegister
 import com.cabral.core.common.domain.model.toUserRegister
+import com.cabral.hubsrc.source.DBConstants
 import com.cabral.remote.local.RemoteDataSource
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -39,15 +39,17 @@ class RemoteDataSourceImpl(
         user.name?.let { name ->
             user.email?.let { email ->
                 val userRegister = user.toUserRegister()
-                val result = db.collection("user").whereEqualTo("email", email).get().await()
+                val result =
+                    db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, email).get().await()
 
                 if (result.documents.isEmpty()) {
-                    val collection = db.collection("user")
+                    val collection = db.collection(DBConstants.USER)
                     val newDocument = collection.document()
                     val generatedId = newDocument.id
-                    db.collection("user").document(generatedId).set(userRegister)
+                    db.collection(DBConstants.USER).document(generatedId).set(userRegister)
 
-                    val addUser = db.collection("user").document(generatedId).get().await()
+                    val addUser =
+                        db.collection(DBConstants.USER).document(generatedId).get().await()
 
                     addUser.also {
                         if (!user.email.isNullOrEmpty()) {
@@ -80,14 +82,14 @@ class RemoteDataSourceImpl(
 
 //    override suspend fun addUser2(user: User) {
 //        withContext(dispatcher) {
-//            db.collection("user").whereEqualTo("email", user.email)
-//                .whereEqualTo("password", user.password).get()
+//            db.collection(DBConstants.user).whereEqualTo(DBConstants.EMAIL, user.email)
+//                .whereEqualTo(DBConstants.PASSWORD, user.password).get()
 //                .addOnFailureListener {
 //                    throw (UserThrowable.AddUserErrorThrowable())
 //                }
 //                .addOnSuccessListener {
 //                    if (it.size() == 0) {
-//                        db.collection("user").document().set(user)
+//                        db.collection(DBConstants.user).document().set(user)
 //                    } else {
 //                        throw (UserThrowable.AddUserThrowable())
 //                    }
@@ -102,8 +104,8 @@ class RemoteDataSourceImpl(
                 val signIn =
                     auth.signInWithEmailAndPassword(email, password).await()
                 if (signIn.user != null) {
-                    val result = db.collection("user").whereEqualTo("email", user.email)
-                        .whereEqualTo("password", user.password).get().await()
+                    val result = db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email)
+                        .whereEqualTo(DBConstants.PASSWORD, user.password).get().await()
 
                     if (result.documents.isNotEmpty()) {
                         for (document in result.documents) {
@@ -126,7 +128,7 @@ class RemoteDataSourceImpl(
 
     override fun autoLogin(key: String): Flow<User> = flow<User> {
         val user = User()
-        val result = db.collection("user").document(key).get().await()
+        val result = db.collection(DBConstants.USER).document(key).get().await()
         result.getByUserKey(user).also {
             if (!user.email.isNullOrEmpty()) {
                 user.key = key
@@ -151,7 +153,7 @@ class RemoteDataSourceImpl(
 //        val signIn =
 //            auth.signInWithEmailAndPassword(user.email, user.password).await()
 //        if (signIn.user != null) {
-//            val result = db.collection("user").document(key).get().await()
+//            val result = db.collection(DBConstants.user).document(key).get().await()
 //            result.getByUserKey(user).also {
 //                if (!user.email.isNullOrEmpty()) {
 //                    user.key = key
@@ -168,7 +170,7 @@ class RemoteDataSourceImpl(
 
     override fun googleLogin(email: String, name: String): Flow<User> = flow {
         val user = User()
-        val result = db.collection("user").whereEqualTo("email", email).get().await()
+        val result = db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, email).get().await()
 
         if (result.documents.isNotEmpty()) {
             for (document in result.documents) {
@@ -180,7 +182,7 @@ class RemoteDataSourceImpl(
             }
         } else {
             val userRegister = UserRegister(name = name, email = email)
-            val collection = db.collection("user")
+            val collection = db.collection(DBConstants.USER)
             val newDocument = collection.document()
             val generatedId = newDocument.id
 
@@ -203,9 +205,9 @@ class RemoteDataSourceImpl(
     ) {
         data?.forEach { map ->
             when (map.key) {
-                "name" -> user.name = map.value as String
-                "email" -> user.email = map.value as String
-                "password" -> user.password = map.value as String
+                DBConstants.NAME -> user.name = map.value as String
+                DBConstants.EMAIL -> user.email = map.value as String
+                DBConstants.PASSWORD -> user.password = map.value as String
             }
         }
     }
@@ -217,12 +219,12 @@ class RemoteDataSourceImpl(
 
         data?.forEach { map ->
             when (map.key) {
-                "id" -> ingredient.id = id
-                "name" -> ingredient.name = map.value as String?
-                "volume" -> ingredient.volume = map.value as Float?
-                "unit" -> ingredient.unit = map.value as String?
-                "price" -> ingredient.price = map.value as Float?
-                "keyDocument" -> ingredient.keyDocument = map.value as String?
+                DBConstants.ID -> ingredient.id = id
+                DBConstants.NAME -> ingredient.name = map.value as String?
+                DBConstants.VOLUME -> ingredient.volume = map.value as Float?
+                DBConstants.UNIT -> ingredient.unit = map.value as String?
+                DBConstants.PRICE -> ingredient.price = map.value as Float?
+                DBConstants.KEY_DOCUMENT -> ingredient.keyDocument = map.value as String?
             }
         }
         return ingredient
@@ -230,7 +232,8 @@ class RemoteDataSourceImpl(
 
     override fun getAllRecipe(): Flow<List<Recipe>> = flow {
         SingletonUser.getInstance().getKey()?.let { key ->
-            val query = db.collection("user").document(key).collection("recipes").get()
+            val query =
+                db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).get()
             query.await()
             val list = mutableListOf<Recipe>()
 
@@ -239,6 +242,7 @@ class RemoteDataSourceImpl(
                 for (document in query.result.documents) {
                     val auxRecipe = document.toObject(RecipeRegister::class.java)
 
+                    //todo tirar nulo toRecipe
                     val recipe = auxRecipe?.toRecipe(id)
                     recipe?.let {
                         list.add(it)
@@ -253,9 +257,35 @@ class RemoteDataSourceImpl(
 
     }.flowOn(dispatcher)
 
+    override fun addRecipe(recipe: Recipe): Flow<Unit> = flow {
+
+        SingletonUser.getInstance().getKey()?.let { key ->
+            val newDocument =
+                db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+                    .document()
+
+            val recipeRegister = recipe.toRecipeRegister(newDocument.id)
+
+            db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+                .document(newDocument.id)
+                .set(recipeRegister)
+
+            val getAddRecipe = newDocument.get()
+            if (getAddRecipe.isSuccessful) {
+                emit(Unit)
+            } else {
+                throw GenericThrowable.FailThrowable()
+            }
+
+        }
+
+    }.flowOn(dispatcher)
+
     override fun getAllIngredients(): Flow<List<Ingredient>> = flow<List<Ingredient>> {
         SingletonUser.getInstance().getKey()?.let { key ->
-            val query = db.collection("user").document(key).collection("ingredients").get()
+            val query =
+                db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
+                    .get()
             query.await()
             val list = mutableListOf<Ingredient>()
 
@@ -287,7 +317,8 @@ class RemoteDataSourceImpl(
 
             listIngredient.forEach {
                 val newDocument =
-                    db.collection("user").document(key).collection("ingredients").document()
+                    db.collection(DBConstants.USER).document(key)
+                        .collection(DBConstants.INGREDIENTS).document()
                 val generatedId = newDocument.id
                 it.keyDocument = generatedId
                 documentReferences.add(newDocument)
@@ -303,7 +334,8 @@ class RemoteDataSourceImpl(
     override fun deleteIngredient(ingredient: Ingredient): Flow<Unit> = flow {
         SingletonUser.getInstance().getKey()?.let { key ->
             ingredient.keyDocument?.let { keyDocument ->
-                val document = db.collection("user").document(key).collection("ingredients")
+                val document = db.collection(DBConstants.USER).document(key)
+                    .collection(DBConstants.INGREDIENTS)
                     .document(keyDocument)
 
                 document.delete().await()

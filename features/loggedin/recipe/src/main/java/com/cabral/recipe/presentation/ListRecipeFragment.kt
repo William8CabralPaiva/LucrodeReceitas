@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cabral.core.ListRecipeNavigation
+import com.cabral.model.RecipeArgs
 import com.cabral.recipe.adapter.RecipeAdapter
 import com.cabral.recipe.databinding.RecipeListFragmentBinding
 import org.koin.android.ext.android.inject
@@ -81,7 +82,7 @@ class ListRecipeFragment : Fragment() {
 
     private fun initClicks() {
         binding.addRecipe.setOnClickListener {
-            navigationRecipe.openRecipe(this)
+            navigationRecipe.openRecipe(this,null)
         }
     }
 

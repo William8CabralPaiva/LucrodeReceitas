@@ -12,3 +12,7 @@ fun IngredientRegister.toIngredient(id: Int): Ingredient {
     val enum = getUnitMeasureByType(unit)
     return Ingredient(id, name, volume, enum.unit, price, keyDocument)
 }
+
+fun IngredientRegister.toIngredientRecipeRegister(): IngredientRecipeRegister {
+    return IngredientRecipeRegister(keyDocument, volume)
+}

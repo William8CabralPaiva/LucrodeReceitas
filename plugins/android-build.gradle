@@ -1,4 +1,5 @@
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'kotlin-parcelize'
 
 apply from: "$rootDir/plugins/config-build.gradle"
 

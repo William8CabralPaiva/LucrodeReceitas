@@ -1,5 +1,6 @@
 package com.cabral.core.common.domain.model
 
+
 data class Ingredient(
     var id: Int,
     var name: String? = null,
@@ -12,4 +13,8 @@ data class Ingredient(
 fun Ingredient.toIngredientRegister(): IngredientRegister {
     val enum = getUnitMeasureByUnit(unit)
     return IngredientRegister(name, volume, enum.type, price, keyDocument)
+}
+
+fun Ingredient.toIngredientRecipeRegister(): IngredientRecipeRegister {
+    return IngredientRecipeRegister(keyDocument,volume)
 }

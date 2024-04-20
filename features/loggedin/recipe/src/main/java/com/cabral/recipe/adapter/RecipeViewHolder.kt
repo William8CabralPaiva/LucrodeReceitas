@@ -23,7 +23,7 @@ class RecipeViewHolder(
             recipeName.text = recipe.name
             recipePrice.text = String.format(
                 context.getString(com.cabral.design.R.string.design_value_format),
-                recipe.price.removeEndZero()
+                "valor qualquer"//recipe.price.removeEndZero()//todo alterar valor
             )
             container.setOnClickListener { onClick(recipe) }
             trash.setOnClickListener { onClickTrash(recipe) }

@@ -27,9 +27,7 @@
         <argument
             android:name="currentRecipe"
             app:argType="com.cabral.model.RecipeArgs"
-            app:nullable="true"
-            />
-
+            app:nullable="true" />
 
     </fragment>
 
@@ -37,6 +35,13 @@
         android:id="@+id/loggedin_hostRecipeaddeditingredientfragment"
         android:name="com.cabral.recipe.presentation.RecipeAddEditIngredientFragment"
         android:label="RecipeAddEditIngredientFragment"
-        tools:layout="@layout/recipe_add_edit_ingredient_fragment"
-        />
+        tools:layout="@layout/recipe_add_edit_ingredient_fragment" >
+
+        <argument
+            android:name="currentRecipe"
+            app:argType="com.cabral.model.RecipeArgs"
+            app:nullable="true" />
+    </fragment>
+
+
 </navigation>

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.core.common.domain.model.Ingredient
+import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.UnitMeasureType
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import com.cabral.recipe.R
@@ -51,7 +52,7 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     var listIngredient = mutableListOf<Ingredient?>()
 
-    var addListIngredient = mutableListOf<Ingredient?>()
+    lateinit var recipe: Recipe
 
     private var editMode = false
 
@@ -59,7 +60,9 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     fun setEditMode(_editMode: Boolean, ingredient: Ingredient?) {
         ingredient?.keyDocument?.let {
-            editPosition = addListIngredient.getPosition(it)
+            recipe.ingredientList?.let { ingredientList ->
+                editPosition = ingredientList.getPosition(it)
+            }
         } ?: run {
             null
         }
@@ -112,34 +115,40 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     fun addIngredientInList(name: String?, volume: Float?) {
         if (editMode && name != null && volume != null) {
-            editPosition?.let {
-                addListIngredient[it]?.run {
-                    this.name = name
-                    this.volume = volume
+            recipe.ingredientList?.let { ingredientList ->
+                editPosition?.let {
+                    ingredientList[it].run {
+                        this.name = name
+                        this.volume = volume
+                    }
+                    editMode = false
+                    _notifyEditMode.postValue(false)
+                    _notifySuccessEdit.postValue(ingredientList[it].id)
                 }
-                editMode = false
-                _notifyEditMode.postValue(false)
-                _notifySuccessEdit.postValue(addListIngredient[it]?.id)
             }
         } else {
-            val selectedIngredient =
-                getSelectedIngredient(name)
-            if (selectedIngredient != null &&
-                !addListIngredient.contains(selectedIngredient)
-            ) {
-                addListIngredient.add(selectedIngredient)
-                _notifyAddIngredient.postValue(selectedIngredient)
-            } else {
-                _notifyShowToast.postValue(RecipeR.string.recipe_item_already_add)
+            recipe.ingredientList?.let { ingredientList ->
+                val selectedIngredient =
+                    getSelectedIngredient(name)
+                if (selectedIngredient != null &&
+                    !ingredientList.contains(selectedIngredient)
+                ) {
+                    ingredientList.add(selectedIngredient)
+                    _notifyAddIngredient.postValue(selectedIngredient)
+                } else {
+                    _notifyShowToast.postValue(RecipeR.string.recipe_item_already_add)
+                }
             }
         }
     }
 
     fun deleteItemAdd(ingredient: Ingredient?) {
-        ingredient?.keyDocument?.let {
-            val position = addListIngredient.getPosition(it)
-            addListIngredient.remove(addListIngredient[position])
-            _notifyRemoveIngredient.postValue(ingredient.id)
+        recipe.ingredientList?.let { ingredientList ->
+            ingredient?.keyDocument?.let {
+                val position = ingredientList.getPosition(it)
+                ingredientList.remove(ingredientList[position])
+                _notifyRemoveIngredient.postValue(ingredient.id)
+            }
         }
     }
 
@@ -153,7 +162,7 @@ class RecipeAddEditIngredientFragmentViewModel(
         }
     }
 
-    private fun MutableList<Ingredient?>.getPosition(keyDocument: String): Int {
-        return indexOfFirst { it?.keyDocument == keyDocument }
+    private fun MutableList<Ingredient>.getPosition(keyDocument: String): Int {
+        return indexOfFirst { it.keyDocument == keyDocument }
     }
 }

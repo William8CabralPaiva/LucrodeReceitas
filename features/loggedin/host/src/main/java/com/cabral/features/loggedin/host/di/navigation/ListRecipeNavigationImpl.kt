@@ -8,8 +8,7 @@ import com.cabral.recipe.presentation.ListRecipeFragmentDirections
 import com.cabral.recipe.presentation.RecipeFragmentDirections
 
 internal class ListRecipeNavigationImpl : ListRecipeNavigation {
-    override fun openRecipe(fragment: Fragment, recipeArgs: RecipeArgs) {
-
+    override fun openRecipe(fragment: Fragment, recipeArgs: RecipeArgs?) {
         val directions = ListRecipeFragmentDirections.actionListRecipeToRecipe(recipeArgs)
         fragment.findNavController().navigate(directions)
     }
@@ -18,8 +17,8 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
         //todo
     }
 
-    override fun openAddEditIngredient(fragment: Fragment) {
-        val directions = RecipeFragmentDirections.recipeToAddEditIngredient()
+    override fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?) {
+        val directions = RecipeFragmentDirections.recipeToAddEditIngredient(recipeArgs)
         fragment.findNavController().navigate(directions)
     }
 }
