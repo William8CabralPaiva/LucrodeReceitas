@@ -42,6 +42,7 @@ class IngredientsFragment : Fragment() {
         _binding = IngredientsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -93,7 +94,7 @@ class IngredientsFragment : Fragment() {
                 binding.abAdd.setText(buttonText)
             }
 
-            notifySuccess.observe(viewLifecycleOwner){
+            notifySuccess.observe(viewLifecycleOwner) {
                 navigationIngredient.backStackActionHasItemAdd(this@IngredientsFragment)
             }
 
@@ -122,7 +123,11 @@ class IngredientsFragment : Fragment() {
             }
 
             abSave.abSetOnClickListener {
-                viewModel.save()
+                if (viewModel.listIngredient.isNotEmpty()) {
+                    viewModel.save()
+                } else {
+                    Toast.makeText(requireContext(), "Lista vazia", Toast.LENGTH_LONG).show()
+                }
             }
 
         }
@@ -162,7 +167,7 @@ class IngredientsFragment : Fragment() {
         adapterIngredient.submitList(viewModel.listIngredient)
     }
 
-    private fun disableAllInput(){
+    private fun disableAllInput() {
         binding.run {
             //biIngredient.
         }

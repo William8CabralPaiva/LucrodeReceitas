@@ -37,6 +37,7 @@ class BorderInputView @JvmOverloads constructor(
     private fun bindingLayout(attrs: AttributeSet?) {
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArchBorderInputView)
+            setupIds()
 
             val hint = typedArray.getText(R.styleable.ArchBorderInputView_arch_ei_label) ?: ""
             setLabelText(hint.toString())
@@ -59,6 +60,18 @@ class BorderInputView @JvmOverloads constructor(
             typedArray.recycle()
         }
 
+    }
+
+    private fun setupIds() {
+        with(binding) {
+            resources.getResourceName(id).run {
+                substring(lastIndexOf("/") + 1).hashCode()
+            }.let { id ->
+                biTextInput.id = id
+            }.also {
+                biTextInput.id= id
+            }
+        }
     }
 
     private fun setInputType(BIInputType: BIInputType) {
