@@ -30,6 +30,8 @@ class BorderInputView @JvmOverloads constructor(
 
     private var drawable: Drawable? = null
 
+    var labelInput = ""
+
     init {
         bindingLayout(attrs)
     }
@@ -69,7 +71,7 @@ class BorderInputView @JvmOverloads constructor(
             }.let { id ->
                 biTextInput.id = id
             }.also {
-                biTextInput.id= id
+                biTextInput.id = id
             }
         }
     }
@@ -128,8 +130,9 @@ class BorderInputView @JvmOverloads constructor(
 
     private fun setLabelText(text: String) {
         binding.run {
-            biHint.hint = text
-            biTextInput.hint = text
+            labelInput = text
+            biHint.hint = labelInput
+            biTextInput.hint = labelInput
         }
     }
 
@@ -257,10 +260,10 @@ class BorderInputView @JvmOverloads constructor(
         }
     }
 
-    fun setError(errorText: String?) {
+    fun setError(errorText: String? = null) {
         binding.biHint.run {
             isErrorEnabled = true
-            error = errorText
+            error = errorText ?: "Preencha o campo $labelInput corretamente"
         }
     }
 

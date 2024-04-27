@@ -10,6 +10,7 @@ import com.cabral.arch.EmailUtils
 import com.cabral.arch.PasswordUtils
 import com.cabral.arch.extensions.UserThrowable
 import com.cabral.arch.saveUserKey
+import com.cabral.arch.widget.CustomToast
 import com.cabral.core.LoggedNavigation
 import com.cabral.core.NotLoggedNavigation
 import com.cabral.features.R
@@ -67,11 +68,7 @@ class LoginFragment : Fragment() {
             }
 
             notifyError.observe(viewLifecycleOwner) {
-                Toast.makeText(
-                    context,
-                    it,
-                    Toast.LENGTH_LONG
-                ).show()
+                showToast(it)
             }
 
             notifyForgotPassword.observe(viewLifecycleOwner) {
@@ -87,6 +84,12 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, it, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        CustomToast.Builder(requireContext())
+            .message(message)
+            .build().show()
     }
 
     private fun initListeners() {

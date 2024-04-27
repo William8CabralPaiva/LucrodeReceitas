@@ -5,4 +5,5 @@
     <string name="recipe_suggestion">Sugestão:</string>
     <string name="recipe_list">Lista de Receitas</string>
     <string name="recipe_click_in_plus_to_add_recipe">Nenhuma receita encontrada.\n Clique no + para adicionar uma receita</string>
+    <string name="recipe_save_before_add">Salve a receita antes de Adicionar um Ingrediente</string>
 </resources>

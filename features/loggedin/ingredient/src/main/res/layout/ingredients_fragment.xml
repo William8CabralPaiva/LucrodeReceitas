@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:drawablePadding="@dimen/arch_default_margin"
-                android:fontFamily="@font/bangers"
+                android:fontFamily="@font/design_bangers"
                 android:gravity="center"
                 android:text="@string/design_ingredients"
                 android:textColor="@color/design_orange"

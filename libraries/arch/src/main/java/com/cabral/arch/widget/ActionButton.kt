@@ -26,8 +26,6 @@ class ActionButton @JvmOverloads constructor(
     var isLoading = false
     var defaultColor: Int = 0
 
-    private val buttonShape by lazy { GradientDrawable() }
-
     @ColorInt
     private var buttonColor: Int = -1
 
@@ -59,6 +57,14 @@ class ActionButton @JvmOverloads constructor(
         }
     }
 
+     fun setAlpha(alpha:Boolean){
+        binding.container.alpha = if(!alpha){
+            1f
+        }else{
+            0.5f
+        }
+    }
+
     private fun getShape(buttonType: ButtonType): Drawable? {
         val drawable = when (buttonType) {
             ButtonType.SHAPE -> {
@@ -77,7 +83,6 @@ class ActionButton @JvmOverloads constructor(
             ButtonType.SHAPE -> {
                 getColor(com.cabral.design.R.color.design_white)
             }
-
             ButtonType.BORDER -> {
                 getColor(com.cabral.design.R.color.design_orange)
             }

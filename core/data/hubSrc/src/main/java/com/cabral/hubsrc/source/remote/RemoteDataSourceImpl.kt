@@ -271,6 +271,7 @@ class RemoteDataSourceImpl(
                 .set(recipeRegister)
 
             val getAddRecipe = newDocument.get()
+            getAddRecipe.await()
             if (getAddRecipe.isSuccessful) {
                 emit(Unit)
             } else {

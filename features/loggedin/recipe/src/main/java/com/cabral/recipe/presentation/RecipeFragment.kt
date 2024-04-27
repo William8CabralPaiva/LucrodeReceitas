@@ -4,16 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.cabral.arch.extensions.RecipeThrowable
-import com.cabral.core.ListIngredientNavigation
+import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
+import com.cabral.recipe.R
 import com.cabral.recipe.databinding.RecipeFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,8 +38,20 @@ class RecipeFragment() : Fragment() {
         return binding.root
     }
 
+    private fun initObservers() {
+        viewModel.run {
+            notifySuccess.observe(viewLifecycleOwner) {
+                binding.abAdd.setAlpha(false)
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.abAdd.setAlpha(true)
+        initObservers()
+
 
         if (args.currentRecipe != null) {
             args.currentRecipe?.let {
@@ -48,26 +60,53 @@ class RecipeFragment() : Fragment() {
         }
 
         binding.abSave.abSetOnClickListener {
-            if (viewModel.recipe.ingredientList == null) {
-                viewModel.recipe.ingredientList = mutableListOf()
-            }
-            navigation.openAddEditIngredient(this, viewModel.recipe.toRecipeArgs())
-        }
 
-        binding.abAdd.abSetOnClickListener {
-            if (args.currentRecipe != null || viewModel.recipeAlreadyCreate) {
-
-            } else {
-                binding.run {
-                    viewModel.addRecipe(
-                        biIngredient.getText(),
-                        biUnit.getText().convertToFloat(),
-                        biExpectedProfit.getText().convertToFloat()
-                    )
+            viewModel.run {
+                if (validateFields()) {
+                    saveRecipe()
                 }
             }
         }
 
+        binding.abAdd.abSetOnClickListener {
+            if (viewModel.recipeAlreadyCreate) {
+                if (viewModel.recipe.ingredientList == null) {
+                    viewModel.recipe.ingredientList = mutableListOf()
+                }
+                navigation.openAddEditIngredient(this, viewModel.recipe.toRecipeArgs())
+
+            } else {
+                showToast(R.string.recipe_save_before_add)
+            }
+
+        }
+
+    }
+
+    private fun showToast(@StringRes text: Int) {
+        CustomToast.Builder(requireContext())
+            .message(getString(text))
+            .build().show()
+    }
+
+    private fun validateFields(): Boolean {
+        binding.apply {
+            if (biIngredient.getText().isEmpty()) {
+                biIngredient.setError()
+                return false
+            }
+            return true
+        }
+    }
+
+    private fun saveRecipe() {
+        binding.run {
+            viewModel.addRecipe(
+                biIngredient.getText(),
+                biUnit.getText().convertToFloat(),
+                biExpectedProfit.getText().convertToFloat()
+            )
+        }
     }
 
     private fun String.convertToFloat(): Float? {

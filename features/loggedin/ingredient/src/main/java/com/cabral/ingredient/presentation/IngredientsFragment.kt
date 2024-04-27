@@ -46,9 +46,9 @@ class IngredientsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initAdapter()
-        initObservers()
-        initListeners()
+//        initAdapter()
+//        initObservers()
+//        initListeners()
     }
 
     private fun initObservers() {

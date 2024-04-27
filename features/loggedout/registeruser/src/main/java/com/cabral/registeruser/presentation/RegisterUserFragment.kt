@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.cabral.arch.extensions.UserThrowable
+import com.cabral.arch.widget.CustomToast
 import com.cabral.registeruser.R
 import com.cabral.registeruser.databinding.RegisterUserFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -91,9 +92,10 @@ class RegisterUserFragment : Fragment() {
     }
 
     private fun showToast(@StringRes string: Int) {
-        Toast.makeText(context, getString(string), Toast.LENGTH_LONG).show()
+        CustomToast.Builder(requireContext())
+            .message(getString(string))
+            .build().show()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

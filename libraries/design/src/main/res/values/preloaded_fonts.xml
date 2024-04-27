@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="design_preloaded_fonts" translatable="false">
-        <item>@font/bangers</item>
-        <item>@font/ubuntu</item>
-        <item>@font/ubuntu_bold</item>
-        <item>@font/ubuntu_medium</item>
+        <item>@font/design_bangers</item>
+        <item>@font/design_ubuntu</item>
+        <item>@font/design_ubuntu_bold</item>
+        <item>@font/design_ubuntu_medium</item>
+        <item>@font/design_roboto_light</item>
     </array>
 </resources>

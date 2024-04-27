@@ -45,7 +45,6 @@ class RecipeViewModel(
                     _notifyError.postValue(it.message)
                 }.onEach {
                     recipeAlreadyCreate = true
-                    this.recipe = recipe
                     _notifySuccess.postValue(Unit)
                 }
                 .launchIn(viewModelScope)
