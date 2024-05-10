@@ -9,6 +9,5 @@ data class RecipeRegister(
 )
 
 fun RecipeRegister.toRecipe(id: Int): Recipe {
-    //todo ingredientList tirar nulo
-    return Recipe(id, name, volumeUnit, expectedProfit, null, keyDocument)
+    return Recipe(id, name, volumeUnit, expectedProfit, ingredientList?.toMutableList(), keyDocument)
 }

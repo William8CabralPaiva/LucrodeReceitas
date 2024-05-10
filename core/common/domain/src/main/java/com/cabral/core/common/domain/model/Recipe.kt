@@ -5,16 +5,11 @@ data class Recipe(
     var name: String? = null,
     var volumeUnit: Float? = null,
     var expectedProfit: Float? = null,
-    var ingredientList: MutableList<Ingredient>? = null,
+    var ingredientList : MutableList<IngredientRecipeRegister>? = null,
     var keyDocument: String? = null
 )
 
 fun Recipe.toRecipeRegister(key: String?): RecipeRegister {
-    val list = mutableListOf<IngredientRecipeRegister>()
-
-    ingredientList?.forEach {
-        list.add(it.toIngredientRecipeRegister())
-    }
 
     val keyId = if (keyDocument == null) {
         key
@@ -22,5 +17,5 @@ fun Recipe.toRecipeRegister(key: String?): RecipeRegister {
         keyDocument
     }
 
-    return RecipeRegister(name, volumeUnit, expectedProfit, list, keyId)
+    return RecipeRegister(name, volumeUnit, expectedProfit, ingredientList, keyId)
 }

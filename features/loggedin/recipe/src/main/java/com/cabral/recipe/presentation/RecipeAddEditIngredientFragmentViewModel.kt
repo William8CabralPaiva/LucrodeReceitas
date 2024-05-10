@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cabral.arch.extensions.removeEndZero
 import com.cabral.core.common.domain.model.Ingredient
+import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.UnitMeasureType
+import com.cabral.core.common.domain.model.toIngredientRecipeRegisterList
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
-import com.cabral.recipe.R
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -50,7 +50,9 @@ class RecipeAddEditIngredientFragmentViewModel(
     private val _notifyEditMode = MutableLiveData<Boolean>()
     val notifyEditMode: LiveData<Boolean> = _notifyEditMode
 
-    var listIngredient = mutableListOf<Ingredient?>()
+    var listAllIngredients = mutableListOf<Ingredient?>()
+
+    var listAddIngredients = mutableListOf<Ingredient?>()
 
     lateinit var recipe: Recipe
 
@@ -78,6 +80,28 @@ class RecipeAddEditIngredientFragmentViewModel(
         getAllIngredients()
     }
 
+    fun prepareLists() {
+        listAddIngredients = mutableListOf()
+        recipe.ingredientList?.forEach { ingredient ->
+            listAllIngredients.forEach { itemRecipe ->
+                itemRecipe?.let {
+                    if (ingredient.keyDocument == itemRecipe.keyDocument) {
+                        val item = Ingredient(
+                            itemRecipe.id,
+                            itemRecipe.name,
+                            itemRecipe.volume,
+                            itemRecipe.unit,
+                            itemRecipe.price,
+                            ingredient.keyDocument,
+                            ingredient.volumeUsed
+                        )
+                        listAddIngredients.add(item)
+                    }
+                }
+            }
+        }
+    }
+
     fun getAllIngredients() {
         listIngredientUseCase()
             .onStart { _notifyStartLoading.postValue(Unit) }
@@ -85,8 +109,10 @@ class RecipeAddEditIngredientFragmentViewModel(
                 _notifyEmptyList.postValue(Unit)
             }.onEach {
                 if (it.isNotEmpty()) {
-                    listIngredient = it.convertToGOrMl()
-                    _notifyListIngredient.postValue(listIngredient)
+                    listAllIngredients = it.convertToGOrMl()
+                    prepareLists().also {
+                        _notifyListIngredient.postValue(listAllIngredients)
+                    }
                 } else {
                     _notifyEmptyList.postValue(Unit)
                 }
@@ -115,25 +141,26 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     fun addIngredientInList(name: String?, volume: Float?) {
         if (editMode && name != null && volume != null) {
-            recipe.ingredientList?.let { ingredientList ->
+            listAllIngredients.let { ingredientList ->
                 editPosition?.let {
                     ingredientList[it].run {
-                        this.name = name
-                        this.volume = volume
+                        this?.name = name
+                        this?.volume = volume
                     }
                     editMode = false
                     _notifyEditMode.postValue(false)
-                    _notifySuccessEdit.postValue(ingredientList[it].id)
+                    _notifySuccessEdit.postValue(ingredientList[it]?.id)
                 }
             }
         } else {
-            recipe.ingredientList?.let { ingredientList ->
+            listAddIngredients.let { ingredientList ->
                 val selectedIngredient =
                     getSelectedIngredient(name)
                 if (selectedIngredient != null &&
                     !ingredientList.contains(selectedIngredient)
                 ) {
                     ingredientList.add(selectedIngredient)
+                    recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
                     _notifyAddIngredient.postValue(selectedIngredient)
                 } else {
                     _notifyShowToast.postValue(RecipeR.string.recipe_item_already_add)
@@ -154,7 +181,7 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     private fun getSelectedIngredient(name: String?): Ingredient? {
         return try {
-            listIngredient.first { ingredient ->
+            listAllIngredients.first { ingredient ->
                 ingredient?.name == name
             }
         } catch (_: Exception) {
@@ -162,7 +189,7 @@ class RecipeAddEditIngredientFragmentViewModel(
         }
     }
 
-    private fun MutableList<Ingredient>.getPosition(keyDocument: String): Int {
+    private fun MutableList<IngredientRecipeRegister>.getPosition(keyDocument: String): Int {
         return indexOfFirst { it.keyDocument == keyDocument }
     }
 }

@@ -1,6 +1,8 @@
 package com.cabral.recipe.presentation
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +15,14 @@ import androidx.navigation.fragment.navArgs
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
+import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
 import com.cabral.model.toRecipe
+import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.adapter.IngredientAdapter
 import com.cabral.recipe.databinding.RecipeAddEditIngredientFragmentBinding
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 
@@ -31,6 +36,8 @@ class RecipeAddEditIngredientFragment : Fragment() {
     private val viewModel: RecipeAddEditIngredientFragmentViewModel by viewModel()
 
     private val args: RecipeAddEditIngredientFragmentArgs by navArgs()
+
+    private val navigation: ListRecipeNavigation by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +71,14 @@ class RecipeAddEditIngredientFragment : Fragment() {
                 it?.id?.let { ingredient ->
                     ingredientAdapterIngredient.notifyItemInserted(ingredient)
                     clearFields()
+                    Handler(Looper.getMainLooper()).postDelayed({
+
+                        navigation.backToRecipeFragment(
+                            this@RecipeAddEditIngredientFragment,
+                            viewModel.recipe.toRecipeArgs()
+                        )
+
+                    }, 1000)
                 }
             }
 
@@ -110,11 +125,12 @@ class RecipeAddEditIngredientFragment : Fragment() {
     }
 
     private fun initListeners() {
-        val list = viewModel.listIngredient.getIngredientName()
+
+        val list = viewModel.listAllIngredients.getIngredientName()
         binding.biIngredient.getSpinner().addTextChangedListener { ed ->
             if (list.contains(ed.toString())) {
                 val ingredient =
-                    viewModel.listIngredient.first { ingredient -> ingredient?.name == ed.toString() }
+                    viewModel.listAllIngredients.first { ingredient -> ingredient?.name == ed.toString() }
                 binding.txtUnit.run {
                     text = ingredient?.unit
                     visibility = View.VISIBLE
@@ -198,7 +214,7 @@ class RecipeAddEditIngredientFragment : Fragment() {
             }
         }
         binding.recycleView.adapter = ingredientAdapterIngredient
-        ingredientAdapterIngredient.submitList(viewModel.recipe.ingredientList)
+        ingredientAdapterIngredient.submitList(viewModel.listAddIngredients)
     }
 
     private fun Ingredient.editItem() {

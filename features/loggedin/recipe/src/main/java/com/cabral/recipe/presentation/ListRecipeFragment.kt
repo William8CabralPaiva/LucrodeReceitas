@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.model.RecipeArgs
+import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.adapter.RecipeAdapter
 import com.cabral.recipe.databinding.RecipeListFragmentBinding
 import org.koin.android.ext.android.inject
@@ -42,15 +43,15 @@ class ListRecipeFragment : Fragment() {
     private fun initObservers() {
         viewModel.run {
 
-            notifyStartLoading.observe(viewLifecycleOwner){
+            notifyStartLoading.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 0
             }
 
-            notifyEmptyList.observe(viewLifecycleOwner){
+            notifyEmptyList.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 1
             }
 
-            notifyListRecipe.observe(viewLifecycleOwner){
+            notifyListRecipe.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 2
                 initAdapter()
             }
@@ -61,7 +62,7 @@ class ListRecipeFragment : Fragment() {
     private fun initAdapter() {
         adapter = RecipeAdapter(requireContext()).apply {
             onClick = {
-                Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
+                navigationRecipe.openRecipe(this@ListRecipeFragment, it.toRecipeArgs())
             }
             onClickTrash = {
 //                it.name?.let { it1 ->
@@ -82,7 +83,7 @@ class ListRecipeFragment : Fragment() {
 
     private fun initClicks() {
         binding.addRecipe.setOnClickListener {
-            navigationRecipe.openRecipe(this,null)
+            navigationRecipe.openRecipe(this, null)
         }
     }
 

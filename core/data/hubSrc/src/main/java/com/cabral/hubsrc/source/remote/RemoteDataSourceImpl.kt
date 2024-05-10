@@ -4,6 +4,7 @@ import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.arch.extensions.UserThrowable
 import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Ingredient
+import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.IngredientRegister
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.RecipeRegister
@@ -40,7 +41,8 @@ class RemoteDataSourceImpl(
             user.email?.let { email ->
                 val userRegister = user.toUserRegister()
                 val result =
-                    db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, email).get().await()
+                    db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, email).get()
+                        .await()
 
                 if (result.documents.isEmpty()) {
                     val collection = db.collection(DBConstants.USER)
@@ -104,8 +106,9 @@ class RemoteDataSourceImpl(
                 val signIn =
                     auth.signInWithEmailAndPassword(email, password).await()
                 if (signIn.user != null) {
-                    val result = db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email)
-                        .whereEqualTo(DBConstants.PASSWORD, user.password).get().await()
+                    val result =
+                        db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email)
+                            .whereEqualTo(DBConstants.PASSWORD, user.password).get().await()
 
                     if (result.documents.isNotEmpty()) {
                         for (document in result.documents) {
@@ -170,7 +173,8 @@ class RemoteDataSourceImpl(
 
     override fun googleLogin(email: String, name: String): Flow<User> = flow {
         val user = User()
-        val result = db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, email).get().await()
+        val result =
+            db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, email).get().await()
 
         if (result.documents.isNotEmpty()) {
             for (document in result.documents) {
@@ -242,8 +246,8 @@ class RemoteDataSourceImpl(
                 for (document in query.result.documents) {
                     val auxRecipe = document.toObject(RecipeRegister::class.java)
 
-                    //todo tirar nulo toRecipe
                     val recipe = auxRecipe?.toRecipe(id)
+
                     recipe?.let {
                         list.add(it)
                         id += 1
@@ -257,25 +261,33 @@ class RemoteDataSourceImpl(
 
     }.flowOn(dispatcher)
 
-    override fun addRecipe(recipe: Recipe): Flow<Unit> = flow {
+    override fun addRecipe(recipe: Recipe): Flow<String?> = flow {
 
         SingletonUser.getInstance().getKey()?.let { key ->
             val newDocument =
                 db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
                     .document()
 
-            val recipeRegister = recipe.toRecipeRegister(newDocument.id)
-
-            db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
-                .document(newDocument.id)
-                .set(recipeRegister)
-
-            val getAddRecipe = newDocument.get()
-            getAddRecipe.await()
-            if (getAddRecipe.isSuccessful) {
-                emit(Unit)
+            val id = if (recipe.keyDocument != null) {
+                recipe.keyDocument
             } else {
-                throw GenericThrowable.FailThrowable()
+                newDocument.id
+            }
+
+            id?.let {
+                val recipeRegister = recipe.toRecipeRegister(id)
+
+                db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+                    .document(id)
+                    .set(recipeRegister)
+
+                val getAddRecipe = newDocument.get()
+                getAddRecipe.await()
+                if (getAddRecipe.isSuccessful) {
+                    emit(id)
+                } else {
+                    throw GenericThrowable.FailThrowable()
+                }
             }
 
         }

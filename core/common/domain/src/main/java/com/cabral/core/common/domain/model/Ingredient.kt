@@ -7,7 +7,9 @@ data class Ingredient(
     var volume: Float? = null,
     var unit: String? = null,
     var price: Float? = null,
-    var keyDocument: String? = null
+    var keyDocument: String? = null,
+    @Transient
+    var volumeUsed: Float? = null// todo testar ver se esta salvando essa info se tiver remover
 )
 
 fun Ingredient.toIngredientRegister(): IngredientRegister {
@@ -15,6 +17,16 @@ fun Ingredient.toIngredientRegister(): IngredientRegister {
     return IngredientRegister(name, volume, enum.type, price, keyDocument)
 }
 
+fun MutableList<Ingredient?>.toIngredientRecipeRegisterList(): MutableList<IngredientRecipeRegister> {
+    val list = mutableListOf<IngredientRecipeRegister>()
+    forEach {
+        it?.run {
+            list.add(toIngredientRecipeRegister())
+        }
+    }
+    return list
+}
+
 fun Ingredient.toIngredientRecipeRegister(): IngredientRecipeRegister {
-    return IngredientRecipeRegister(keyDocument,volume)
+    return IngredientRecipeRegister(keyDocument, volume)
 }

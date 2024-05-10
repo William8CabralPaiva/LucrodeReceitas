@@ -29,7 +29,7 @@ class RecipeViewModel(
 
 
     fun addRecipe(name: String?, volume: Float?, expectedProfit: Float?) {
-        if (!name.isNullOrEmpty() && !recipeAlreadyCreate) {
+        if (!name.isNullOrEmpty()) {
 
             recipe.name = name
             volume?.let {
@@ -45,6 +45,7 @@ class RecipeViewModel(
                     _notifyError.postValue(it.message)
                 }.onEach {
                     recipeAlreadyCreate = true
+                    recipe.keyDocument = it
                     _notifySuccess.postValue(Unit)
                 }
                 .launchIn(viewModelScope)

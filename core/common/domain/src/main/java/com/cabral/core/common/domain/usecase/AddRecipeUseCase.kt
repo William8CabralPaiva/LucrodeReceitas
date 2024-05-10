@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class AddRecipeUseCase(
     private val repository: RecipeRepository
 ) {
-    operator fun invoke(recipe: Recipe): Flow<Unit> {
+    operator fun invoke(recipe: Recipe): Flow<String?> {
         return repository.addRecipe(recipe)
     }
 }

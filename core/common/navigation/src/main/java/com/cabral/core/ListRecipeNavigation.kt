@@ -5,6 +5,12 @@ import com.cabral.model.RecipeArgs
 
 interface ListRecipeNavigation {
     fun openRecipe(fragment: Fragment, recipeArgs: RecipeArgs?)
-    fun openIngredient(fragment: Fragment)
+    fun backToRecipeFragment(fragment: Fragment, recipeArgs: RecipeArgs?)
+
+    fun observeRecipeChangePreviousFragment(
+        fragment: Fragment,
+        insideFunction: (recipeArgs: RecipeArgs?) -> Unit
+    )
+
     fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?)
 }
