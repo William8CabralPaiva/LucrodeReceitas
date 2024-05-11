@@ -18,6 +18,7 @@
     <string name="design_name">Nome</string>
     <string name="design_password">Senha</string>
     <string name="design_add">Adicionar</string>
+    <string name="design_save_back">Salvar e Voltar</string>
     <string name="design_edit">Editar</string>
     <string name="design_confirm_password">Confirme sua senha</string>
     <string name="design_ic_cook">Ícone de Cozinheiro</string>

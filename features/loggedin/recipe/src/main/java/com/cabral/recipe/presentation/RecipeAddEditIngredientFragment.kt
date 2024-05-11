@@ -71,14 +71,6 @@ class RecipeAddEditIngredientFragment : Fragment() {
                 it?.id?.let { ingredient ->
                     ingredientAdapterIngredient.notifyItemInserted(ingredient)
                     clearFields()
-                    Handler(Looper.getMainLooper()).postDelayed({
-
-                        navigation.backToRecipeFragment(
-                            this@RecipeAddEditIngredientFragment,
-                            viewModel.recipe.toRecipeArgs()
-                        )
-
-                    }, 1000)
                 }
             }
 
@@ -152,6 +144,13 @@ class RecipeAddEditIngredientFragment : Fragment() {
                     binding.biVolume.getText().toFloat()
                 )
             }
+        }
+
+        binding.abSave.abSetOnClickListener {
+            navigation.backToRecipeFragment(
+                this@RecipeAddEditIngredientFragment,
+                viewModel.recipe.toRecipeArgs()
+            )
         }
     }
 

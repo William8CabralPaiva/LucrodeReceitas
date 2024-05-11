@@ -8,9 +8,14 @@ import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
+import com.cabral.core.common.domain.model.Recipe
+import com.cabral.model.RecipeArgs
 import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.R
@@ -29,6 +34,8 @@ class RecipeFragment() : Fragment() {
     private val args: RecipeFragmentArgs by navArgs()
 
     private val viewModel: RecipeViewModel by viewModel()
+
+    private var updateIngredients = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,10 +59,40 @@ class RecipeFragment() : Fragment() {
         binding.abAdd.setAlpha(true)
         initObservers()
 
+//        val navBackStackEntry =
+//            findNavController().getBackStackEntry(com.cabral.recipe.R.id.recipe)
+//
+//        val observer = LifecycleEventObserver { _, event ->
+//
+//            val contain =navBackStackEntry.savedStateHandle.contains("SAVE_RECIPE")
+//
+//            if (event == Lifecycle.Event.ON_RESUME && contain) {
+//                val isSortingApplied =
+//                    navBackStackEntry.savedStateHandle.get<RecipeArgs>("SAVE_RECIPE")
+//                viewModel.recipe.ingredientList = isSortingApplied?.toRecipe()?.ingredientList
+//                navBackStackEntry.savedStateHandle.remove<RecipeArgs>("SAVE_RECIPE")
+//            }
+//        }
+//
+//
+//        navBackStackEntry.lifecycle.addObserver(observer)
+
+        navigation.observeRecipeChangePreviousFragment(this) { recipe ->
+            viewModel.recipe.ingredientList = recipe?.toRecipe()?.ingredientList
+            updateIngredients = true
+        }
 
         if (args.currentRecipe != null) {
             args.currentRecipe?.let {
-                viewModel.recipe = it.toRecipe()
+                if(!updateIngredients) {
+                    viewModel.recipe = it.toRecipe()
+                }else{
+                    updateIngredients = false
+                }
+                viewModel.recipeAlreadyCreate = true
+                binding.abAdd.setAlpha(false)
+
+                fillInputs(viewModel.recipe)
             }
         }
 
@@ -81,6 +118,16 @@ class RecipeFragment() : Fragment() {
 
         }
 
+    }
+
+    private fun fillInputs(recipe: Recipe?) {
+        recipe?.run {
+            binding.run {
+                name?.let { biIngredient.setInputText(it) }
+                volumeUnit?.let { biUnit.setInputText(it.toString()) }
+                expectedProfit?.let { biExpectedProfit.setInputText(it.toString()) }
+            }
+        }
     }
 
     private fun showToast(@StringRes text: Int) {

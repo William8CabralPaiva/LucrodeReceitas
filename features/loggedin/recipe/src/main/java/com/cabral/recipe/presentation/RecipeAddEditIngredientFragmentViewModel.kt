@@ -62,8 +62,8 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     fun setEditMode(_editMode: Boolean, ingredient: Ingredient?) {
         ingredient?.keyDocument?.let {
-            recipe.ingredientList?.let { ingredientList ->
-                editPosition = ingredientList.getPosition(it)
+           listAddIngredients.let { ingredientList ->
+                editPosition = ingredientList.getPositionIngredient(it)
             }
         } ?: run {
             null
@@ -141,13 +141,14 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     fun addIngredientInList(name: String?, volume: Float?) {
         if (editMode && name != null && volume != null) {
-            listAllIngredients.let { ingredientList ->
+            listAddIngredients.let { ingredientList ->
                 editPosition?.let {
                     ingredientList[it].run {
                         this?.name = name
                         this?.volume = volume
                     }
                     editMode = false
+                    recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
                     _notifyEditMode.postValue(false)
                     _notifySuccessEdit.postValue(ingredientList[it]?.id)
                 }
@@ -170,10 +171,11 @@ class RecipeAddEditIngredientFragmentViewModel(
     }
 
     fun deleteItemAdd(ingredient: Ingredient?) {
-        recipe.ingredientList?.let { ingredientList ->
+        listAddIngredients.let { ingredientList ->
             ingredient?.keyDocument?.let {
-                val position = ingredientList.getPosition(it)
+                val position = ingredientList.getPositionIngredient(it)
                 ingredientList.remove(ingredientList[position])
+                recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
                 _notifyRemoveIngredient.postValue(ingredient.id)
             }
         }
@@ -187,6 +189,10 @@ class RecipeAddEditIngredientFragmentViewModel(
         } catch (_: Exception) {
             null
         }
+    }
+
+    private fun MutableList<Ingredient?>.getPositionIngredient(keyDocument: String): Int {
+        return indexOfFirst { it?.keyDocument == keyDocument }
     }
 
     private fun MutableList<IngredientRecipeRegister>.getPosition(keyDocument: String): Int {
