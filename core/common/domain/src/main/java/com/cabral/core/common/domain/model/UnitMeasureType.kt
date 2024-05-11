@@ -4,9 +4,7 @@ enum class UnitMeasureType(val unit: String, val type: String) {
     U("Unidades", "U"),
     KG("Kg", "K"),
     G("g", "G"),
-    MG("mg", "MG"),
     L("L", "l"),
-    DL("dl", "dl"),
     ML("ml", "ml")
 }
 
@@ -28,7 +26,6 @@ fun listMassUnitMeasure(): List<UnitMeasureType> {
     list.run {
         add(UnitMeasureType.KG)
         add(UnitMeasureType.G)
-        add(UnitMeasureType.MG)
     }
     return list
 }
@@ -39,7 +36,6 @@ fun listLiquidUnitMeasure(): List<UnitMeasureType> {
 
     list.run {
         add(UnitMeasureType.L)
-        add(UnitMeasureType.DL)
         add(UnitMeasureType.ML)
     }
     return list
