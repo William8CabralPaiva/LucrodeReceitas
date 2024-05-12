@@ -14,6 +14,13 @@
         <action
             android:id="@+id/action_listRecipe_to_recipe"
             app:destination="@id/recipe" />
+        <action
+            android:id="@+id/action_list_recipe_to_costs_recipe"
+            app:destination="@id/recipeCostsrecipefragment" >
+
+        </action>
+
+
     </fragment>
 
     <fragment
@@ -37,6 +44,16 @@
         android:label="RecipeAddEditIngredientFragment"
         tools:layout="@layout/recipe_add_edit_ingredient_fragment" >
 
+        <argument
+            android:name="currentRecipe"
+            app:argType="com.cabral.model.RecipeArgs"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipeCostsrecipefragment"
+        android:name="com.cabral.recipe.presentation.RecipeCostsFragment"
+        android:label="fragment_costs_recipe"
+        tools:layout="@layout/recipe_costs_fragment" >
         <argument
             android:name="currentRecipe"
             app:argType="com.cabral.model.RecipeArgs"

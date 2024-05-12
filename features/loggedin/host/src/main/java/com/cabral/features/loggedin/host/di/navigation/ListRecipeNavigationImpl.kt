@@ -52,4 +52,10 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
         val directions = RecipeFragmentDirections.recipeToAddEditIngredient(recipeArgs)
         fragment.findNavController().navigate(directions)
     }
+
+
+    override fun openCostsFragment(fragment: Fragment, recipeArgs: RecipeArgs?) {
+        val directions = ListRecipeFragmentDirections.actionListRecipeToCostsRecipe(recipeArgs)
+        fragment.findNavController().navigate(directions)
+    }
 }

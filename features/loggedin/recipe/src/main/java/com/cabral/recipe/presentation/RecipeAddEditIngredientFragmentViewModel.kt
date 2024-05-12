@@ -62,11 +62,9 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     fun setEditMode(_editMode: Boolean, ingredient: Ingredient?) {
         ingredient?.keyDocument?.let {
-           listAddIngredients.let { ingredientList ->
+            listAddIngredients.let { ingredientList ->
                 editPosition = ingredientList.getPositionIngredient(it)
             }
-        } ?: run {
-            null
         }
         editMode = _editMode
         _notifyEditMode.postValue(editMode)
@@ -89,11 +87,10 @@ class RecipeAddEditIngredientFragmentViewModel(
                         val item = Ingredient(
                             itemRecipe.id,
                             itemRecipe.name,
-                            itemRecipe.volume,
+                            ingredient.volumeUsed,
                             itemRecipe.unit,
                             itemRecipe.price,
                             ingredient.keyDocument,
-                            ingredient.volumeUsed
                         )
                         listAddIngredients.add(item)
                     }
@@ -123,20 +120,25 @@ class RecipeAddEditIngredientFragmentViewModel(
     private fun List<Ingredient>.convertToGOrMl(): MutableList<Ingredient?> {
         val list = mutableListOf<Ingredient?>()
         forEach {
-            when (it.unit) {
-                UnitMeasureType.KG.unit -> {
-                    it.unit = UnitMeasureType.G.unit
-                    it.volume = it.volume?.times(1000)
-                }
-
-                UnitMeasureType.L.unit -> {
-                    it.unit = UnitMeasureType.ML.unit
-                    it.volume = it.volume?.times(1000)
-                }
-            }
-            list.add(it)
+            val ingredient = it.convertToUnit()
+            list.add(ingredient)
         }
         return list
+    }
+
+    private fun Ingredient.convertToUnit(): Ingredient {
+        when (unit) {
+            UnitMeasureType.KG.unit -> {
+                unit = UnitMeasureType.G.unit
+                volume = volume?.times(1000)
+            }
+
+            UnitMeasureType.L.unit -> {
+                unit = UnitMeasureType.ML.unit
+                volume = volume?.times(1000)
+            }
+        }
+        return this
     }
 
     fun addIngredientInList(name: String?, volume: Float?) {
@@ -160,7 +162,9 @@ class RecipeAddEditIngredientFragmentViewModel(
                 if (selectedIngredient != null &&
                     !ingredientList.contains(selectedIngredient)
                 ) {
+
                     ingredientList.add(selectedIngredient)
+                    selectedIngredient.volume = volume
                     recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
                     _notifyAddIngredient.postValue(selectedIngredient)
                 } else {

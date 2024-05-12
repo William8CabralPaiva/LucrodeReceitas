@@ -8,8 +8,6 @@ data class Ingredient(
     var unit: String? = null,
     var price: Float? = null,
     var keyDocument: String? = null,
-    @Transient
-    var volumeUsed: Float? = null// todo testar ver se esta salvando essa info se tiver remover
 )
 
 fun Ingredient.toIngredientRegister(): IngredientRegister {
