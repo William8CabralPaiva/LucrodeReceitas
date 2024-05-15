@@ -12,6 +12,7 @@
     <color name="design_black">#FF000000</color>
     <color name="design_white">#FFFFFFFF</color>
     <color name="design_green">#008140</color>
+    <color name="design_dark_red">#b20a00</color>
     <color name="design_gray">#80ffffff</color>
     <color name="design_gray_light">#9C9C9C</color>
     <color name="design_gray_dark">#757575</color>

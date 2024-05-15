@@ -2,7 +2,6 @@ package com.cabral.core.common.domain.model
 
 
 data class IngredientCosts(
-    //todo converter number
     var name: String? = null,
     var volume: Float? = null,
     var unit: String? = null,

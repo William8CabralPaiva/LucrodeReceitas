@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
@@ -23,11 +24,7 @@ import com.cabral.recipe.databinding.RecipeFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RecipeFragment() : Fragment() {
-
-    private var _binding: RecipeFragmentBinding? = null
-    private val binding get() = _binding!!
-    //private val activity by lazy { requireActivity() as LoggedActivity }
+class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding::inflate) {
 
     private val navigation: ListRecipeNavigation by inject()
 
@@ -36,14 +33,6 @@ class RecipeFragment() : Fragment() {
     private val viewModel: RecipeViewModel by viewModel()
 
     private var updateIngredients = false
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = RecipeFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     private fun initObservers() {
         viewModel.run {

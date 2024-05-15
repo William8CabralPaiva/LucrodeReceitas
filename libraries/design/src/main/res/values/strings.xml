@@ -26,7 +26,10 @@
     <string name="design_img_edit">Imagem de um lápis</string>
     <string name="design_value_format">R$ %s</string>
     <string name="design_ingredient_format">%1$s %2$s</string>
-    <string name="design_ingredient_costs_details">%1$s %2$s por %3$s</string>
+    <string name="design_ingredient_costs_details">%1$s %2$s de %3$s R$%4$s cada sai á R$%5$s</string>
+    <string name="design_ingredient_costs_details_unit">%1$s %2$s(s) R$%3$s cada sai á R$%4$s</string>
+    <string name="design_total">Custo da receita R$%1$s</string>
+    <string name="design_profit_price">Valor a ser cobrado R$%1$s</string>
     <string name="design_yes">Sim</string>
     <string name="design_no">Não</string>
 

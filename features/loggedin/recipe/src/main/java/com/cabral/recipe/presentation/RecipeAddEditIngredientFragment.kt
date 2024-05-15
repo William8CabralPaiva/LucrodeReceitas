@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
+import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
@@ -26,10 +27,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 
-class RecipeAddEditIngredientFragment : Fragment() {
-
-    private var _binding: RecipeAddEditIngredientFragmentBinding? = null
-    private val binding get() = _binding!!
+class RecipeAddEditIngredientFragment :
+    BaseFragment<RecipeAddEditIngredientFragmentBinding>(RecipeAddEditIngredientFragmentBinding::inflate) {
 
     private lateinit var ingredientAdapterIngredient: IngredientAdapter
 
@@ -38,14 +37,6 @@ class RecipeAddEditIngredientFragment : Fragment() {
     private val args: RecipeAddEditIngredientFragmentArgs by navArgs()
 
     private val navigation: ListRecipeNavigation by inject()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = RecipeAddEditIngredientFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

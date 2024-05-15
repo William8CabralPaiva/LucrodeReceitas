@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.cabral.profile.databinding.ProfileFragmentBinding
 
-
 class ProfileFragment : Fragment() {
 
     private var _binding: ProfileFragmentBinding? = null

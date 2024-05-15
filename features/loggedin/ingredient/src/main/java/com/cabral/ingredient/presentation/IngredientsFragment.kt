@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.CustomAlertDialog
@@ -24,24 +25,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 
 
-class IngredientsFragment : Fragment() {
-
-    private var _binding: IngredientsFragmentBinding? = null
-    private val binding get() = _binding!!
+class IngredientsFragment : BaseFragment<IngredientsFragmentBinding>(IngredientsFragmentBinding::inflate) {
 
     private val viewModel: IngredientsViewModel by viewModel()
 
     private lateinit var adapterIngredient: IngredientAdapter
 
     private val navigationIngredient: ListIngredientNavigation by inject()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = IngredientsFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -230,8 +220,4 @@ class IngredientsFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
 }

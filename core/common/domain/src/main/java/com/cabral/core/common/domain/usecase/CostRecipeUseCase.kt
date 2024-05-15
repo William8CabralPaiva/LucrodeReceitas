@@ -18,17 +18,12 @@ class CostRecipeUseCase(private val repository: IngredientRepository) {
         val recipeCosts = RecipeCosts()
         recipeCosts.ingredientList = mutableListOf()
 
-        recipeCosts.run {
-            name = recipe.name
-            expectedProfit = recipe.expectedProfit
-        }
-
         val result = repository.getAllIngredients()
 
         result.catch {
             throw Throwable()
         }
-//todo n deixar cadastrar volume e preço 0
+
         recipe.ingredientList?.forEach {
             result.collect { costs ->
                 costs.forEach { itemCost ->
@@ -66,7 +61,16 @@ class CostRecipeUseCase(private val repository: IngredientRepository) {
             }
         }
 
-        recipeCosts.total = totalRecipe
+        recipeCosts.run {
+            name = recipe.name
+            total = totalRecipe
+            recipe.expectedProfit?.let {
+                if (recipe.expectedProfit != 0f) {
+                    val profit = totalRecipe * it / 100
+                    profitPrice = totalRecipe + profit
+                }
+            }
+        }
         emit(recipeCosts)
 
     }

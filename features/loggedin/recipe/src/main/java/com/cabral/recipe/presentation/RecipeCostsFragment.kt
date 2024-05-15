@@ -11,30 +11,21 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.removeEndZero
+import com.cabral.arch.extensions.roundingNumber
 import com.cabral.core.common.domain.model.IngredientCosts
+import com.cabral.core.common.domain.model.UnitMeasureType
 import com.cabral.model.toRecipe
-import com.cabral.recipe.R
 import com.cabral.recipe.databinding.RecipeCostsFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 
-class RecipeCostsFragment : Fragment() {
-
-    private var _binding: RecipeCostsFragmentBinding? = null
-    private val binding get() = _binding!!
+class RecipeCostsFragment : BaseFragment<RecipeCostsFragmentBinding>(RecipeCostsFragmentBinding::inflate) {
 
     private val args: RecipeCostsFragmentArgs by navArgs()
 
     private val viewModel: RecipeCostsViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = RecipeCostsFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,17 +36,40 @@ class RecipeCostsFragment : Fragment() {
     private fun initObservers() {
         viewModel.run {
 
-            notifyStartLoading.observe(viewLifecycleOwner){
+            notifyStartLoading.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 0
             }
 
-            notifyStopLoading.observe(viewLifecycleOwner){
+            notifyStopLoading.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 1
             }
 
-            notifySuccess.observe(viewLifecycleOwner) {
+            notifyTitle.observe(viewLifecycleOwner) {
+                binding.title.text = it
+            }
+
+            notifyPrices.observe(viewLifecycleOwner) {
+                val profitPrice = it.first
+                val total = it.second
+
+                profitPrice?.run {
+                    binding.profitPrice.text = String.format(
+                        getString(DesignR.string.design_profit_price),
+                        roundingNumber()
+                    )
+                }
+
+                total?.run {
+                    binding.total.text = String.format(
+                        getString(DesignR.string.design_total),
+                        roundingNumber()
+                    )
+                }
+            }
+
+            notifyIngredients.observe(viewLifecycleOwner) {
                 it.forEach {
-                    val textView =  createTextView()
+                    val textView = createTextView()
                     textView.text = it.toText()
 
                     binding.llCosts.addView(textView)
@@ -64,8 +78,8 @@ class RecipeCostsFragment : Fragment() {
         }
     }
 
-    private fun createTextView():TextView{
-       return  TextView(requireContext()).apply {
+    private fun createTextView(): TextView {
+        return TextView(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
@@ -81,18 +95,31 @@ class RecipeCostsFragment : Fragment() {
     }
 
     private fun IngredientCosts.toText(): String {
-        return String.format(
-            getString(com.cabral.design.R.string.design_ingredient_costs_details),
-            volume,
-            name,
-            total
-        )
+        if (this.unit == UnitMeasureType.U.unit) {
+            return String.format(
+                getString(DesignR.string.design_ingredient_costs_details_unit),
+                volume.removeEndZero(),
+                name,
+                priceUnit.roundingNumber(),
+                total.roundingNumber()
+            )
+        } else {
+            return String.format(
+                getString(DesignR.string.design_ingredient_costs_details),
+                volume.removeEndZero(),
+                unit,
+                name,
+                priceUnit.roundingNumber(),
+                total.roundingNumber()
+            )
+        }
     }
+
 
     private fun initArgs() {
         args.currentRecipe?.run {
             viewModel.recipe = toRecipe()
-            viewModel.teste()
+            viewModel.load()
         }
 
     }
