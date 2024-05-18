@@ -3,13 +3,10 @@ package com.cabral.ingredient.presentation
 //noinspection SuspiciousImport
 import android.R
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.arch.extensions.removeEndZero
@@ -25,7 +22,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 
 
-class IngredientsFragment : BaseFragment<IngredientsFragmentBinding>(IngredientsFragmentBinding::inflate) {
+class IngredientsFragment :
+    BaseFragment<IngredientsFragmentBinding>(IngredientsFragmentBinding::inflate) {
 
     private val viewModel: IngredientsViewModel by viewModel()
 
@@ -35,7 +33,6 @@ class IngredientsFragment : BaseFragment<IngredientsFragmentBinding>(Ingredients
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initAdapter()
         initObservers()
         initListeners()
@@ -155,12 +152,6 @@ class IngredientsFragment : BaseFragment<IngredientsFragmentBinding>(Ingredients
         }
         binding.recycleView.adapter = adapterIngredient
         adapterIngredient.submitList(viewModel.listIngredient)
-    }
-
-    private fun disableAllInput() {
-        binding.run {
-            //biIngredient.
-        }
     }
 
     private fun Ingredient.deleteItem() {

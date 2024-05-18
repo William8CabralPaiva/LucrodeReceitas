@@ -4,7 +4,6 @@ import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.arch.extensions.UserThrowable
 import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.IngredientRegister
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.RecipeRegister
@@ -374,21 +373,43 @@ class RemoteDataSourceImpl(
 
                 document.delete().await()
 
-                val result = document.get().result
+                val result = document.get().await()
 
                 if (!result.exists()) {
-                    //TODO  remover a referencia a esse ingrediente nas receitas
-                    emit(Unit)
+                    deleteEachItemIngredientList(key, ingredient).also {
+                        emit(Unit)
+                    }
+
                 } else {
                     GenericThrowable.FailThrowable()
                 }
-
-
             }
 
         }
 
     }.flowOn(dispatcher)
+
+    private suspend fun deleteEachItemIngredientList(
+        key: String,
+        ingredient: Ingredient
+    ) {
+        val query =
+            db.collection(DBConstants.USER).document(key)
+                .collection(DBConstants.RECIPES).get()
+        query.await()
+
+        if (query.isSuccessful) {
+            for (documentRecipe in query.result.documents) {
+                val recipeRegister = documentRecipe.toObject(RecipeRegister::class.java)
+
+                val listUpdated =
+                    recipeRegister?.ingredientList?.filter { it.keyDocument != ingredient.keyDocument }
+
+                documentRecipe.reference.update(DBConstants.LIST_INGREDIENTS, listUpdated)
+                    .await()
+            }
+        }
+    }
 
     override fun changeIngredient(ingredient: Ingredient): Flow<Unit> {
         TODO("Not yet implemented")

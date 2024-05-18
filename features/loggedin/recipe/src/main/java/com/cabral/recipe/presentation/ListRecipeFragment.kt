@@ -1,21 +1,16 @@
 package com.cabral.recipe.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.design.R
-import com.cabral.model.RecipeArgs
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.adapter.RecipeAdapter
-import com.cabral.recipe.databinding.RecipeCostsFragmentBinding
 import com.cabral.recipe.databinding.RecipeListFragmentBinding
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -68,7 +63,6 @@ class ListRecipeFragment :
         if (position >= 0) {
             adapter.notifyItemRemoved(position)
             viewModel.listRecipe.remove(viewModel.listRecipe[position])
-            adapter.notifyItemRangeChanged(0, viewModel.listRecipe.size)
         }
     }
 

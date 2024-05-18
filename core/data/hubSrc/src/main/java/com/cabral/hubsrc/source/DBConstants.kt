@@ -5,6 +5,8 @@ object DBConstants {
     const val USER = "user"
     const val RECIPES = "recipes"
     const val INGREDIENTS = "ingredients"
+    const val LIST_INGREDIENTS = "ingredientList"
+
 
     const val NAME = "name"
     const val EMAIL = "email"

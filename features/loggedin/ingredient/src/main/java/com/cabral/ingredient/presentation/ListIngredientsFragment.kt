@@ -1,12 +1,9 @@
 package com.cabral.ingredient.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.ListIngredientNavigation
@@ -18,7 +15,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.ingredient.R as IngredientR
 
-class ListIngredientsFragment : BaseFragment<IngredientsListFragmentBinding>(IngredientsListFragmentBinding::inflate) {
+class ListIngredientsFragment :
+    BaseFragment<IngredientsListFragmentBinding>(IngredientsListFragmentBinding::inflate) {
 
     private lateinit var adapter: ListIngredientAdapter
 
@@ -93,9 +91,11 @@ class ListIngredientsFragment : BaseFragment<IngredientsListFragmentBinding>(Ing
     }
 
     private fun Ingredient.deleteItem() {
-        viewModel.listIngredient.remove(viewModel.listIngredient[0])//todo ver o deletar item ingrediente
         val position = viewModel.listIngredient.indexOf(this)
-        adapter.notifyItemRemoved(position)
+        if (position >= 0) {
+            adapter.notifyItemRemoved(position)
+            viewModel.listIngredient.remove(viewModel.listIngredient[position])
+        }
     }
 
     private fun showAlertDialog(
