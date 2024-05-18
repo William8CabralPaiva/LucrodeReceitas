@@ -14,4 +14,8 @@ class RecipeRepositoryImpl(private val remoteDataSource: RemoteDataSource) : Rec
     override fun addRecipe(recipe: Recipe): Flow<String?> {
         return remoteDataSource.addRecipe(recipe)
     }
+
+    override fun deleteRecipe(keyDocument: String): Flow<Unit> {
+        return remoteDataSource.deleteRecipe(keyDocument)
+    }
 }

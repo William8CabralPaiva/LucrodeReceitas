@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.ListAdapter
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.recipe.adapter.RecipeViewHolder.Companion.typeViewHolder
 
-class RecipeAdapter(private val context: Context) : ListAdapter<Recipe, RecipeViewHolder>(DIFF_CALLBACK) {
+class RecipeAdapter(private val context: Context) :
+    ListAdapter<Recipe, RecipeViewHolder>(DIFF_CALLBACK) {
 
     lateinit var onClick: (Recipe) -> Unit
     lateinit var onClickTrash: (Recipe) -> Unit
+    lateinit var onClickEdit: (Recipe) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         return typeViewHolder(parent, context, viewType)
@@ -18,7 +20,7 @@ class RecipeAdapter(private val context: Context) : ListAdapter<Recipe, RecipeVi
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val news = getItem(position)
-        holder.bind(news, onClick, onClickTrash)
+        holder.bind(news, onClick, onClickEdit, onClickTrash)
     }
 
     override fun getItemViewType(position: Int): Int {

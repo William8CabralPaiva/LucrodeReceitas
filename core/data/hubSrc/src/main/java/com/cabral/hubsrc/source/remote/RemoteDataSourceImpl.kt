@@ -294,6 +294,27 @@ class RemoteDataSourceImpl(
 
     }.flowOn(dispatcher)
 
+    override fun deleteRecipe(keyDocument: String) = flow {
+        SingletonUser.getInstance().getKey()?.let { key ->
+            val document = db.collection(DBConstants.USER).document(key)
+                .collection(DBConstants.RECIPES)
+                .document(keyDocument)
+
+            document.delete().await()
+
+            val result = document.get().await()
+
+            if (!result.exists()) {
+                emit(Unit)
+            } else {
+                GenericThrowable.FailThrowable()
+            }
+
+
+        }
+
+    }.flowOn(dispatcher)
+
     override fun getAllIngredients(): Flow<List<Ingredient>> = flow<List<Ingredient>> {
         SingletonUser.getInstance().getKey()?.let { key ->
             val query =

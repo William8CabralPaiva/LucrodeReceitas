@@ -41,6 +41,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Nome da Receita" />
 
+            <ImageView
+                android:id="@+id/pencil"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/design_img_edit"
+                android:scaleType="fitXY"
+                android:layout_marginStart="@dimen/arch_default_margin"
+                android:src="@drawable/design_pencil"
+                app:layout_constraintBottom_toBottomOf="@+id/recipe_name"
+                app:layout_constraintStart_toEndOf="@+id/recipe_name"
+                app:layout_constraintTop_toTopOf="@+id/recipe_name" />
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"

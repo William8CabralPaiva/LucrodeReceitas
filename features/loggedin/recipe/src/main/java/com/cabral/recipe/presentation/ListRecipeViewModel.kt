@@ -4,20 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.Recipe
-import com.cabral.core.common.domain.usecase.RecipeRepositoryUseCase
+import com.cabral.core.common.domain.usecase.DeleteRecipeUseCase
+import com.cabral.core.common.domain.usecase.GetListRecipeUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 
 class ListRecipeViewModel(
-    private val listRecipeRepositoryUseCase: RecipeRepositoryUseCase
+    private val getListRecipe: GetListRecipeUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase
 ) : ViewModel() {
 
     private val _notifyStartLoading = MutableLiveData<Unit>()
     val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
+
+    private val _notifySuccessDelete = MutableLiveData<Recipe>()
+    val notifySuccessDelete: LiveData<Recipe> = _notifySuccessDelete
+
+    private val _notifyErrorDelete = MutableLiveData<String>()
+    val notifyErrorDelete: LiveData<String> = _notifyErrorDelete
 
     private val _notifyListRecipe = MutableLiveData<List<Recipe>>()
     val notifyListRecipe: LiveData<List<Recipe>> = _notifyListRecipe
@@ -32,7 +39,7 @@ class ListRecipeViewModel(
     }
 
     fun getAllRecipe() {
-        listRecipeRepositoryUseCase()
+        getListRecipe()
             .onStart { _notifyStartLoading.postValue(Unit) }
             .catch {
                 _notifyEmptyList.postValue(Unit)
@@ -45,5 +52,21 @@ class ListRecipeViewModel(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    fun deleteRecipe(recipe: Recipe) {
+        recipe.keyDocument?.let {
+            deleteRecipeUseCase(it)
+                .catch {
+                    recipe.name?.let {
+                        _notifyErrorDelete.postValue(it)
+                    }
+                }.onEach {
+                    _notifySuccessDelete.postValue(recipe)
+                }
+                .launchIn(viewModelScope)
+        }
+        _notifySuccessDelete.postValue(recipe)
+
     }
 }

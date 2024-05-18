@@ -16,7 +16,7 @@ object RecipeModule {
         viewModel {
             RecipeAddEditIngredientFragmentViewModel(get())
         }
-        viewModel { ListRecipeViewModel(get()) }
+        viewModel { ListRecipeViewModel(get(),get()) }
         viewModel { RecipeViewModel(get()) }
         viewModel { RecipeCostsViewModel(get()) }
     }

@@ -34,6 +34,7 @@
     <string name="design_no">Não</string>
 
     <string name="design_delete_in_edit">Não é possível deletar durante a exclusão</string>
+    <string name="design_delete_error">Erro ao deletar o item %1$s</string>
     <string name="design_delete_title">Aviso de Exclusão!</string>
     <string name="design_delete_message">Deseja deletar o item %1$s ?</string>
     <string name="design_edit_title">Aviso de Alteração!</string>

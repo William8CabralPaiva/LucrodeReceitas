@@ -17,6 +17,7 @@ class RecipeViewHolder(
     fun bind(
         recipe: Recipe,
         onClick: (Recipe) -> Unit,
+        onClickEdit: (Recipe) -> Unit,
         onClickTrash: (Recipe) -> Unit
     ) {
         binding.apply {
@@ -26,6 +27,7 @@ class RecipeViewHolder(
                 "valor qualquer"//recipe.price.removeEndZero()//todo alterar valor
             )
             container.setOnClickListener { onClick(recipe) }
+            pencil.setOnClickListener { onClickEdit(recipe) }
             trash.setOnClickListener { onClickTrash(recipe) }
         }
     }

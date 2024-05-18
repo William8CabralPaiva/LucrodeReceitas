@@ -15,6 +15,7 @@ interface RemoteDataSource {
     suspend fun forgotPassword(email: String)
     fun getAllRecipe(): Flow<List<Recipe>>
     fun addRecipe(recipe: Recipe): Flow<String?>
+    fun deleteRecipe(key:String):Flow<Unit>
     fun getAllIngredients(): Flow<List<Ingredient>>
     fun addIngredient(ingredient: List<Ingredient>): Flow<Unit>
     fun deleteIngredient(ingredient: Ingredient): Flow<Unit>

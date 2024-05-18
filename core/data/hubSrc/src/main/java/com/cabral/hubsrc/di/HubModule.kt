@@ -13,7 +13,8 @@ import com.cabral.core.common.domain.usecase.GoogleLoginUseCase
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import com.cabral.core.common.domain.usecase.LoginUseCase
 import com.cabral.core.common.domain.usecase.DeleteIngredientUseCase
-import com.cabral.core.common.domain.usecase.RecipeRepositoryUseCase
+import com.cabral.core.common.domain.usecase.DeleteRecipeUseCase
+import com.cabral.core.common.domain.usecase.GetListRecipeUseCase
 import com.cabral.hubsrc.repository.IngredientRepositoryImpl
 import com.cabral.hubsrc.repository.RecipeRepositoryImpl
 import com.cabral.hubsrc.repository.UserRepositoryImpl
@@ -36,7 +37,8 @@ object HubModule {
         factory { AutoLoginUseCase(get()) }
         factory { GoogleLoginUseCase(get()) }
         factory { ForgotPasswordUseCase(get()) }
-        factory { RecipeRepositoryUseCase(get()) }
+        factory { GetListRecipeUseCase(get()) }
+        factory { DeleteRecipeUseCase(get()) }
 
 
         //TODO VER

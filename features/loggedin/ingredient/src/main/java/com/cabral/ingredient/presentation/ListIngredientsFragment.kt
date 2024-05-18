@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
@@ -17,24 +18,13 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.ingredient.R as IngredientR
 
-class ListIngredientsFragment : Fragment() {
-
-    private var _binding: IngredientsListFragmentBinding? = null
-    private val binding get() = _binding!!
+class ListIngredientsFragment : BaseFragment<IngredientsListFragmentBinding>(IngredientsListFragmentBinding::inflate) {
 
     private lateinit var adapter: ListIngredientAdapter
 
     private val navigationIngredient: ListIngredientNavigation by inject()
 
     private val viewModel: ListIngredientsViewModel by viewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = IngredientsListFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -103,7 +93,7 @@ class ListIngredientsFragment : Fragment() {
     }
 
     private fun Ingredient.deleteItem() {
-        viewModel.listIngredient.remove(viewModel.listIngredient[0])
+        viewModel.listIngredient.remove(viewModel.listIngredient[0])//todo ver o deletar item ingrediente
         val position = viewModel.listIngredient.indexOf(this)
         adapter.notifyItemRemoved(position)
     }
