@@ -1,7 +1,6 @@
 package com.cabral.arch.widget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.text.InputType
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.cabral.arch.R
@@ -44,15 +42,9 @@ class BorderInputView @JvmOverloads constructor(
             val hint = typedArray.getText(R.styleable.ArchBorderInputView_arch_ei_label) ?: ""
             setLabelText(hint.toString())
 
-            val color =
-                typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_color, ColorType.ORANGE)
-            //     setDefaultColor(color)
-
             val BIInputType =
                 typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_type, BIInputType.TEXT)
             setInputType(BIInputType)
-            hintTextColor()
-            changeText()
 
             val drawableTop =
                 typedArray.getDrawable(R.styleable.ArchBorderInputView_arch_drawable_top)
@@ -106,10 +98,6 @@ class BorderInputView @JvmOverloads constructor(
             if (it >= 0) enumValues<T>()[it] else default
         }
 
-    enum class ColorType(val colorType: String) {
-        ORANGE("orange")
-    }
-
     enum class BIInputType(val inputType: String) {
         TEXT("text"),
         PASSWORD("password"),
@@ -132,7 +120,6 @@ class BorderInputView @JvmOverloads constructor(
         binding.run {
             labelInput = text
             biHint.hint = labelInput
-            biTextInput.hint = labelInput
         }
     }
 
@@ -144,94 +131,10 @@ class BorderInputView @JvmOverloads constructor(
         binding.biTextInput.setText("")
     }
 
-    private fun controlColors(colorType: ColorType): ColorStateList {
-        val states = arrayOf(
-            intArrayOf(android.R.attr.state_enabled), // enabled
-            intArrayOf(-android.R.attr.state_enabled), // disabled
-            intArrayOf(-android.R.attr.state_checked), // unchecked
-            intArrayOf(android.R.attr.state_pressed)  // pressed
-        )
-
-        val colors = when (colorType) {
-            ColorType.ORANGE -> {
-                intArrayOf(
-                    getColor(com.cabral.design.R.color.design_orange),
-                    getColor(com.cabral.design.R.color.design_orange_light),
-                    getColor(com.cabral.design.R.color.design_orange),
-                    getColor(com.cabral.design.R.color.design_orange_light)
-                )
-            }
-        }
-
-        return ColorStateList(states, colors)
-    }
-
-    private fun controlColors2(colorType: ColorType): ColorStateList {
-        val states = arrayOf(
-            intArrayOf(android.R.attr.state_enabled), // enabled
-            intArrayOf(-android.R.attr.state_enabled), // enabled
-        )
-
-        val colors = when (colorType) {
-            ColorType.ORANGE -> {
-                intArrayOf(
-                    getColor(com.cabral.design.R.color.design_orange),
-                )
-            }
-        }
-
-        return ColorStateList(states, colors)
-    }
-
     fun setFocus() {
         binding.biTextInput.requestFocus()
     }
 
-    private fun hintTextColor() {
-        binding.biTextInput.text?.let { input ->
-            binding.biTextInput.setOnFocusChangeListener { _, hasFocus ->
-
-                val color = when {
-                    (input.isNotEmpty() && !hasFocus) -> {
-                        com.cabral.design.R.color.design_orange
-                    }
-
-                    !hasFocus -> {
-                        com.cabral.design.R.color.design_gray_dark
-                    }
-
-                    else -> {
-                        com.cabral.design.R.color.design_orange
-                    }
-                }
-
-                binding.biHint.defaultHintTextColor =
-                    ColorStateList.valueOf(getColor(color))
-
-                drawable?.let {
-                    val drawableWrap = DrawableCompat.wrap(it).mutate()
-                    DrawableCompat.setTint(drawableWrap, ContextCompat.getColor(context, color))
-                }
-
-            }
-
-        }
-    }
-
-    fun setDefaultColor(colorType: ColorType) {
-        try {
-            val colorState = controlColors(colorType)
-            val colorState2 = controlColors2(colorType)
-            binding.biHint.apply {
-                hintTextColor = colorState2
-
-                defaultHintTextColor = colorState2
-                setBoxStrokeColorStateList(colorState)
-            }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-        }
-    }
 
     fun getText(): String {
         return binding.biTextInput.text.toString()

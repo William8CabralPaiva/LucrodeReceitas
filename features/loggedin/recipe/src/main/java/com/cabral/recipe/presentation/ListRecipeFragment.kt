@@ -30,6 +30,11 @@ class ListRecipeFragment :
         initObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllRecipe()
+    }
+
     private fun initObservers() {
         viewModel.run {
 

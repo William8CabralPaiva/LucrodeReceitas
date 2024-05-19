@@ -9,11 +9,6 @@
         <attr name="arch_drawable_top" format="reference" />
         <attr name="arch_ei_label" format="string" />
 
-        <attr name="arch_ei_color" format="enum">
-            <enum name="orange" value="0" />
-            <enum name="blue" value="1" />
-        </attr>
-
         <attr name="arch_ei_type" format="enum">
             <enum name="text" value="0" />
             <enum name="password" value="1" />

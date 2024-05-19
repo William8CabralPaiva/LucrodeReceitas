@@ -34,10 +34,6 @@ class ListRecipeViewModel(
 
     var listRecipe = mutableListOf<Recipe?>()
 
-    init {
-        getAllRecipe()
-    }
-
     fun getAllRecipe() {
         getListRecipe()
             .onStart { _notifyStartLoading.postValue(Unit) }
