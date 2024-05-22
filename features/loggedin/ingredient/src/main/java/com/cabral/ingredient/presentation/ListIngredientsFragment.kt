@@ -2,10 +2,10 @@ package com.cabral.ingredient.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.StringRes
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
+import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
@@ -33,6 +33,10 @@ class ListIngredientsFragment :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllIngredients()
+    }
 
     private fun initClicks() {
         binding.addIngredient.setOnClickListener {
@@ -71,7 +75,7 @@ class ListIngredientsFragment :
     private fun initAdapter() {
         adapter = ListIngredientAdapter(requireContext()).apply {
             onClick = {
-                Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
+                it.name?.let { it1 -> showToast(it1) }
             }
             onClickTrash = {
                 it.name?.let { it1 ->
@@ -96,6 +100,12 @@ class ListIngredientsFragment :
             adapter.notifyItemRemoved(position)
             viewModel.listIngredient.remove(viewModel.listIngredient[position])
         }
+    }
+
+    private fun showToast(text: String) {
+        CustomToast.Builder(requireContext())
+            .message(text)
+            .build().show()
     }
 
     private fun showAlertDialog(

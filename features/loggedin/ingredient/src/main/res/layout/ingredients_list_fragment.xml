@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.ListIngredientsFragment">
 
     <TextView
@@ -39,10 +39,9 @@
             android:id="@+id/progress_circular"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:indeterminate="true"
-            android:indeterminateTint="@color/design_orange"
             android:layout_gravity="center"
-            />
+            android:indeterminate="true"
+            android:indeterminateTint="@color/design_orange" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -60,6 +59,8 @@
             android:id="@+id/recycleView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="60dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/ingredients_item_list" />
 

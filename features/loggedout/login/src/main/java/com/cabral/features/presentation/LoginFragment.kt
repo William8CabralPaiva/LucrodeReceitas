@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.cabral.arch.EmailUtils
 import com.cabral.arch.PasswordUtils
@@ -72,16 +71,11 @@ class LoginFragment : Fragment() {
             }
 
             notifyForgotPassword.observe(viewLifecycleOwner) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.login_redefine_password),
-                    Toast.LENGTH_LONG
-                )
-                    .show()
+                showToast(getString(R.string.login_redefine_password))
             }
 
             notifyErrorForgotPassword.observe(viewLifecycleOwner) {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                showToast(it)
             }
         }
     }
@@ -143,9 +137,5 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = LoginFragment()
-    }
 
 }

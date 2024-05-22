@@ -35,10 +35,6 @@ class ListIngredientsViewModel(
 
     var listIngredient = mutableListOf<Ingredient?>()
 
-    init {
-        getAllIngredients()
-    }
-
     fun getAllIngredients() {
         listIngredientUseCase()
             .onStart { _notifyStartLoading.postValue(Unit) }

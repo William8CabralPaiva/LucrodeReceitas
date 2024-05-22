@@ -115,9 +115,7 @@ class ActionButton @JvmOverloads constructor(
 
     fun finishLoading(success: Boolean, hideIcon: Boolean = false) {
         binding.container.run {
-
             binding.iconResult.setImageDrawable(iconChecked(success))
-
             if (isLoading) {
                 binding.progressCircular.animate().apply {
                     duration = 350
@@ -132,6 +130,23 @@ class ActionButton @JvmOverloads constructor(
                         }.withEndAction {
                             hideIconShowText(hideIcon)
                         }.start()
+                    }.start()
+                }.start()
+            }
+        }
+    }
+
+    fun stopLoading() {
+        binding.container.run {
+            if (isLoading) {
+                binding.progressCircular.animate().apply {
+                    duration = 350
+                }.withEndAction {
+                    binding.progressCircular.isVisible = false
+                    binding.iconResult.animate().apply {
+                        duration = 350
+                    }.withEndAction {
+                        hideIconShowText(true)
                     }.start()
                 }.start()
             }

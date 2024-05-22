@@ -5,12 +5,12 @@ import android.R
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.annotation.StringRes
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.CustomAlertDialog
+import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.allUnitMeasure
@@ -20,6 +20,7 @@ import com.cabral.ingredient.presentation.adapter.IngredientAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
+import com.cabral.ingredient.R as IngredientR
 
 
 class IngredientsFragment :
@@ -113,7 +114,7 @@ class IngredientsFragment :
                 if (viewModel.listIngredient.isNotEmpty()) {
                     viewModel.save()
                 } else {
-                    Toast.makeText(requireContext(), "Lista vazia", Toast.LENGTH_LONG).show()
+                    showToast(IngredientR.string.ingredients_empty_list)
                 }
             }
 
@@ -131,11 +132,7 @@ class IngredientsFragment :
                             name
                         ) { it.deleteItem() }
                     } else {
-                        Toast.makeText(
-                            context,
-                            getString(DesignR.string.design_delete_in_edit),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        showToast(DesignR.string.design_delete_in_edit)
                     }
 
                 }
@@ -188,6 +185,12 @@ class IngredientsFragment :
             biVolume.clearInputText()
             biUnit.clearInputText()
         }
+    }
+
+    private fun showToast(@StringRes text: Int) {
+        CustomToast.Builder(requireContext())
+            .message(getString(text))
+            .build().show()
     }
 
     private fun showAlertDialog(

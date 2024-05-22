@@ -19,105 +19,140 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ViewFlipper
+            android:id="@+id/view_flipper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/arch_default_margin"
+            android:background="@color/design_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:context=".presentation.ListRecipeFragment">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:drawablePadding="@dimen/arch_default_margin"
-                android:fontFamily="@font/design_bangers"
-                android:gravity="center"
-                android:text="@string/design_ingredients"
-                android:textColor="@color/design_orange"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/design_orange" />
 
-            <com.cabral.arch.widget.RecipeSpinner
-                android:id="@+id/bi_ingredient"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/arch_default_margin"
-                app:arch_ei_type="text"
-                app:arch_rs_hint_text="@string/design_ingredient"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bi_ingredient">
-
-                <com.cabral.arch.widget.BorderInputView
-                    android:id="@+id/bi_volume"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:arch_ei_label="@string/design_amount"
-                    app:arch_ei_type="number" />
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/txt_unit"
-                    android:layout_width="0dp"
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/arch_default_margin"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/design_ubuntu_medium"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="@dimen/arch_default_margin"
+                    android:fontFamily="@font/design_bangers"
+                    android:gravity="center"
+                    android:text="@string/design_ingredients"
                     android:textColor="@color/design_orange"
-                    android:textSize="16sp"
-                    android:visibility="invisible"
-                    tools:visibility="visible" />
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+                <com.cabral.arch.widget.RecipeSpinner
+                    android:id="@+id/bi_ingredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/arch_default_margin"
+                    app:arch_ei_type="text"
+                    app:arch_rs_hint_text="@string/design_ingredient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bi_ingredient">
+
+                    <com.cabral.arch.widget.BorderInputView
+                        android:id="@+id/bi_volume"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:arch_ei_label="@string/design_amount"
+                        app:arch_ei_type="number" />
+
+                    <TextView
+                        android:id="@+id/txt_unit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/arch_default_margin"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/design_ubuntu_medium"
+                        android:textColor="@color/design_orange"
+                        android:textSize="16sp"
+                        android:visibility="invisible"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
 
 
-            <com.cabral.arch.widget.ActionButton
-                android:id="@+id/ab_add"
-                android:layout_width="match_parent"
+                <com.cabral.arch.widget.ActionButton
+                    android:id="@+id/ab_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="38dp"
+                    app:arch_ab_enabled="false"
+                    app:arch_ab_text="@string/design_add"
+                    app:arch_ab_type="shape"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/arch_default_margin"
+                    android:background="@drawable/arch_border_orange"
+                    android:minHeight="200dp"
+                    android:padding="@dimen/arch_default_margin"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ab_add" />
+
+                <com.cabral.arch.widget.ActionButton
+                    android:id="@+id/ab_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/arch_default_margin"
+                    app:arch_ab_text="@string/design_save_back"
+                    app:arch_ab_type="shape"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycleView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="38dp"
-                app:arch_ab_enabled="false"
-                app:arch_ab_text="@string/design_add"
-                app:arch_ab_type="shape"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/arch_default_margin"
+                android:fontFamily="@font/design_ubuntu_medium"
+                android:gravity="start"
+                android:text="@string/recipe_search_ingredientes"
+                android:textAlignment="textStart"
+                android:textColor="@color/design_gray_light"
+                android:textSize="20sp" />
+        </ViewFlipper>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycleView"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/arch_default_margin"
-                android:background="@drawable/arch_border_orange"
-                android:minHeight="200dp"
-                android:padding="@dimen/arch_default_margin"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ab_add" />
 
-            <com.cabral.arch.widget.ActionButton
-                android:id="@+id/ab_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/arch_default_margin"
-                app:arch_ab_text="@string/design_save_back"
-                app:arch_ab_type="shape"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycleView" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 

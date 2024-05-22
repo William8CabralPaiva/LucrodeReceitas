@@ -6,4 +6,7 @@
     <string name="recipe_list">Lista de Receitas</string>
     <string name="recipe_click_in_plus_to_add_recipe">Nenhuma receita encontrada.\n Clique no + para adicionar uma receita</string>
     <string name="recipe_save_before_add">Salve a receita antes de Adicionar um Ingrediente</string>
+    <string name="recipe_save_error">Erro ao salvar a receita</string>
+    <string name="recipe_search_ingredientes">Erro ao buscar ingredientes</string>
+    <string name="recipe_success_save">Receita salva com sucesso!</string>
 </resources>

@@ -2,10 +2,10 @@ package com.cabral.recipe.presentation
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.StringRes
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
+import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.design.R
@@ -127,7 +127,9 @@ class ListRecipeFragment :
 //    }
 
     private fun showToast(text: String) {
-        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
+        CustomToast.Builder(requireContext())
+            .message(text)
+            .build().show()
     }
 
     private fun showAlertDialog(

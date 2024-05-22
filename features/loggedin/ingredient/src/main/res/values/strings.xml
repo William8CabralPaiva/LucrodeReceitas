@@ -8,4 +8,5 @@
     <string name="ingredients_add">Clique aqui para adicionar um ingrediente</string>
     <string name="ingredients_remove_modal_title">Deseja remover o item %1$s?</string>
     <string name="ingredients_warning_remove">O item %1$s será removido de todas as receitas.</string>
+    <string name="ingredients_empty_list">Lista vazia, adicione um item</string>
 </resources>
