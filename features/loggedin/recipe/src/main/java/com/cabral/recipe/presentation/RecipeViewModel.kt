@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cabral.arch.extensions.RecipeThrowable
 import com.cabral.core.common.domain.model.Recipe
-import com.cabral.core.common.domain.model.RecipeRegister
 import com.cabral.core.common.domain.usecase.AddRecipeUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 
 class RecipeViewModel(
     private val addRecipeUseCase: AddRecipeUseCase
@@ -23,10 +22,12 @@ class RecipeViewModel(
     private val _notifyError = MutableLiveData<String>()
     val notifyError: LiveData<String> = _notifyError
 
+    private val _notifyStopLoadingButton = MutableLiveData<Unit>()
+    val notifyStopLoadingButton: LiveData<Unit> = _notifyStopLoadingButton
+
     var recipeAlreadyCreate = false
 
     var recipe: Recipe = Recipe(-1)
-
 
     fun addRecipe(name: String?, volume: Float?, expectedProfit: Float?) {
         if (!name.isNullOrEmpty()) {
@@ -48,6 +49,7 @@ class RecipeViewModel(
                     recipe.keyDocument = it
                     _notifySuccess.postValue(Unit)
                 }
+                .onCompletion { _notifyStopLoadingButton.postValue(Unit) }
                 .launchIn(viewModelScope)
         } else {
             _notifyError.postValue(RecipeThrowable.AddRecipeThrowable().message)

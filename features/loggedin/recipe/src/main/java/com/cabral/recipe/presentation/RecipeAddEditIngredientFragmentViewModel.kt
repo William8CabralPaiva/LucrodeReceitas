@@ -12,6 +12,7 @@ import com.cabral.core.common.domain.model.toIngredientRecipeRegisterList
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import com.cabral.recipe.R as RecipeR
@@ -20,20 +21,11 @@ class RecipeAddEditIngredientFragmentViewModel(
     private val listIngredientUseCase: ListIngredientUseCase,
 ) : ViewModel() {
 
-    private val _notifyStartLoading = MutableLiveData<Unit>()
-    val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
-
     private val _notifyListIngredient = MutableLiveData<List<Ingredient?>>()
     val notifyListIngredient: LiveData<List<Ingredient?>> = _notifyListIngredient
 
-    private val _notifyEmptyList = MutableLiveData<Unit>()
-    val notifyEmptyList: LiveData<Unit> = _notifyEmptyList
-
     private val _notifyRemoveIngredient = MutableLiveData<Int>()
     val notifyRemoveIngredient: LiveData<Int> = _notifyRemoveIngredient
-
-    private val _notifySuccessRemove = MutableLiveData<Ingredient>()
-    val notifySuccessRemove: LiveData<Ingredient> = _notifySuccessRemove
 
     private val _notifySuccessEdit = MutableLiveData<Int>()
     val notifySuccessEdit: LiveData<Int> = _notifySuccessEdit
@@ -101,17 +93,14 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     fun getAllIngredients() {
         listIngredientUseCase()
-            .onStart { _notifyStartLoading.postValue(Unit) }
             .catch {
-                _notifyEmptyList.postValue(Unit)
+                _notifyError.postValue(it.message)
             }.onEach {
                 if (it.isNotEmpty()) {
                     listAllIngredients = it.convertToGOrMl()
                     prepareLists().also {
                         _notifyListIngredient.postValue(listAllIngredients)
                     }
-                } else {
-                    _notifyEmptyList.postValue(Unit)
                 }
             }
             .launchIn(viewModelScope)

@@ -3,6 +3,7 @@ package com.cabral.arch.widget
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -48,6 +49,8 @@ class BorderInputView @JvmOverloads constructor(
 
             val drawableTop =
                 typedArray.getDrawable(R.styleable.ArchBorderInputView_arch_drawable_top)
+
+            changeText()
 
             setDrawableTop(drawableTop)
 
@@ -166,7 +169,9 @@ class BorderInputView @JvmOverloads constructor(
     fun setError(errorText: String? = null) {
         binding.biHint.run {
             isErrorEnabled = true
-            error = errorText ?: "Preencha o campo $labelInput corretamente"
+            error = errorText ?: "Preencha o campo $labelInput corretamente".also {
+                binding.biTextInput.isCursorVisible=true
+            }
         }
     }
 

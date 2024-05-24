@@ -16,6 +16,7 @@ import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
+import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
@@ -52,7 +53,13 @@ class RecipeAddEditIngredientFragment :
 
     private fun initObservers() {
         viewModel.run {
+
+            notifyError.observe(viewLifecycleOwner) {
+                binding.viewFlipper.displayedChild = 2
+            }
+
             notifyListIngredient.observe(viewLifecycleOwner) {
+                binding.viewFlipper.displayedChild = 1
                 it?.let {
                     initAdapter(it.getIngredientName())
                 }
@@ -131,22 +138,16 @@ class RecipeAddEditIngredientFragment :
         binding.abAdd.abSetOnClickListener {
             if (binding.biVolume.getText().isNotEmpty()) {
                 viewModel.addIngredientInList(
-                    binding.biIngredient.getText(),
-                    binding.biVolume.getText().toFloat()
+                    binding.biIngredient.getText(), binding.biVolume.getText().toFloat()
                 )
             }
         }
 
         binding.abSave.abSetOnClickListener {
             navigation.backToRecipeFragment(
-                this@RecipeAddEditIngredientFragment,
-                viewModel.recipe.toRecipeArgs()
+                this@RecipeAddEditIngredientFragment, viewModel.recipe.toRecipeArgs()
             )
         }
-    }
-
-    private fun showToast(@StringRes text: Int) {
-        Toast.makeText(requireContext(), getString(text), Toast.LENGTH_LONG).show()
     }
 
 
@@ -184,11 +185,7 @@ class RecipeAddEditIngredientFragment :
                             name
                         ) { viewModel.deleteItemAdd(it) }
                     } else {
-                        Toast.makeText(
-                            context,
-                            getString(DesignR.string.design_delete_in_edit),
-                            Toast.LENGTH_LONG
-                        ).show()
+                        showToast(DesignR.string.design_delete_in_edit)
                     }
 
                 }
@@ -196,15 +193,19 @@ class RecipeAddEditIngredientFragment :
             onClickEdit = {
                 it.name?.let { name ->
                     showAlertDialog(
-                        DesignR.string.design_edit_title,
-                        DesignR.string.design_edit_message,
-                        name
+                        DesignR.string.design_edit_title, DesignR.string.design_edit_message, name
                     ) { it.editItem() }
                 }
             }
         }
         binding.recycleView.adapter = ingredientAdapterIngredient
         ingredientAdapterIngredient.submitList(viewModel.listAddIngredients)
+    }
+
+    private fun showToast(@StringRes text: Int) {
+        CustomToast.Builder(requireContext())
+            .message(getString(text))
+            .build().show()
     }
 
     private fun Ingredient.editItem() {
@@ -236,8 +237,7 @@ class RecipeAddEditIngredientFragment :
                 .title(title)
                 .message(message)
                 .negativeButton(getString(R.string.design_no))
-                .positiveButton(getString(R.string.design_yes))
-                .positiveFunction {
+                .positiveButton(getString(R.string.design_yes)).positiveFunction {
                     positiveFunction()
                 }
 

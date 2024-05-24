@@ -1,22 +1,13 @@
 package com.cabral.recipe.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
-import com.cabral.model.RecipeArgs
 import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.R
@@ -37,7 +28,16 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
     private fun initObservers() {
         viewModel.run {
             notifySuccess.observe(viewLifecycleOwner) {
+                showToast(R.string.recipe_success_save)
                 binding.abAdd.setAlpha(false)
+            }
+
+            notifyError.observe(viewLifecycleOwner) {
+                showToast(R.string.recipe_save_error)
+            }
+
+            notifyStopLoadingButton.observe(viewLifecycleOwner) {
+                binding.abSave.stopLoading()
             }
         }
     }
@@ -48,23 +48,6 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
         binding.abAdd.setAlpha(true)
         initObservers()
 
-//        val navBackStackEntry =
-//            findNavController().getBackStackEntry(com.cabral.recipe.R.id.recipe)
-//
-//        val observer = LifecycleEventObserver { _, event ->
-//
-//            val contain =navBackStackEntry.savedStateHandle.contains("SAVE_RECIPE")
-//
-//            if (event == Lifecycle.Event.ON_RESUME && contain) {
-//                val isSortingApplied =
-//                    navBackStackEntry.savedStateHandle.get<RecipeArgs>("SAVE_RECIPE")
-//                viewModel.recipe.ingredientList = isSortingApplied?.toRecipe()?.ingredientList
-//                navBackStackEntry.savedStateHandle.remove<RecipeArgs>("SAVE_RECIPE")
-//            }
-//        }
-//
-//
-//        navBackStackEntry.lifecycle.addObserver(observer)
 
         navigation.observeRecipeChangePreviousFragment(this) { recipe ->
             viewModel.recipe.ingredientList = recipe?.toRecipe()?.ingredientList
@@ -73,20 +56,23 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
         if (args.currentRecipe != null) {
             args.currentRecipe?.let {
-                if(!updateIngredients) {
+                if (!updateIngredients) {
                     viewModel.recipe = it.toRecipe()
-                }else{
+                    fillInputs(viewModel.recipe)
+                } else {
                     updateIngredients = false
+                    fillInputs(viewModel.recipe).also {
+                        saveRecipe()
+                    }
                 }
                 viewModel.recipeAlreadyCreate = true
                 binding.abAdd.setAlpha(false)
 
-                fillInputs(viewModel.recipe)
             }
         }
 
         binding.abSave.abSetOnClickListener {
-
+            binding.abSave.startLoading()
             viewModel.run {
                 if (validateFields()) {
                     saveRecipe()
@@ -155,11 +141,6 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
         } catch (_: Exception) {
             return null
         }
-    }
-
-
-    private fun getColor(@ColorRes color: Int): Int {
-        return ContextCompat.getColor(requireContext(), color);
     }
 
 }
