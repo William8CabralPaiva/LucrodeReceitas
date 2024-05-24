@@ -43,11 +43,11 @@ internal class ListIngredientNavigationImpl : ListIngredientNavigation {
                 }
             }
 
-            navBackStackEntry?.lifecycle?.addObserver(observer)
+            lifecycleOwner.lifecycle.addObserver(observer)
             lifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
 
                 if (event == Lifecycle.Event.ON_DESTROY) {
-                    navBackStackEntry?.lifecycle?.removeObserver(observer)
+                    lifecycleOwner.lifecycle.removeObserver(observer)
                 }
 
             })

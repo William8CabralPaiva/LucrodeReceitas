@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.cabral.arch.EmailUtils
 import com.cabral.arch.PasswordUtils
 import com.cabral.arch.extensions.UserThrowable
-import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.AddUserUseCase
 import kotlinx.coroutines.flow.catch
@@ -25,6 +24,18 @@ class RegisterUserViewModel(
     private val _notifyError = MutableLiveData<Unit>()
     val notifyError: LiveData<Unit> = _notifyError
 
+    private val _notifyErrorUsername = MutableLiveData<String>()
+    val notifyErrorUsername: LiveData<String> = _notifyErrorUsername
+
+    private val _notifyErrorEmail = MutableLiveData<String>()
+    val notifyErrorEmail: LiveData<String> = _notifyErrorEmail
+
+    private val _notifyErrorPassword = MutableLiveData<String>()
+    val notifyErrorPassword: LiveData<String> = _notifyErrorPassword
+
+    private val _notifyErrorConfirmPassword = MutableLiveData<String>()
+    val notifyErrorConfirmPassword: LiveData<String> = _notifyErrorConfirmPassword
+
     private val _notifyStartLoading = MutableLiveData<Unit>()
     val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
 
@@ -34,21 +45,41 @@ class RegisterUserViewModel(
         password: String?,
         confirmPassword: String?
     ) {
-        if (name.validateName() &&
-            EmailUtils.validateEmail(email) &&
-            PasswordUtils.validatePassword(password) &&
-            equalPassword(password, confirmPassword)
-        ) {
-            val user = User(email, name, password)
-            addUserUseCase(user)
-                .onStart {
-                    _notifyStartLoading.postValue(Unit)
+        try {
+            if (name.validateName() &&
+                EmailUtils.validateEmail(email) &&
+                PasswordUtils.validatePassword(password) &&
+                equalPassword(password, confirmPassword)
+            ) {
+                val user = User(email, name, password)
+                addUserUseCase(user)
+                    .onStart {
+                        _notifyStartLoading.postValue(Unit)
+                    }
+                    .catch {
+                        _notifyError.postValue(Unit)
+                    }.onEach {
+                        _notifySuccess.postValue(Unit)
+                    }.launchIn(viewModelScope)
+            }
+        } catch (error: Throwable) {
+            when (error) {
+                is UserThrowable.AuthenticatePasswordThrowable -> {
+                    _notifyErrorPassword.postValue(error.message)
                 }
-                .catch {
-                    _notifyError.postValue(Unit)
-                }.onEach {
-                    _notifySuccess.postValue(Unit)
-                }.launchIn(viewModelScope)
+
+                is UserThrowable.AuthenticateEmailThrowable -> {
+                    _notifyErrorEmail.postValue(error.message)
+                }
+
+                is UserThrowable.UsernameRegisterThrowable -> {
+                    _notifyErrorUsername.postValue(error.message)
+                }
+
+                else -> {
+                    _notifyErrorConfirmPassword.postValue(error.message)
+                }
+            }
         }
 
     }

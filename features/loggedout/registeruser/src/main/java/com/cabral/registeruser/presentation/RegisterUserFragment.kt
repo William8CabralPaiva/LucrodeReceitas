@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.cabral.arch.extensions.UserThrowable
+import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomToast
 import com.cabral.registeruser.R
 import com.cabral.registeruser.databinding.RegisterUserFragmentBinding
@@ -41,33 +42,12 @@ class RegisterUserFragment : Fragment() {
             }
 
             abRegister.abSetOnClickListener {
-                try {
-                    viewModel.registerUser(
-                        biName.getText(),
-                        biEmail.getText(),
-                        biPassword.getText(),
-                        biConfirmPassword.getText()
-                    )
-
-                } catch (t: Throwable) {
-                    when (t) {
-                        is UserThrowable.UsernameRegisterThrowable -> {
-                            biName.setError(t.message)
-                        }
-
-                        is UserThrowable.AuthenticateEmailThrowable -> {
-                            biEmail.setError(t.message)
-                        }
-
-                        is UserThrowable.UserAlreadyRegisterPasswordThrowable -> {
-                            biPassword.setError(t.message)
-                        }
-
-                        is UserThrowable.NotEqualPasswordThrowable -> {
-                            biConfirmPassword.setError(t.message)
-                        }
-                    }
-                }
+                viewModel.registerUser(
+                    biName.getText(),
+                    biEmail.getText(),
+                    biPassword.getText(),
+                    biConfirmPassword.getText()
+                )
             }
         }
     }
@@ -88,7 +68,28 @@ class RegisterUserFragment : Fragment() {
                 showToast(R.string.register_user_success)
                 requireActivity().onBackPressed()
             }
+
+            notifyErrorUsername.observe(viewLifecycleOwner) {
+                binding.biName.setErrorFocus(it)
+            }
+
+            notifyErrorEmail.observe(viewLifecycleOwner) {
+                binding.biEmail.setErrorFocus(it)
+            }
+
+            notifyErrorPassword.observe(viewLifecycleOwner) {
+                binding.biPassword.setErrorFocus(it)
+            }
+
+            notifyErrorConfirmPassword.observe(viewLifecycleOwner) {
+                binding.biConfirmPassword.setErrorFocus(it)
+            }
         }
+    }
+
+    private fun BorderInputView.setErrorFocus(text: String) {
+        setError(text)
+        setFocus()
     }
 
     private fun showToast(@StringRes string: Int) {

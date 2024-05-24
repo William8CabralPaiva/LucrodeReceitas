@@ -6,7 +6,6 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.fragment.findNavController
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.model.RecipeArgs
-import com.cabral.model.toRecipe
 import com.cabral.recipe.presentation.ListRecipeFragmentDirections
 import com.cabral.recipe.presentation.RecipeFragmentDirections
 
@@ -45,7 +44,7 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
                 navBackStackEntry.savedStateHandle.remove<RecipeArgs>(SAVE_RECIPE)
             }
         }
-        navBackStackEntry.lifecycle.addObserver(observer)
+        fragment.lifecycle.addObserver(observer)
     }
 
     override fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?) {
