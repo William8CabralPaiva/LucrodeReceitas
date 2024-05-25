@@ -8,6 +8,7 @@ import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.UnitMeasureType
+import com.cabral.core.common.domain.model.toIngredientRecipeRegister
 import com.cabral.core.common.domain.model.toIngredientRecipeRegisterList
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import kotlinx.coroutines.flow.catch
@@ -141,7 +142,12 @@ class RecipeAddEditIngredientFragmentViewModel(
                     editMode = false
                     recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
                     _notifyEditMode.postValue(false)
-                    _notifySuccessEdit.postValue(ingredientList[it]?.id)
+
+                    val position =
+                        recipe.ingredientList?.indexOf(ingredientList[it]?.toIngredientRecipeRegister())
+                    position?.let {
+                        _notifySuccessEdit.postValue(it)
+                    }
                 }
             }
         } else {
@@ -149,7 +155,7 @@ class RecipeAddEditIngredientFragmentViewModel(
                 val selectedIngredient =
                     getSelectedIngredient(name)
                 if (selectedIngredient != null &&
-                    !ingredientList.contains(selectedIngredient)
+                    !ingredientList.containsIngredient(selectedIngredient.keyDocument)
                 ) {
 
                     ingredientList.add(selectedIngredient)
@@ -182,6 +188,11 @@ class RecipeAddEditIngredientFragmentViewModel(
         } catch (_: Exception) {
             null
         }
+    }
+
+    private fun MutableList<Ingredient?>.containsIngredient(keyDocument: String?): Boolean {
+        val list = filter { it?.keyDocument == keyDocument }
+        return list.isNotEmpty()
     }
 
     private fun MutableList<Ingredient?>.getPositionIngredient(keyDocument: String): Int {

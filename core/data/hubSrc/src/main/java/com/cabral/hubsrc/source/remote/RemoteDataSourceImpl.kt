@@ -106,8 +106,7 @@ class RemoteDataSourceImpl(
                     auth.signInWithEmailAndPassword(email, password).await()
                 if (signIn.user != null) {
                     val result =
-                        db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email)
-                            .whereEqualTo(DBConstants.PASSWORD, user.password).get().await()
+                        db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email).get().await()
 
                     if (result.documents.isNotEmpty()) {
                         for (document in result.documents) {

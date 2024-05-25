@@ -3,6 +3,7 @@ package com.cabral.features.loggedin.host.di.navigation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.model.RecipeArgs
@@ -29,22 +30,31 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
 
     override fun observeRecipeChangePreviousFragment(
         fragment: Fragment,
+        lifecycleOwner: LifecycleOwner,
         insideFunction: (recipeArgs: RecipeArgs?) -> Unit
     ) {
         val navBackStackEntry =
-            fragment.findNavController().getBackStackEntry(com.cabral.recipe.R.id.recipe)
+            fragment.findNavController().currentBackStackEntry
 
         val observer = LifecycleEventObserver { _, event ->
-            val contain = navBackStackEntry.savedStateHandle.contains(SAVE_RECIPE)
-
-            if (event == Lifecycle.Event.ON_RESUME && contain) {
-                val recipe =
-                    navBackStackEntry.savedStateHandle.get<RecipeArgs>(SAVE_RECIPE)
-                insideFunction(recipe)
-                navBackStackEntry.savedStateHandle.remove<RecipeArgs>(SAVE_RECIPE)
+            val contain = navBackStackEntry?.savedStateHandle?.contains(SAVE_RECIPE)
+            contain?.let {
+                if (event == Lifecycle.Event.ON_RESUME && contain) {
+                    val recipe =
+                        navBackStackEntry.savedStateHandle.get<RecipeArgs>(SAVE_RECIPE)
+                    navBackStackEntry.savedStateHandle.remove<RecipeArgs>(SAVE_RECIPE)
+                    insideFunction(recipe)
+                }
             }
         }
-        fragment.lifecycle.addObserver(observer)
+        lifecycleOwner.lifecycle.addObserver(observer)
+        lifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+
+            if (event == Lifecycle.Event.ON_DESTROY) {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+            }
+
+        })
     }
 
     override fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?) {

@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:alpha=".8"
-        app:cardBackgroundColor="@color/design_black"
+        android:alpha=".9"
+        app:cardBackgroundColor="@color/design_orange"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -36,7 +36,7 @@
             <TextView
                 android:id="@+id/customToast_text_tv"
                 android:layout_width="wrap_content"
-                android:fontFamily="@font/design_roboto_light"
+                android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginStart="16dp"

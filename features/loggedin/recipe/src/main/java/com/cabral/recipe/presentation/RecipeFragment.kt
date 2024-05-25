@@ -8,6 +8,7 @@ import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
+import com.cabral.model.RecipeArgs
 import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.R
@@ -23,7 +24,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
     private val viewModel: RecipeViewModel by viewModel()
 
-    private var updateIngredients = false
+    private var alreadySetCurrentRecipe = false
 
     private fun initObservers() {
         viewModel.run {
@@ -48,27 +49,19 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
         binding.abAdd.setAlpha(true)
         initObservers()
 
-
-        navigation.observeRecipeChangePreviousFragment(this) { recipe ->
-            viewModel.recipe.ingredientList = recipe?.toRecipe()?.ingredientList
-            updateIngredients = true
+        args.currentRecipe?.let {
+            if (!alreadySetCurrentRecipe) {
+                viewModel.recipe = it.toRecipe()
+                fillInputs(viewModel.recipe)
+                alreadySetCurrentRecipe = true
+                viewModel.recipeAlreadyCreate = true
+            }
+            binding.abAdd.setAlpha(false)
         }
 
-        if (args.currentRecipe != null) {
-            args.currentRecipe?.let {
-                if (!updateIngredients) {
-                    viewModel.recipe = it.toRecipe()
-                    fillInputs(viewModel.recipe)
-                } else {
-                    updateIngredients = false
-                    fillInputs(viewModel.recipe).also {
-                        saveRecipe()
-                    }
-                }
-                viewModel.recipeAlreadyCreate = true
-                binding.abAdd.setAlpha(false)
 
-            }
+        navigation.observeRecipeChangePreviousFragment(this,viewLifecycleOwner) { recipe ->
+            backFromAddRecipeEdit(recipe)
         }
 
         binding.abSave.abSetOnClickListener {
@@ -93,6 +86,17 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
         }
 
+    }
+
+    private fun backFromAddRecipeEdit(recipe: RecipeArgs?) {
+        val ingredientList = recipe?.toRecipe()?.ingredientList
+        if (viewModel.recipe.ingredientList != ingredientList) {
+            viewModel.recipe.ingredientList = ingredientList
+            fillInputs(viewModel.recipe).also {
+                saveRecipe()
+            }
+        }
+        binding.abAdd.setAlpha(false)
     }
 
     private fun fillInputs(recipe: Recipe?) {

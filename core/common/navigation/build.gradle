@@ -13,7 +13,4 @@ dependencies {
 
     implementation project(Modules.design)
     implementation project(Modules.domain)
-//    implementation project(Modules.login)
-//    implementation project(Modules.recipe)
-//    implementation project(Modules.splash)
 }

@@ -9,8 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.removeEndZero
@@ -20,6 +24,7 @@ import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
+import com.cabral.model.RecipeArgs
 import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.adapter.IngredientAdapter
@@ -39,16 +44,30 @@ class RecipeAddEditIngredientFragment :
 
     private val navigation: ListRecipeNavigation by inject()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initArgs()
+        initOnBackPress()
     }
 
     private fun initArgs() {
         args.currentRecipe?.let {
             viewModel.recipe = it.toRecipe()
         }
+    }
+
+    private fun initOnBackPress(){
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                isEnabled = false
+                navigation.backToRecipeFragment(
+                    this@RecipeAddEditIngredientFragment, null
+                )
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun initObservers() {
@@ -149,7 +168,6 @@ class RecipeAddEditIngredientFragment :
             )
         }
     }
-
 
     private fun BorderInputView.enableButtonVolume() {
         binding.abAdd.run {

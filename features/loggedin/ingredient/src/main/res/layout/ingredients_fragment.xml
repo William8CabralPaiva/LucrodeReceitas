@@ -101,10 +101,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="260dp"
                 android:layout_marginTop="@dimen/arch_default_margin"
                 android:background="@drawable/arch_border_orange"
-                android:minHeight="200dp"
                 android:padding="@dimen/arch_default_margin"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
