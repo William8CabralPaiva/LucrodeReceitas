@@ -58,7 +58,7 @@ class RecipeAddEditIngredientFragment :
         }
     }
 
-    private fun initOnBackPress(){
+    private fun initOnBackPress() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 isEnabled = false
