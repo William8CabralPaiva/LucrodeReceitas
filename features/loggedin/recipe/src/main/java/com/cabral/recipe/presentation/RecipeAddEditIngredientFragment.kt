@@ -167,6 +167,10 @@ class RecipeAddEditIngredientFragment :
                 this@RecipeAddEditIngredientFragment, viewModel.recipe.toRecipeArgs()
             )
         }
+
+        binding.addIngredient.abSetOnClickListener {
+            navigation.openIngredient(this)
+        }
     }
 
     private fun BorderInputView.enableButtonVolume() {

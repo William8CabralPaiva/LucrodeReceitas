@@ -102,7 +102,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
     private fun fillInputs(recipe: Recipe?) {
         recipe?.run {
             binding.run {
-                name?.let { biIngredient.setInputText(it) }
+                name?.let { biRecipe.setInputText(it) }
                 volumeUnit?.let { biUnit.setInputText(it.toString()) }
                 expectedProfit?.let { biExpectedProfit.setInputText(it.toString()) }
             }
@@ -117,8 +117,8 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
     private fun validateFields(): Boolean {
         binding.apply {
-            if (biIngredient.getText().isEmpty()) {
-                biIngredient.setError()
+            if (biRecipe.getText().isEmpty()) {
+                biRecipe.setError()
                 return false
             }
             return true
@@ -128,7 +128,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
     private fun saveRecipe() {
         binding.run {
             viewModel.addRecipe(
-                biIngredient.getText(),
+                biRecipe.getText(),
                 biUnit.getText().convertToFloat(),
                 biExpectedProfit.getText().convertToFloat()
             )

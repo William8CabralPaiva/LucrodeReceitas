@@ -39,7 +39,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.cabral.arch.widget.BorderInputView
-                android:id="@+id/bi_ingredient"
+                android:id="@+id/bi_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="@dimen/arch_default_margin"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bi_ingredient">
+                app:layout_constraintTop_toBottomOf="@+id/bi_recipe">
 
                 <com.cabral.arch.widget.BorderInputView
                     android:id="@+id/bi_unit"
@@ -95,7 +95,7 @@
         android:id="@+id/ab_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:arch_ab_text="@string/ingredient_save"
+        app:arch_ab_text="@string/design_save"
         app:arch_ab_type="shape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

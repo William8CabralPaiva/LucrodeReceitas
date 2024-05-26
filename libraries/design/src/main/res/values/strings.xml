@@ -15,6 +15,8 @@
     <string name="design_user">Usuário</string>
     <string name="design_email">Email</string>
     <string name="design_login">Entrar</string>
+    <string name="design_save">Salvar</string>
+    <string name="design_plus">+</string>
     <string name="design_name">Nome</string>
     <string name="design_password">Senha</string>
     <string name="design_add">Adicionar</string>
@@ -39,4 +41,7 @@
     <string name="design_delete_message">Deseja deletar o item %1$s ?</string>
     <string name="design_edit_title">Aviso de Alteração!</string>
     <string name="design_edit_message">Deseja alterar o item %1$s ?</string>
+    
+    <string name="design_required_field">Campo obrigatório</string>
+    <string name="design_select_field">Selecione um item</string>
 </resources>

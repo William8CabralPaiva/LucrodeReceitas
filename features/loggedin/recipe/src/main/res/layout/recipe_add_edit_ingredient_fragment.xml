@@ -61,14 +61,25 @@
 
                 <com.cabral.arch.widget.RecipeSpinner
                     android:id="@+id/bi_ingredient"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/arch_default_margin"
+                    android:layout_marginEnd="@dimen/arch_default_margin"
                     app:arch_ei_type="text"
                     app:arch_rs_hint_text="@string/design_ingredient"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/add_ingredient"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                <com.cabral.arch.widget.ActionButton
+                    android:id="@+id/add_ingredient"
+                    android:layout_width="64dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/arch_default_margin"
+                    app:arch_ab_text="@string/design_plus"
+                    app:arch_ab_type="shape"
+                    app:layout_constraintBottom_toBottomOf="@id/bi_ingredient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/bi_ingredient" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout"

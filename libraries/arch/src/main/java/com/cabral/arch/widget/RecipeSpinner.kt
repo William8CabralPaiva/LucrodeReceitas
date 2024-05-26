@@ -22,6 +22,8 @@ class RecipeSpinner @JvmOverloads constructor(
     private val binding = ArchRecipeSpinnerBinding
         .inflate(LayoutInflater.from(context), this, true)
 
+    private var labelInput = ""
+
     init {
         bindingLayout(attrs)
     }
@@ -32,8 +34,10 @@ class RecipeSpinner @JvmOverloads constructor(
 
 
             val text = typedArray.getText(R.styleable.ArchRecipeSpinner_arch_rs_hint_text) ?: ""
-            binding.textView.hint = text
+            setLabelText(text.toString())
+
             typedArray.recycle()
+
         }
     }
 
@@ -53,46 +57,19 @@ class RecipeSpinner @JvmOverloads constructor(
         return binding.spinner.setText(text)
     }
 
-    private fun changeText() {
-//        binding.spinner.addTextChangedListener {
-//            isErrorEnabled = false
-//            error = null
-//        }
+    private fun setLabelText(text: String) {
+        binding.run {
+            labelInput = text
+            biHint.hint = labelInput
+        }
     }
 
-    fun setError(errorText: String?) {
-//        binding.biHint.run {
-//            isErrorEnabled = true
-//            error = errorText
-//        }
+    fun setError(errorText: String? = null) {
+        binding.biHint.run {
+            isErrorEnabled = true
+            error = errorText ?: "Preencha o campo $labelInput corretamente"
+        }
     }
-
-
-//    private fun hintTextColor() {
-//        binding.spinner.text?.let { input ->
-//            binding.spinner.setOnFocusChangeListener { _, hasFocus ->
-//
-//                val color = when {
-//                    (input.isNotEmpty() && !hasFocus) -> {
-//                        com.cabral.design.R.color.design_orange
-//                    }
-//
-//                    !hasFocus -> {
-//                        com.cabral.design.R.color.design_gray_dark
-//                    }
-//
-//                    else -> {
-//                        com.cabral.design.R.color.design_orange
-//                    }
-//                }
-//
-//                binding.biHint.defaultHintTextColor =
-//                    ColorStateList.valueOf(getColor(color))
-//
-//            }
-//
-//        }
-//    }
 
 
 }

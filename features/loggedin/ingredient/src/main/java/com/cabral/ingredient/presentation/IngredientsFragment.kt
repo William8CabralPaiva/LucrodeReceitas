@@ -61,11 +61,11 @@ class IngredientsFragment :
                     }
 
                     is IngredientThrowable.UnitThrowable -> {
-                        binding.biUnit.setError()
+                        binding.biUnit.setError(getString(DesignR.string.design_select_field))
                     }
 
                     is IngredientThrowable.SizeThrowable -> {
-                        binding.biVolume.setError()
+                        binding.biVolume.setError(getString(DesignR.string.design_required_field))
                     }
 
                     else -> {

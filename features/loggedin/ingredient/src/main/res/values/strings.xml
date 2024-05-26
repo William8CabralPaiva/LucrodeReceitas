@@ -1,6 +1,5 @@
 <resources>
     <string name="ingredient_click_here_to_close_modal">Clique aqui para fechar a modal</string>
-    <string name="ingredient_save">Salvar</string>
 
     <string name="ingredients_price">Preço:</string>
     <string name="ingredients_list_title">Lista de Ingredients</string>

@@ -28,6 +28,10 @@ fun IngredientArgs.toIngredient(): Ingredient {
     return Ingredient(id, name, volume, unit, price, keyDocument)
 }
 
+fun Ingredient.toIngredientArgs(): IngredientArgs {
+    return IngredientArgs(id, name, volume, unit, price, keyDocument)
+}
+
 fun MutableList<IngredientArgs>.toListIngredient(): MutableList<Ingredient>? {
     val list = mutableListOf<Ingredient>()
     forEach {
@@ -40,7 +44,8 @@ fun MutableList<IngredientArgs>.toListIngredient(): MutableList<Ingredient>? {
 fun MutableList<Ingredient>.toListIngredientArgs(): MutableList<IngredientArgs>? {
     val list = mutableListOf<IngredientArgs>()
     forEach {
-        val ingredient = IngredientArgs(it.id, it.name, it.volume, it.unit, it.price, it.keyDocument)
+        val ingredient =
+            IngredientArgs(it.id, it.name, it.volume, it.unit, it.price, it.keyDocument)
         list.add(ingredient)
     }
     return list
