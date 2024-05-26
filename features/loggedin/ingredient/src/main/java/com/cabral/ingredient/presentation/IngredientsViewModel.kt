@@ -33,14 +33,16 @@ class IngredientsViewModel(
     private val _notifySuccess = MutableLiveData<Unit>()
     val notifySuccess: LiveData<Unit> = _notifySuccess
 
-
     private val _notifyError = MutableLiveData<String>()
     val notifyError: LiveData<String> = _notifyError
 
     private var countItem = 0
 
     private var editPosition: Int? = null
-    private var editMode = false
+
+    private var editItemOnList = false
+
+    var editExistItem = false
 
     fun save() {
         addIngredientUseCase(listIngredient)
@@ -57,7 +59,7 @@ class IngredientsViewModel(
             val ingredient = validateField(name, volume, unit, price)
             if (ingredient != null) {
 
-                if (editMode) {
+                if (editItemOnList) {
                     editPosition?.let {
                         ingredient.id = it
                         listIngredient[it] = ingredient
@@ -69,7 +71,7 @@ class IngredientsViewModel(
 
                 } else {
                     listIngredient.add(ingredient)
-                    _notifySuccessAdd.postValue(ingredient.id)
+                    _notifySuccessAdd.postValue(listIngredient.size - 1)
                     countItem += 1
                 }
             }
@@ -112,29 +114,45 @@ class IngredientsViewModel(
             }
         }
 
+        val key = if (editExistItem && editItemOnList && editPosition == 0) {
+            editExistItem = false
+            editPosition?.let {
+                listIngredient[it].keyDocument
+            }
+        } else {
+            null
+        }
 
         return Ingredient(
             countItem,
             name,
             volume.toFloat(),
             unit,
-            price.toFloat()
+            price.toFloat(),
+            key
         )
 
     }
 
-    fun setEditMode(_editMode: Boolean, ingredient: Ingredient?) {
+    fun setEditMode(editMode: Boolean, ingredient: Ingredient?) {
         editPosition = if (ingredient == null) {
             null
         } else {
             listIngredient.indexOf(ingredient)
         }
-        editMode = _editMode
-        _notifyEditMode.postValue(editMode)
+        editItemOnList = editMode
+        _notifyEditMode.postValue(editItemOnList)
+    }
+
+    fun changeIngredient(ingredient: Ingredient) {
+        listIngredient.add(ingredient)
+        editPosition = 0
+        editItemOnList = true
+        _notifyEditMode.postValue(true)
     }
 
     fun getEditMode(): Boolean {
-        return editMode
+        return editItemOnList
     }
 
     private fun validateUnit(unit: String?): UnitMeasureType? {

@@ -8,10 +8,12 @@ import androidx.navigation.fragment.findNavController
 import com.cabral.arch.Redirection
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.ingredient.presentation.ListIngredientsFragmentDirections
+import com.cabral.model.IngredientArgs
 
 internal class ListIngredientNavigationImpl : ListIngredientNavigation {
-    override fun openIngredient(fragment: Fragment) {
-        val directions = ListIngredientsFragmentDirections.actionListIngredientsToIngredients()
+    override fun openIngredient(fragment: Fragment, ingredientsArgs: IngredientArgs?) {
+        val directions =
+            ListIngredientsFragmentDirections.actionListIngredientsToIngredients(ingredientsArgs)
         fragment.findNavController().navigate(directions)
     }
 

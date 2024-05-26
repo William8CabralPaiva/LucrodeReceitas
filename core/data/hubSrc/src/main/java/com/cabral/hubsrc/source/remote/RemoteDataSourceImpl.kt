@@ -106,7 +106,8 @@ class RemoteDataSourceImpl(
                     auth.signInWithEmailAndPassword(email, password).await()
                 if (signIn.user != null) {
                     val result =
-                        db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email).get().await()
+                        db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email)
+                            .get().await()
 
                     if (result.documents.isNotEmpty()) {
                         for (document in result.documents) {
@@ -348,13 +349,18 @@ class RemoteDataSourceImpl(
             val documentReferences = mutableListOf<DocumentReference>()
 
             listIngredient.forEach {
-                val newDocument =
+
+                val document = it.keyDocument?.let {
+                    db.collection(DBConstants.USER).document(key)
+                        .collection(DBConstants.INGREDIENTS).document(it)
+                } ?: run {
                     db.collection(DBConstants.USER).document(key)
                         .collection(DBConstants.INGREDIENTS).document()
-                val generatedId = newDocument.id
-                it.keyDocument = generatedId
-                documentReferences.add(newDocument)
-                batch.set(newDocument, it.toIngredientRegister())
+                }
+
+                it.keyDocument = document.id
+                documentReferences.add(document)
+                batch.set(document, it.toIngredientRegister())
             }
             batch.commit().await()
 

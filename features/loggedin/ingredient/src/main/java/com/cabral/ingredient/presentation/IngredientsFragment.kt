@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.StringRes
+import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.arch.extensions.removeEndZero
@@ -16,7 +17,9 @@ import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.allUnitMeasure
 import com.cabral.core.common.domain.model.listMeasure
 import com.cabral.ingredient.databinding.IngredientsFragmentBinding
+import com.cabral.ingredient.presentation.IngredientsFragmentArgs
 import com.cabral.ingredient.presentation.adapter.IngredientAdapter
+import com.cabral.model.toIngredient
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
@@ -32,8 +35,18 @@ class IngredientsFragment :
 
     private val navigationIngredient: ListIngredientNavigation by inject()
 
+    private val args: IngredientsFragmentArgs? by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        args?.currentIngredient?.let {
+            viewModel.editExistItem = true
+            val ingredient = it.toIngredient()
+            ingredient.setAllInputsText()
+            viewModel.changeIngredient(ingredient)
+        }
+
         initAdapter()
         initObservers()
         initListeners()
@@ -44,19 +57,19 @@ class IngredientsFragment :
             notifyErrorAdd.observe(viewLifecycleOwner) {
                 when (it) {
                     is IngredientThrowable.NameThrowable -> {
-                        binding.biIngredient.setError(it.message)
+                        binding.biIngredient.setError()
                     }
 
                     is IngredientThrowable.UnitThrowable -> {
-                        binding.biUnit.setError(it.message)
+                        binding.biUnit.setError()
                     }
 
                     is IngredientThrowable.SizeThrowable -> {
-                        binding.biVolume.setError(it.message)
+                        binding.biVolume.setError()
                     }
 
                     else -> {
-                        binding.biPrice.setError(it.message)
+                        binding.biPrice.setError()
                     }
                 }
             }

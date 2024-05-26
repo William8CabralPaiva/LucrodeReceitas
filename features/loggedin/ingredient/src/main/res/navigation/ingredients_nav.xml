@@ -19,6 +19,12 @@
     <fragment
         android:id="@+id/ingredient"
         android:name="com.cabral.ingredient.presentation.IngredientsFragment"
-        tools:layout="@layout/ingredients_fragment" />
+        tools:layout="@layout/ingredients_fragment" >
+        <argument
+            android:name="currentIngredient"
+            app:argType="com.cabral.model.IngredientArgs"
+            app:nullable="true"
+            />
+    </fragment>
 
 </navigation>

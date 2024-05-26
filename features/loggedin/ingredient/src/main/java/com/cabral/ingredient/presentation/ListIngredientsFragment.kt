@@ -8,9 +8,11 @@ import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
+import com.cabral.core.common.domain.model.toIngredientRegister
 import com.cabral.design.R
 import com.cabral.ingredient.databinding.IngredientsListFragmentBinding
 import com.cabral.ingredient.presentation.adapter.ListIngredientAdapter
+import com.cabral.model.toIngredientArgs
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.ingredient.R as IngredientR
@@ -75,7 +77,10 @@ class ListIngredientsFragment :
     private fun initAdapter() {
         adapter = ListIngredientAdapter(requireContext()).apply {
             onClick = {
-                it.name?.let { it1 -> showToast(it1) }
+                navigationIngredient.openIngredient(
+                    this@ListIngredientsFragment,
+                    it.toIngredientArgs()
+                )
             }
             onClickTrash = {
                 it.name?.let { it1 ->

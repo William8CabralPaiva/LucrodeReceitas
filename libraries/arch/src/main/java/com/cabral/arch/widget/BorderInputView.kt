@@ -29,7 +29,7 @@ class BorderInputView @JvmOverloads constructor(
 
     private var drawable: Drawable? = null
 
-    var labelInput = ""
+    private var labelInput = ""
 
     init {
         bindingLayout(attrs)
@@ -170,7 +170,7 @@ class BorderInputView @JvmOverloads constructor(
         binding.biHint.run {
             isErrorEnabled = true
             error = errorText ?: "Preencha o campo $labelInput corretamente".also {
-                binding.biTextInput.isCursorVisible=true
+                binding.biTextInput.isCursorVisible = true
             }
         }
     }
