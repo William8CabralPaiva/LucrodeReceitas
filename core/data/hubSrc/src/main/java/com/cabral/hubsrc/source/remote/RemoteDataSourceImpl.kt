@@ -16,7 +16,9 @@ import com.cabral.core.common.domain.model.toRecipeRegister
 import com.cabral.core.common.domain.model.toUserRegister
 import com.cabral.hubsrc.source.DBConstants
 import com.cabral.remote.local.RemoteDataSource
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,6 +27,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
@@ -36,6 +39,7 @@ class RemoteDataSourceImpl(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : RemoteDataSource {
     override fun addUser(user: User): Flow<Unit> = flow {
+        auth.setLanguageCode("pt-BR")
         user.name?.let { name ->
             user.email?.let { email ->
                 val userRegister = user.toUserRegister()
@@ -62,6 +66,7 @@ class RemoteDataSourceImpl(
                                     ).await()
                                         .also {
                                             if (!it.user?.email.isNullOrEmpty()) {
+                                                it.user?.sendEmailVerification()?.await()
                                                 emit(Unit)
                                             } else {
                                                 throw UserThrowable.AddUserErrorThrowable()
@@ -81,52 +86,56 @@ class RemoteDataSourceImpl(
 
     }.flowOn(dispatcher)
 
-//    override suspend fun addUser2(user: User) {
-//        withContext(dispatcher) {
-//            db.collection(DBConstants.user).whereEqualTo(DBConstants.EMAIL, user.email)
-//                .whereEqualTo(DBConstants.PASSWORD, user.password).get()
-//                .addOnFailureListener {
-//                    throw (UserThrowable.AddUserErrorThrowable())
-//                }
-//                .addOnSuccessListener {
-//                    if (it.size() == 0) {
-//                        db.collection(DBConstants.user).document().set(user)
-//                    } else {
-//                        throw (UserThrowable.AddUserThrowable())
-//                    }
-//                }
-//
-//        }
-//    }
-
     override fun login(user: User): Flow<User> = flow {
+        auth.setLanguageCode("pt-BR")
         user.email?.let { email ->
             user.password?.let { password ->
-                val signIn =
-                    auth.signInWithEmailAndPassword(email, password).await()
-                if (signIn.user != null) {
-                    val result =
-                        db.collection(DBConstants.USER).whereEqualTo(DBConstants.EMAIL, user.email)
-                            .get().await()
-
-                    if (result.documents.isNotEmpty()) {
-                        for (document in result.documents) {
-                            user.key = document.id
-                        }
-
-                        if (!user.key.isNullOrEmpty()) {
-                            emit(user)
-                        }
-                    } else {
-                        throw UserThrowable.UnknownUserThrowable()
+                try {
+                    val signIn =
+                        auth.signInWithEmailAndPassword(email, password).await()
+                    signIn.user?.let {
+                        validateUser(it, signIn, user)
                     }
-                } else {
-                    throw UserThrowable.UnknownUserThrowable()
+                } catch (_: Exception) {
+                    throw UserThrowable.WrongUserPassword()
                 }
+
             }
         }
 
     }.flowOn(dispatcher)
+
+    private suspend fun FlowCollector<User>.validateUser(
+        it: FirebaseUser,
+        signIn: AuthResult,
+        user: User
+    ) {
+        if (it.isEmailVerified) {
+            if (signIn.user != null) {
+                val result =
+                    db.collection(DBConstants.USER)
+                        .whereEqualTo(DBConstants.EMAIL, user.email)
+                        .get().await()
+
+                if (result.documents.isNotEmpty()) {
+                    for (document in result.documents) {
+                        user.key = document.id
+                    }
+
+                    if (!user.key.isNullOrEmpty()) {
+                        emit(user)
+                    }
+                } else {
+                    throw UserThrowable.UnknownUserThrowable()
+                }
+            } else {
+                throw UserThrowable.UnknownUserThrowable()
+            }
+        } else {
+            signIn.user?.sendEmailVerification()?.await()
+            throw UserThrowable.CheckEmailThrowable()
+        }
+    }
 
     override fun autoLogin(key: String): Flow<User> = flow<User> {
         val user = User()
@@ -150,23 +159,6 @@ class RemoteDataSourceImpl(
                 throw UserThrowable.UnknownUserThrowable()
             }
         }
-
-//        val user = User()
-//        val signIn =
-//            auth.signInWithEmailAndPassword(user.email, user.password).await()
-//        if (signIn.user != null) {
-//            val result = db.collection(DBConstants.user).document(key).get().await()
-//            result.getByUserKey(user).also {
-//                if (!user.email.isNullOrEmpty()) {
-//                    user.key = key
-//                    emit(user)
-//                } else {
-//                    throw UserThrowable.UnknownUserThrowable()
-//                }
-//            }
-//        } else {
-//            throw UserThrowable.UnknownUserThrowable()
-//        }
 
     }.flowOn(dispatcher)
 
@@ -199,7 +191,8 @@ class RemoteDataSourceImpl(
 
     override suspend fun forgotPassword(email: String) {
         withContext(dispatcher) {
-            auth.sendPasswordResetEmail(email).await()
+            auth.setLanguageCode("pt-BR")
+            auth.sendPasswordResetEmail(email)
         }
     }
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ingredient_add_nav"
+    app:startDestination="@id/ingredient">
+
+    <fragment
+        android:id="@+id/ingredient"
+        android:name="com.cabral.ingredient.presentation.IngredientsFragment"
+        tools:layout="@layout/ingredients_fragment" >
+    </fragment>
+</navigation>

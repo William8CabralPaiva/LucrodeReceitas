@@ -5,10 +5,10 @@
     android:id="@+id/logged_nav"
     app:startDestination="@+id/list_recipe_nav">
 
-
     <include app:graph="@navigation/recipe_nav"/>
     <include app:graph="@navigation/ingredients_nav" />
     <include app:graph="@navigation/profile_nav" />
+    <include app:graph="@navigation/ingredient_add_nav" />
 
 
 </navigation>

@@ -36,6 +36,8 @@ class RecipeSpinner @JvmOverloads constructor(
             val text = typedArray.getText(R.styleable.ArchRecipeSpinner_arch_rs_hint_text) ?: ""
             setLabelText(text.toString())
 
+            changeText()
+
             typedArray.recycle()
 
         }
@@ -61,6 +63,15 @@ class RecipeSpinner @JvmOverloads constructor(
         binding.run {
             labelInput = text
             biHint.hint = labelInput
+        }
+    }
+
+    private fun changeText() {
+        binding.spinner.doOnTextChanged { _, _, _, _ ->
+            binding.biHint.run {
+                isErrorEnabled = false
+                error = null
+            }
         }
     }
 

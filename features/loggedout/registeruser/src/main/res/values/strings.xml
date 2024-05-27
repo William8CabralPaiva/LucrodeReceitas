@@ -3,4 +3,5 @@
     <string name="register_user_register">Cadastrar</string>
     <string name="register_user_already_exists">Usuário ja Cadastrado</string>
     <string name="register_user_success">Usuário criado com Sucesso!</string>
+    <string name="register_user_check_email_conclude_register">Verifique o E-mail para concluir o cadastro</string>
 </resources>

@@ -17,7 +17,6 @@ import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.allUnitMeasure
 import com.cabral.core.common.domain.model.listMeasure
 import com.cabral.ingredient.databinding.IngredientsFragmentBinding
-import com.cabral.ingredient.presentation.IngredientsFragmentArgs
 import com.cabral.ingredient.presentation.adapter.IngredientAdapter
 import com.cabral.model.toIngredient
 import org.koin.android.ext.android.inject
@@ -40,16 +39,22 @@ class IngredientsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        args?.currentIngredient?.let {
-            viewModel.editExistItem = true
-            val ingredient = it.toIngredient()
-            ingredient.setAllInputsText()
-            viewModel.changeIngredient(ingredient)
-        }
-
+        initArgs()
         initAdapter()
         initObservers()
         initListeners()
+    }
+
+    private fun initArgs(){
+        try {
+            args?.currentIngredient?.let {
+                viewModel.editExistItem = true
+                val ingredient = it.toIngredient()
+                ingredient.setAllInputsText()
+                viewModel.changeIngredient(ingredient)
+            }
+        } catch (_: Exception) {
+        }
     }
 
     private fun initObservers() {

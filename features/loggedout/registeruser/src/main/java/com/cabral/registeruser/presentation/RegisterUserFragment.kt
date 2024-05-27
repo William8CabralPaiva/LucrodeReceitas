@@ -65,7 +65,7 @@ class RegisterUserFragment : Fragment() {
 
             notifySuccess.observe(viewLifecycleOwner) {
                 binding.abRegister.finishLoading(true)
-                showToast(R.string.register_user_success)
+                showToast(R.string.register_user_check_email_conclude_register)
                 requireActivity().onBackPressed()
             }
 

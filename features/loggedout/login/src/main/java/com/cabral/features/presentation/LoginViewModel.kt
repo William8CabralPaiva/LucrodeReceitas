@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -46,8 +47,8 @@ class LoginViewModel(
     fun login(email: String?, password: String?) {
         val user = User(email = email, password = password)
 
-        //_notifyStartLoading.postValue(Unit)
         loginUseCase(user)
+            //.onStart { _notifyStartLoading.postValue(Unit) }
             .catch {
                 _notifyError.postValue(it.message)
             }.onEach {
@@ -72,38 +73,13 @@ class LoginViewModel(
     fun forgotPassword(email: String?) {
         viewModelScope.launch {
             try {
-                if (EmailUtils.validateEmail(email)) {
+                if (email != null && EmailUtils.validateEmail(email)) {
+                    forgotPasswordUseCase(email)
                     _notifyForgotPassword.postValue(Unit)
                 }
-            }catch (t:UserThrowable){
+            } catch (t: UserThrowable) {
                 _notifyErrorForgotPassword.postValue(t.message)
             }
-//            if (EmailUtils.validateEmail(email)) {
-//                //forgotPasswordUseCase(email)
-//                //_notifyForgotPassword.postValue(Unit)
-//            }
         }
-    }
-
-    fun getUser(user: User) {
-//        addUserUseCase(user)
-//            .flowOn(dispatcher)
-//            .onStart {}//start o loader
-//            .onCompletion { }//desliga laoder
-//            .catch { }//exception
-//            .onEach { }//sucesso
-//            .launchIn(viewModelScope)
-//
-//        viewModelScope.launch {
-//            repository.addUser(user)
-//                .flowOn(dispatcher)
-//                .onStart {}
-//                .onCompletion { }
-//                .catch { }
-//                .collect {
-//
-//                }
-        //collect
-//        }
     }
 }

@@ -8,6 +8,16 @@ sealed class UserThrowable(cause: Throwable?) : Throwable(cause) {
         throwable: Throwable? = null
     ) : UserThrowable(throwable)
 
+    class CheckEmailThrowable(
+        override val message: String? = "Verifique o seu email, e tente fazer o login novamente!",
+        throwable: Throwable? = null
+    ) : UserThrowable(throwable)
+
+    class WrongUserPassword(
+        override val message: String? = "E-mail ou senha incorretos",
+        throwable: Throwable? = null
+    ) : UserThrowable(throwable)
+
     class AddUserErrorThrowable(
         override val message: String? = "Erro ao cadastrar usuário",
         throwable: Throwable? = null

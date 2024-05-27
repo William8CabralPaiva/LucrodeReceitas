@@ -49,7 +49,7 @@ class RecipeAddEditIngredientFragmentViewModel(
 
     private var editMode = false
 
-    var editPosition: Int? = null
+    private var editPosition: Int? = null
 
     fun setEditMode(_editMode: Boolean, ingredient: Ingredient?) {
         ingredient?.keyDocument?.let {
@@ -65,9 +65,6 @@ class RecipeAddEditIngredientFragmentViewModel(
         return editMode
     }
 
-    init {
-        getAllIngredients()
-    }
 
     fun prepareLists() {
         listAddIngredients = mutableListOf()

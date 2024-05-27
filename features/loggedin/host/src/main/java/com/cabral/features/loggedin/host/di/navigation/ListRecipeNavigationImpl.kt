@@ -1,11 +1,13 @@
 package com.cabral.features.loggedin.host.di.navigation
 
+import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.cabral.core.ListRecipeNavigation
+import com.cabral.features.loggedin.host.R
 import com.cabral.model.RecipeArgs
 import com.cabral.recipe.presentation.ListRecipeFragmentDirections
 import com.cabral.recipe.presentation.RecipeFragmentDirections
@@ -16,6 +18,11 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
     override fun openRecipe(fragment: Fragment, recipeArgs: RecipeArgs?) {
         val directions = ListRecipeFragmentDirections.actionListRecipeToRecipe(recipeArgs)
         fragment.findNavController().navigate(directions)
+    }
+
+    override fun openIngredient(fragment: Fragment) {
+        val id = com.cabral.ingredient.R.id.ingredient_add_nav
+        fragment.findNavController().navigate(id)
     }
 
     override fun backToRecipeFragment(fragment: Fragment, recipeArgs: RecipeArgs?) {
