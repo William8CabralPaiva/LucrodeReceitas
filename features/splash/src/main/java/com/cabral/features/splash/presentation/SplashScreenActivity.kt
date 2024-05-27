@@ -2,8 +2,6 @@ package com.cabral.features.splash.presentation
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.cabral.arch.getUserKey
 import com.cabral.core.LoggedNavigation
@@ -36,7 +34,6 @@ class SplashScreenActivity : AppCompatActivity() {
         viewModel.notifyLogged.observe(this) {
             if (it) {
                 navigationLogged.openActivityLogged(this)
-                //navigationNotLogged.openNotLogged(this)
             } else {
                 navigationNotLogged.openNotLogged(this)
             }

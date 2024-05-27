@@ -143,18 +143,7 @@ class RemoteDataSourceImpl(
         result.getByUserKey(user).also {
             if (!user.email.isNullOrEmpty()) {
                 user.key = key
-                user.email?.let { email ->
-                    user.password?.let { password ->
-                        val signIn =
-                            auth.signInWithEmailAndPassword(email, password).await()
-                        if (signIn.user != null) {
-                            emit(user)
-                        } else {
-                            throw UserThrowable.UnknownUserThrowable()
-                        }
-                        emit(user)
-                    }
-                }
+                emit(user)
             } else {
                 throw UserThrowable.UnknownUserThrowable()
             }

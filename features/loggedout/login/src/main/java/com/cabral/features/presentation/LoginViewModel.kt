@@ -28,7 +28,6 @@ class LoginViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-
     private val _notifySuccess = MutableLiveData<User>()
     val notifySuccess: LiveData<User> = _notifySuccess
 

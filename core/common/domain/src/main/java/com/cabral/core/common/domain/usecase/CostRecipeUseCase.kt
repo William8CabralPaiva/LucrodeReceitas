@@ -24,8 +24,8 @@ class CostRecipeUseCase(private val repository: IngredientRepository) {
             throw Throwable()
         }
 
-        recipe.ingredientList?.forEach {
-            result.collect { costs ->
+        result.collect { costs ->
+            recipe.ingredientList?.forEach {
                 costs.forEach { itemCost ->
                     if (it.keyDocument == itemCost.keyDocument) {
                         val ingredientCosts = IngredientCosts()
