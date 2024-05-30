@@ -22,8 +22,9 @@
     </style>
 
     <style name="DesignHandWriting" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/design_black</item>
+        <item name="android:lineSpacingExtra">18sp</item>
         <item name="fontFamily">@font/design_dancing_script_bold</item>
     </style>
 

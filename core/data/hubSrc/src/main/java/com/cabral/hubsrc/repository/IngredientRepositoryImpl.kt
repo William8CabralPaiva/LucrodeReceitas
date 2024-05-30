@@ -20,8 +20,4 @@ class IngredientRepositoryImpl(
         return remoteDataSource.deleteIngredient(ingredient)
     }
 
-    override fun changeIngredient(ingredient: Ingredient): Flow<Unit> {
-        return remoteDataSource.changeIngredient(ingredient)
-    }
-
 }
