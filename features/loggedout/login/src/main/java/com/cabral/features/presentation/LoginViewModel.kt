@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -34,6 +35,9 @@ class LoginViewModel(
     private val _notifyStartLoading = MutableLiveData<Unit>()
     val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
 
+    private val _notifyStopLoading = MutableLiveData<Unit>()
+    val notifyStopLoading: LiveData<Unit> = _notifyStopLoading
+
     private val _notifyError = MutableLiveData<String>()
     val notifyError: LiveData<String> = _notifyError
 
@@ -47,13 +51,13 @@ class LoginViewModel(
         val user = User(email = email, password = password)
 
         loginUseCase(user)
-            //.onStart { _notifyStartLoading.postValue(Unit) }
+            .onStart { _notifyStartLoading.postValue(Unit) }
             .catch {
                 _notifyError.postValue(it.message)
             }.onEach {
                 SingletonUser.getInstance().setUser(it)
                 _notifySuccess.postValue(user)
-            }
+            }.onCompletion { _notifyStopLoading.postValue(Unit) }
             .launchIn(viewModelScope)
     }
 

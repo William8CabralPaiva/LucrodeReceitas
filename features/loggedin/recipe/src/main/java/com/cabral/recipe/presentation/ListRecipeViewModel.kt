@@ -34,6 +34,10 @@ class ListRecipeViewModel(
 
     var listRecipe = mutableListOf<RecipeProfitPrice?>()
 
+    init {
+        getAllRecipe()
+    }
+
     fun getAllRecipe() {
         getListRecipe().onStart { _notifyStartLoading.postValue(Unit) }.catch {
             _notifyEmptyList.postValue(Unit)

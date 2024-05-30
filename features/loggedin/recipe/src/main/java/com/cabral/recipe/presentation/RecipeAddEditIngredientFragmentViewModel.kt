@@ -32,6 +32,9 @@ class RecipeAddEditIngredientFragmentViewModel(
     private val _notifyError = MutableLiveData<String>()
     val notifyError: LiveData<String> = _notifyError
 
+    private val _notifyErrorSpinner = MutableLiveData<Unit>()
+    val notifyErrorSpinner: LiveData<Unit> = _notifyErrorSpinner
+
     private val _notifyShowToast = MutableLiveData<Int>()
     val notifyShowToast: LiveData<Int> = _notifyShowToast
 
@@ -181,7 +184,8 @@ class RecipeAddEditIngredientFragmentViewModel(
                 ingredient?.name == name
             }
         } catch (_: Exception) {
-            null//todo ver acontece quando o item é invalido
+            _notifyErrorSpinner.postValue(Unit)
+            null
         }
     }
 

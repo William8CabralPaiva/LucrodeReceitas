@@ -1,17 +1,14 @@
 package com.cabral.arch.widget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.AutoCompleteTextView
 import android.widget.FrameLayout
-import android.widget.Spinner
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.cabral.arch.R
-import com.cabral.arch.databinding.ArchActionButtonBinding
 import com.cabral.arch.databinding.ArchRecipeSpinnerBinding
+import com.cabral.design.R.string as DesignR
 
 class RecipeSpinner @JvmOverloads constructor(
     context: Context,
@@ -31,7 +28,6 @@ class RecipeSpinner @JvmOverloads constructor(
     private fun bindingLayout(attrs: AttributeSet?) {
         attrs?.let {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArchRecipeSpinner)
-
 
             val text = typedArray.getText(R.styleable.ArchRecipeSpinner_arch_rs_hint_text) ?: ""
             setLabelText(text.toString())
@@ -77,8 +73,10 @@ class RecipeSpinner @JvmOverloads constructor(
 
     fun setError(errorText: String? = null) {
         binding.biHint.run {
+            val text =
+                String.format(context.getString(DesignR.design_fill_field), labelInput)
             isErrorEnabled = true
-            error = errorText ?: "Preencha o campo $labelInput corretamente"
+            error = errorText ?: text
         }
     }
 

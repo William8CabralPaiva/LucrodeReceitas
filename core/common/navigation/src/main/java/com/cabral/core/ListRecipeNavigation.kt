@@ -9,10 +9,20 @@ interface ListRecipeNavigation {
     fun openIngredient(fragment: Fragment)
     fun backToRecipeFragment(fragment: Fragment, recipeArgs: RecipeArgs?)
 
-    fun observeRecipeChangePreviousFragment(
+    fun observeRecipeChangeOnRecipeAddEditFragment(
         fragment: Fragment,
         lifecycleOwner: LifecycleOwner,
         insideFunction: (recipeArgs: RecipeArgs?) -> Unit
+    )
+
+    fun observeRecipeChangeOnListRecipeFragment(
+        fragment: Fragment,
+        lifecycleOwner: LifecycleOwner,
+        insideFunction: (hasChanged: Boolean?) -> Unit
+    )
+
+    fun observeListRecipeHasChanged(
+        fragment: Fragment
     )
 
     fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?)

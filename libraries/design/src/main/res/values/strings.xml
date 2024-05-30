@@ -44,4 +44,5 @@
     
     <string name="design_required_field">Campo obrigatório</string>
     <string name="design_select_field">Selecione um item</string>
+    <string name="design_fill_field">Preencha o campo %1$s corretamente</string>
 </resources>

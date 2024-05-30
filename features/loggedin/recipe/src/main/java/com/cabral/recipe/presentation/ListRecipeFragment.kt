@@ -28,11 +28,10 @@ class ListRecipeFragment :
         super.onViewCreated(view, savedInstanceState)
         initClicks()
         initObservers()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getAllRecipe()
+        navigationRecipe.observeRecipeChangeOnListRecipeFragment(this, viewLifecycleOwner) { it ->
+            viewModel.getAllRecipe()
+        }
     }
 
     private fun initObservers() {
@@ -52,7 +51,7 @@ class ListRecipeFragment :
             }
 
             notifySuccessDelete.observe(viewLifecycleOwner) {
-                 it.deleteItem()
+                it.deleteItem()
             }
 
             notifyErrorDelete.observe(viewLifecycleOwner) {

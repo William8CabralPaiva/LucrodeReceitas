@@ -31,6 +31,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
             notifySuccess.observe(viewLifecycleOwner) {
                 showToast(R.string.recipe_success_save)
                 binding.abAdd.setAlpha(false)
+                navigation.observeListRecipeHasChanged(this@RecipeFragment)
             }
 
             notifyError.observe(viewLifecycleOwner) {
@@ -60,7 +61,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
         }
 
 
-        navigation.observeRecipeChangePreviousFragment(this,viewLifecycleOwner) { recipe ->
+        navigation.observeRecipeChangeOnRecipeAddEditFragment(this, viewLifecycleOwner) { recipe ->
             backFromAddRecipeEdit(recipe)
         }
 

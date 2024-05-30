@@ -66,6 +66,10 @@ class LoginFragment : Fragment() {
                 binding.acEnter.startLoading()
             }
 
+            notifyStopLoading.observe(viewLifecycleOwner){
+                binding.acEnter.stopLoading()
+            }
+
             notifyError.observe(viewLifecycleOwner) {
                 showToast(it)
             }
@@ -110,6 +114,8 @@ class LoginFragment : Fragment() {
         binding.registerUser.setOnClickListener {
             navigationNotLogged.openUserRegister(this)
         }
+
+
     }
 
     private fun forgotPassword() {
@@ -119,7 +125,7 @@ class LoginFragment : Fragment() {
     private fun login() {
         try {
             if (EmailUtils.validateEmail(binding.biEmail.getText()) &&
-                PasswordUtils.validatePassword(binding.biPassword.getText())
+                PasswordUtils.validatePasswordLogin(binding.biPassword.getText())
             ) {
                 viewModel.login(binding.biEmail.getText(), binding.biPassword.getText())
             }

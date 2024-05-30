@@ -3,7 +3,6 @@ package com.cabral.arch.widget
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -16,7 +15,7 @@ import com.cabral.arch.R
 import com.cabral.arch.databinding.ArchBorderInputViewBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-
+import com.cabral.design.R.string as DesignR
 
 class BorderInputView @JvmOverloads constructor(
     context: Context,
@@ -168,13 +167,15 @@ class BorderInputView @JvmOverloads constructor(
 
     fun setError(errorText: String? = null) {
         binding.biHint.run {
+            val text =
+                String.format(
+                    context.getString(DesignR.design_fill_field),
+                    labelInput
+                )
             isErrorEnabled = true
-            error = errorText ?: "Preencha o campo $labelInput corretamente".also {
-                binding.biTextInput.isCursorVisible = true
-            }
+            error = errorText ?: text
         }
     }
-
 
     private fun getColor(@ColorRes color: Int): Int {
         return ContextCompat.getColor(context, color)

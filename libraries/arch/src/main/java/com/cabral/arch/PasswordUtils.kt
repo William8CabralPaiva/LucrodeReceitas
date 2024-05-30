@@ -5,7 +5,7 @@ import com.cabral.arch.extensions.UserThrowable
 object PasswordUtils {
     fun validatePassword(password: String?): Boolean {
         val size = 8
-        if(password!=null) {
+        if (password != null) {
             val hasUpperCase = password.any { it.isUpperCase() }
             val hasLowerCase = password.any { it.isLowerCase() }
             val hasNumber = password.any { it.isDigit() }
@@ -30,11 +30,20 @@ object PasswordUtils {
             if (!hasEspecialCharacter) {
                 throw UserThrowable.AuthenticatePasswordThrowable("A senha deve conter pelo menos um caractere especial.")
             }
-        }else{
+        } else {
             throw UserThrowable.AuthenticatePasswordThrowable("A senha deve ter pelo menos $size caracteres.")
         }
 
         return true
 
+    }
+
+    fun validatePasswordLogin(password: String?): Boolean {
+        password?.let {
+            if (password.isNotEmpty()) {
+                return true
+            }
+        }
+        throw UserThrowable.AuthenticatePasswordThrowable("Preencha o campo senha corretamente")
     }
 }

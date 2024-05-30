@@ -15,6 +15,8 @@ import com.cabral.recipe.presentation.RecipeFragmentDirections
 internal class ListRecipeNavigationImpl : ListRecipeNavigation {
 
     val SAVE_RECIPE = "SAVE_RECIPE"
+    val UPDATE_LIST_RECIPE = "UPDATE_LIST_RECIPE"
+
     override fun openRecipe(fragment: Fragment, recipeArgs: RecipeArgs?) {
         val directions = ListRecipeFragmentDirections.actionListRecipeToRecipe(recipeArgs)
         fragment.findNavController().navigate(directions)
@@ -35,22 +37,40 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
         }
     }
 
-    override fun observeRecipeChangePreviousFragment(
+    override fun observeRecipeChangeOnRecipeAddEditFragment(
         fragment: Fragment,
         lifecycleOwner: LifecycleOwner,
         insideFunction: (recipeArgs: RecipeArgs?) -> Unit
+    ) {
+        backScreenAction(fragment, insideFunction, lifecycleOwner, SAVE_RECIPE)
+    }
+
+    override fun observeRecipeChangeOnListRecipeFragment(
+        fragment: Fragment,
+        lifecycleOwner: LifecycleOwner,
+        insideFunction: (hasChanged: Boolean?) -> Unit
+    ) {
+        backScreenAction(fragment, insideFunction, lifecycleOwner, UPDATE_LIST_RECIPE)
+    }
+
+
+    private fun <T> backScreenAction(
+        fragment: Fragment,
+        insideFunction: (objectParam: T?) -> Unit,
+        lifecycleOwner: LifecycleOwner,
+        key: String
     ) {
         val navBackStackEntry =
             fragment.findNavController().currentBackStackEntry
 
         val observer = LifecycleEventObserver { _, event ->
-            val contain = navBackStackEntry?.savedStateHandle?.contains(SAVE_RECIPE)
+            val contain = navBackStackEntry?.savedStateHandle?.contains(key)
             contain?.let {
                 if (event == Lifecycle.Event.ON_RESUME && contain) {
-                    val recipe =
-                        navBackStackEntry.savedStateHandle.get<RecipeArgs>(SAVE_RECIPE)
-                    navBackStackEntry.savedStateHandle.remove<RecipeArgs>(SAVE_RECIPE)
-                    insideFunction(recipe)
+                    val obj =
+                        navBackStackEntry.savedStateHandle.get<T>(key)
+                    navBackStackEntry.savedStateHandle.remove<T>(key)
+                    insideFunction(obj)
                 }
             }
         }
@@ -62,6 +82,48 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
             }
 
         })
+    }
+
+//    override fun observeRecipeChangeOnRecipeFragment(
+//        fragment: Fragment,
+//        lifecycleOwner: LifecycleOwner,
+//        insideFunction: (hasChanged: Boolean) -> Unit
+//    ) {
+//
+//
+//        val navBackStackEntry =
+//            fragment.findNavController().currentBackStackEntry
+//
+//        val observer = LifecycleEventObserver { _, event ->
+//            val contain = navBackStackEntry?.savedStateHandle?.contains(UPDATE_LIST_RECIPE)
+//            contain?.let {
+//                if (event == Lifecycle.Event.ON_RESUME && contain) {
+//                    val hasChanged =
+//                        navBackStackEntry.savedStateHandle.get<Boolean>(UPDATE_LIST_RECIPE)
+//                    navBackStackEntry.savedStateHandle.remove<Boolean>(UPDATE_LIST_RECIPE)
+//                    hasChanged?.let {
+//                        insideFunction(it)
+//                    }
+//                }
+//            }
+//        }
+//        lifecycleOwner.lifecycle.addObserver(observer)
+//        lifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
+//
+//            if (event == Lifecycle.Event.ON_DESTROY) {
+//                lifecycleOwner.lifecycle.removeObserver(observer)
+//            }
+//
+//        })
+//    }
+
+    override fun observeListRecipeHasChanged(fragment: Fragment) {
+        fragment.findNavController().run {
+            previousBackStackEntry?.savedStateHandle?.set(
+                UPDATE_LIST_RECIPE,
+                true
+            )
+        }
     }
 
     override fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?) {

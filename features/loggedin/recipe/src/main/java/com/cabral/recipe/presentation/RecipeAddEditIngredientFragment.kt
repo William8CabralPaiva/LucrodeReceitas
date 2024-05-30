@@ -3,7 +3,6 @@ package com.cabral.recipe.presentation
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
@@ -38,6 +37,7 @@ class RecipeAddEditIngredientFragment :
         super.onResume()
         viewModel.getAllIngredients()
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
@@ -50,21 +50,15 @@ class RecipeAddEditIngredientFragment :
         }
     }
 
-//    private fun initOnBackPress() {
-//        val callback = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                isEnabled = false
-//
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-//    }
-
     private fun initObservers() {
         viewModel.run {
 
             notifyError.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 2
+            }
+
+            notifyErrorSpinner.observe(viewLifecycleOwner){
+                binding.biIngredient.setError()
             }
 
             notifyListIngredient.observe(viewLifecycleOwner) {
