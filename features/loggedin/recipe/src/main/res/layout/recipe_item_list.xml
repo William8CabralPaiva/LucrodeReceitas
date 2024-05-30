@@ -60,7 +60,7 @@
                 app:layout_constraintVertical_bias="1.0" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/suggestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -68,6 +68,8 @@
                 android:text="@string/recipe_suggestion"
                 android:textColor="@color/design_orange"
                 android:textSize="16sp"
+                android:visibility="invisible"
+                tools:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/recipe_name"
                 app:layout_constraintTop_toBottomOf="@+id/recipe_name" />
@@ -80,9 +82,11 @@
                 android:paddingStart="5dp"
                 android:textColor="@color/design_orange"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toTopOf="@+id/textView2"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/suggestion"
+                app:layout_constraintStart_toEndOf="@+id/suggestion"
+                app:layout_constraintTop_toTopOf="@+id/suggestion"
                 tools:text="R$ 50,00" />
 
             <ImageView

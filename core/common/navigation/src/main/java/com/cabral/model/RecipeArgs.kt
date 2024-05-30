@@ -1,11 +1,10 @@
 package com.cabral.model
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import androidx.annotation.Keep
-import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.model.RecipeProfitPrice
+import kotlinx.parcelize.Parcelize
 
 @Keep
 @Parcelize
@@ -25,5 +24,25 @@ fun RecipeArgs.toRecipe(): Recipe {
 
 fun Recipe.toRecipeArgs(): RecipeArgs {
     val listIngredient = ingredientList
-    return RecipeArgs(id, name, volumeUnit, expectedProfit, listIngredient?.toIngredientRecipeRegisterArgs(), keyDocument)
+    return RecipeArgs(
+        id,
+        name,
+        volumeUnit,
+        expectedProfit,
+        listIngredient?.toIngredientRecipeRegisterArgs(),
+        keyDocument
+    )
 }
+
+fun RecipeProfitPrice.toRecipeArgs(): RecipeArgs {
+    val listIngredient = ingredientList
+    return RecipeArgs(
+        id,
+        name,
+        volumeUnit,
+        expectedProfit,
+        listIngredient?.toIngredientRecipeRegisterArgs(),
+        keyDocument
+    )
+}
+

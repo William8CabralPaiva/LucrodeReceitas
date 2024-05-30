@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.model.RecipeProfitPrice
 import com.cabral.recipe.adapter.RecipeViewHolder.Companion.typeViewHolder
 
 class RecipeAdapter(private val context: Context) :
-    ListAdapter<Recipe, RecipeViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<RecipeProfitPrice, RecipeViewHolder>(DIFF_CALLBACK) {
 
-    lateinit var onClick: (Recipe) -> Unit
-    lateinit var onClickTrash: (Recipe) -> Unit
-    lateinit var onClickEdit: (Recipe) -> Unit
+    lateinit var onClick: (RecipeProfitPrice) -> Unit
+    lateinit var onClickTrash: (RecipeProfitPrice) -> Unit
+    lateinit var onClickEdit: (RecipeProfitPrice) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         return typeViewHolder(parent, context, viewType)
@@ -29,17 +29,17 @@ class RecipeAdapter(private val context: Context) :
 
     companion object {
         private val DIFF_CALLBACK =
-            object : DiffUtil.ItemCallback<Recipe>() {
+            object : DiffUtil.ItemCallback<RecipeProfitPrice>() {
                 override fun areItemsTheSame(
-                    oldItem: Recipe,
-                    newItem: Recipe
+                    oldItem: RecipeProfitPrice,
+                    newItem: RecipeProfitPrice
                 ): Boolean {
                     return oldItem.name == newItem.name
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: Recipe,
-                    newItem: Recipe
+                    oldItem: RecipeProfitPrice,
+                    newItem: RecipeProfitPrice
                 ): Boolean {
                     return oldItem == newItem
                 }

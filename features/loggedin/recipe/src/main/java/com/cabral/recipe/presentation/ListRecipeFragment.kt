@@ -7,7 +7,7 @@ import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
-import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.model.RecipeProfitPrice
 import com.cabral.design.R
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.adapter.RecipeAdapter
@@ -52,7 +52,7 @@ class ListRecipeFragment :
             }
 
             notifySuccessDelete.observe(viewLifecycleOwner) {
-                it.deleteItem()
+                // it.deleteItem()
             }
 
             notifyErrorDelete.observe(viewLifecycleOwner) {
@@ -63,7 +63,7 @@ class ListRecipeFragment :
         }
     }
 
-    private fun Recipe.deleteItem() {
+    private fun RecipeProfitPrice.deleteItem() {
         val position = viewModel.listRecipe.indexOf(this)
         if (position >= 0) {
             adapter.notifyItemRemoved(position)

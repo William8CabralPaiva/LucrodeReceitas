@@ -42,7 +42,6 @@ class RecipeAddEditIngredientFragment :
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initArgs()
-        initOnBackPress()
     }
 
     private fun initArgs() {
@@ -51,17 +50,15 @@ class RecipeAddEditIngredientFragment :
         }
     }
 
-    private fun initOnBackPress() {
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                isEnabled = false
-                navigation.backToRecipeFragment(
-                    this@RecipeAddEditIngredientFragment, null
-                )
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
-    }
+//    private fun initOnBackPress() {
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                isEnabled = false
+//
+//            }
+//        }
+//        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+//    }
 
     private fun initObservers() {
         viewModel.run {

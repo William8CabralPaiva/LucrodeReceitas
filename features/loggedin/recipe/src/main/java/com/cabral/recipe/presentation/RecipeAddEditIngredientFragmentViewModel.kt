@@ -66,7 +66,7 @@ class RecipeAddEditIngredientFragmentViewModel(
     }
 
 
-    fun prepareLists() {
+    private fun prepareLists() {
         listAddIngredients = mutableListOf()
         recipe.ingredientList?.forEach { ingredient ->
             listAllIngredients.forEach { itemRecipe ->
@@ -181,7 +181,7 @@ class RecipeAddEditIngredientFragmentViewModel(
                 ingredient?.name == name
             }
         } catch (_: Exception) {
-            null
+            null//todo ver acontece quando o item é invalido
         }
     }
 

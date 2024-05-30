@@ -28,3 +28,18 @@ fun MutableList<Ingredient?>.toIngredientRecipeRegisterList(): MutableList<Ingre
 fun Ingredient.toIngredientRecipeRegister(): IngredientRecipeRegister {
     return IngredientRecipeRegister(keyDocument, volume)
 }
+
+fun Ingredient.convertToUnit(): Ingredient {
+    when (unit) {
+        UnitMeasureType.KG.unit -> {
+            unit = UnitMeasureType.G.unit
+            volume = volume?.times(1000)
+        }
+
+        UnitMeasureType.L.unit -> {
+            unit = UnitMeasureType.ML.unit
+            volume = volume?.times(1000)
+        }
+    }
+    return this
+}

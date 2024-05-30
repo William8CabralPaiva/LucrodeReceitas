@@ -6,22 +6,26 @@ import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.IngredientRegister
 import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.model.RecipeProfitPrice
 import com.cabral.core.common.domain.model.RecipeRegister
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.model.UserRegister
 import com.cabral.core.common.domain.model.toIngredient
 import com.cabral.core.common.domain.model.toIngredientRegister
+import com.cabral.core.common.domain.model.toListRecipeProfitPrice
 import com.cabral.core.common.domain.model.toRecipe
 import com.cabral.core.common.domain.model.toRecipeRegister
 import com.cabral.core.common.domain.model.toUserRegister
 import com.cabral.hubsrc.source.DBConstants
 import com.cabral.remote.local.RemoteDataSource
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -215,11 +219,12 @@ class RemoteDataSourceImpl(
         return ingredient
     }
 
-    override fun getAllRecipe(): Flow<List<Recipe>> = flow {
+    override fun getAllRecipes(): Flow<List<RecipeProfitPrice>> = flow {
         SingletonUser.getInstance().getKey()?.let { key ->
             val query =
                 db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).get()
             query.await()
+
             val list = mutableListOf<Recipe>()
 
             if (query.isSuccessful) {
@@ -234,7 +239,19 @@ class RemoteDataSourceImpl(
                         id += 1
                     }
                 }
-                emit(list)
+
+                val queryIngredient =
+                    db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
+                        .get()
+                queryIngredient.await()
+
+                val ingredientList = getIngredientList(queryIngredient)
+
+                val listRecipeProfitExpected = list.toListRecipeProfitPrice(ingredientList)
+
+                emit(listRecipeProfitExpected)
+
+
             } else {
                 throw GenericThrowable.FailThrowable()
             }
@@ -302,35 +319,44 @@ class RemoteDataSourceImpl(
                 db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
                     .get()
             query.await()
-            val list = mutableListOf<Ingredient>()
 
-            if (query.isSuccessful) {
-                var id = 0;
-                for (document in query.result.documents) {
-                    val auxIngredient = document.toObject(IngredientRegister::class.java)
+            val ingredientList = getIngredientList(query)
 
-                    val ingredient = auxIngredient?.toIngredient(id)
-                    ingredient?.let {
-                        list.add(it)
-                        id += 1
-                    }
-                }
-                emit(list)
-            } else {
-                throw GenericThrowable.FailThrowable()
-            }
+            emit(ingredientList)
         }
 
     }.flowOn(dispatcher)
 
-    override fun addIngredient(listIngredient: List<Ingredient>): Flow<Unit> = flow {
+
+    private fun getIngredientList(
+        query: Task<QuerySnapshot>
+    ): MutableList<Ingredient> {
+        val list = mutableListOf<Ingredient>()
+        if (query.isSuccessful) {
+            var id = 0;
+            for (document in query.result.documents) {
+                val auxIngredient = document.toObject(IngredientRegister::class.java)
+
+                val ingredient = auxIngredient?.toIngredient(id)
+                ingredient?.let {
+                    list.add(it)
+                    id += 1
+                }
+            }
+            return list
+        } else {
+            throw GenericThrowable.FailThrowable()
+        }
+    }
+
+    override fun addIngredient(ingredientList: List<Ingredient>): Flow<Unit> = flow {
 
         SingletonUser.getInstance().getKey()?.let { key ->
             val batch = db.batch()
 
             val documentReferences = mutableListOf<DocumentReference>()
 
-            listIngredient.forEach {
+            ingredientList.forEach {
 
                 val document = it.keyDocument?.let {
                     db.collection(DBConstants.USER).document(key)
