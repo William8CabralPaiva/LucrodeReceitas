@@ -52,7 +52,7 @@ class ListRecipeFragment :
             }
 
             notifySuccessDelete.observe(viewLifecycleOwner) {
-                // it.deleteItem()
+                 it.deleteItem()
             }
 
             notifyErrorDelete.observe(viewLifecycleOwner) {
