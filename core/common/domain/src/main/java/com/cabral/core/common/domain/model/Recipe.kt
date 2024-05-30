@@ -77,7 +77,7 @@ fun Recipe.toRecipeCosts(costs: List<Ingredient>): RecipeCosts {
 
 
 fun Recipe.toRecipeProfitPrice(list: List<Ingredient>): RecipeProfitPrice {
-    var totalRecipe = 0f
+    var totalRecipe:Float = 0f
 
 
     list.forEach { itemCost ->
@@ -115,12 +115,14 @@ fun Recipe.toRecipeProfitPrice(list: List<Ingredient>): RecipeProfitPrice {
 
     }
 
+
     val recipeProfitPrice = RecipeProfitPrice(
-       id,
+        id,
         name,
         volumeUnit,
         expectedProfit,
         null,
+        totalRecipe,
         ingredientList,
         keyDocument
     )

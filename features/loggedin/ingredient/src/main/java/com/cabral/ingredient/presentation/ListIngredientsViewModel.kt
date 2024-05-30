@@ -29,11 +29,11 @@ class ListIngredientsViewModel(
     private val _notifySuccessRemove = MutableLiveData<Ingredient>()
     val notifySuccessRemove: LiveData<Ingredient> = _notifySuccessRemove
 
-    private val _notifyError = MutableLiveData<String>()
-    val notifyError: LiveData<String> = _notifyError
-
-
     var listIngredient = mutableListOf<Ingredient?>()
+
+    init {
+        getAllIngredients()
+    }
 
     fun getAllIngredients() {
         listIngredientUseCase()

@@ -30,19 +30,15 @@ class ListIngredientsFragment :
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initClicks()
-        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
-            viewModel.getAllIngredients()
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getAllIngredients()
     }
 
     private fun initClicks() {
         binding.addIngredient.setOnClickListener {
             navigationIngredient.openIngredient(this)
+        }
+
+        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
+            viewModel.getAllIngredients()
         }
     }
 
@@ -64,10 +60,6 @@ class ListIngredientsFragment :
 
             notifySuccessRemove.observe(viewLifecycleOwner) {
                 it.deleteItem()
-            }
-
-            notifyError.observe(viewLifecycleOwner) {
-
             }
 
 

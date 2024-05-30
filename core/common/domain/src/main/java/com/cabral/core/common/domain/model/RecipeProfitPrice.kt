@@ -6,6 +6,7 @@ data class RecipeProfitPrice(
     var volumeUnit: Float? = null,
     var expectedProfit: Float? = null,
     var profitPrice: Float? = null,
+    var total: Float? = null,
     var ingredientList: MutableList<IngredientRecipeRegister>? = null,
     var keyDocument: String? = null
 )

@@ -115,7 +115,6 @@ class LoginFragment : Fragment() {
             navigationNotLogged.openUserRegister(this)
         }
 
-
     }
 
     private fun forgotPassword() {
