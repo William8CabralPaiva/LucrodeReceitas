@@ -14,7 +14,7 @@ import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import com.cabral.recipe.R as RecipeR
+import com.cabral.design.R as DesignR
 
 class RecipeAddEditIngredientFragmentViewModel(
     private val listIngredientUseCase: ListIngredientUseCase,
@@ -161,7 +161,7 @@ class RecipeAddEditIngredientFragmentViewModel(
                     recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
                     _notifyAddIngredient.postValue(selectedIngredient)
                 } else {
-                    _notifyShowToast.postValue(RecipeR.string.recipe_item_already_add)
+                    _notifyShowToast.postValue(DesignR.string.design_item_already_add)
                 }
             }
         }

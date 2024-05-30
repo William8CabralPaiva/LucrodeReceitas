@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/design_ubuntu_bold"
-                android:text="@string/ingredients_price"
+                android:text="@string/design_price_info"
                 android:textColor="@color/design_black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

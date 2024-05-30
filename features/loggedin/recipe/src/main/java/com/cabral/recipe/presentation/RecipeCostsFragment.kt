@@ -21,7 +21,8 @@ import com.cabral.recipe.databinding.RecipeCostsFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 
-class RecipeCostsFragment : BaseFragment<RecipeCostsFragmentBinding>(RecipeCostsFragmentBinding::inflate) {
+class RecipeCostsFragment :
+    BaseFragment<RecipeCostsFragmentBinding>(RecipeCostsFragmentBinding::inflate) {
 
     private val args: RecipeCostsFragmentArgs by navArgs()
 
@@ -41,6 +42,10 @@ class RecipeCostsFragment : BaseFragment<RecipeCostsFragmentBinding>(RecipeCosts
             }
 
             notifyStopLoading.observe(viewLifecycleOwner) {
+                binding.viewFlipper.displayedChild = 2
+            }
+
+            notifyError.observe(viewLifecycleOwner) {
                 binding.viewFlipper.displayedChild = 1
             }
 

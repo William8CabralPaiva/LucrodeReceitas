@@ -25,8 +25,7 @@ class LoginViewModel(
     private val addUserUseCase: AddUserUseCase,
     private val loginUseCase: LoginUseCase,
     private val googleLoginUseCase: GoogleLoginUseCase,
-    private val forgotPasswordUseCase: ForgotPasswordUseCase,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val forgotPasswordUseCase: ForgotPasswordUseCase
 ) : ViewModel() {
 
     private val _notifySuccess = MutableLiveData<User>()

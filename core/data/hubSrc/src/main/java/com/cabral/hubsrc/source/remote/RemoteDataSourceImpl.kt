@@ -424,7 +424,4 @@ class RemoteDataSourceImpl(
         }
     }
 
-    override fun changeIngredient(ingredient: Ingredient): Flow<Unit> {
-        TODO("Not yet implemented")
-    }
 }

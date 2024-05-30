@@ -1,6 +1,5 @@
 package com.cabral.ingredient.presentation
 
-//noinspection SuspiciousImport
 import android.R
 import android.os.Bundle
 import android.view.View
@@ -22,8 +21,6 @@ import com.cabral.model.toIngredient
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
-import com.cabral.ingredient.R as IngredientR
-
 
 class IngredientsFragment :
     BaseFragment<IngredientsFragmentBinding>(IngredientsFragmentBinding::inflate) {
@@ -45,7 +42,7 @@ class IngredientsFragment :
         initListeners()
     }
 
-    private fun initArgs(){
+    private fun initArgs() {
         try {
             args?.currentIngredient?.let {
                 viewModel.editExistItem = true
@@ -104,6 +101,16 @@ class IngredientsFragment :
                 navigationIngredient.backStackActionHasItemAdd(this@IngredientsFragment)
             }
 
+            notifyError.observe(viewLifecycleOwner) {
+                context?.run {
+                    val text = getString(DesignR.string.design_error_check_your_connection)
+                    CustomToast.Builder(requireContext())
+                        .message(text)
+                        .setBackgroundColor(DesignR.color.design_dark_red)
+                        .build().show()
+                }
+            }
+
         }
     }
 
@@ -132,7 +139,7 @@ class IngredientsFragment :
                 if (viewModel.listIngredient.isNotEmpty()) {
                     viewModel.save()
                 } else {
-                    showToast(IngredientR.string.ingredients_empty_list)
+                    showToast(DesignR.string.design_empty_list)
                 }
             }
 

@@ -5,17 +5,15 @@ import android.view.View
 import androidx.annotation.StringRes
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
-import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
-import com.cabral.core.common.domain.model.toIngredientRegister
 import com.cabral.design.R
 import com.cabral.ingredient.databinding.IngredientsListFragmentBinding
 import com.cabral.ingredient.presentation.adapter.ListIngredientAdapter
 import com.cabral.model.toIngredientArgs
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.cabral.ingredient.R as IngredientR
+import com.cabral.design.R as DesignR
 
 class ListIngredientsFragment :
     BaseFragment<IngredientsListFragmentBinding>(IngredientsListFragmentBinding::inflate) {
@@ -77,8 +75,8 @@ class ListIngredientsFragment :
             onClickTrash = {
                 it.name?.let { it1 ->
                     showAlertDialog(
-                        IngredientR.string.ingredients_remove_modal_title,
-                        IngredientR.string.ingredients_warning_remove,
+                        DesignR.string.design_remove_modal_title,
+                        DesignR.string.design_warning_remove,
                         it1
                     ) {
                         viewModel.deleteIngredient(it)
@@ -97,12 +95,6 @@ class ListIngredientsFragment :
             adapter.notifyItemRemoved(position)
             viewModel.listIngredient.remove(viewModel.listIngredient[position])
         }
-    }
-
-    private fun showToast(text: String) {
-        CustomToast.Builder(requireContext())
-            .message(text)
-            .build().show()
     }
 
     private fun showAlertDialog(

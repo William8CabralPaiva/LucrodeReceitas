@@ -54,13 +54,4 @@ class LoggedInHostActivity : AppCompatActivity() {
         _binding = null
     }
 
-
-    fun setBadgeInIcon(@IntegerRes id: Int, amount: Int) {
-//        binding.bottomNavMain.run {
-//            val badge = getOrCreateBadge(id)
-//            badge.backgroundColor = getColor(R.color.black)
-//            badge.badgeGravity = BadgeDrawable.TOP_END
-//            badge.number = amount
-//        }
-    }
 }

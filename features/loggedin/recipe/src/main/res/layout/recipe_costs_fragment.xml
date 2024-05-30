@@ -34,13 +34,25 @@
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:context=".presentation.ListRecipeFragment">
 
-        <!--        <ProgressBar-->
-        <!--            android:id="@+id/progress_circular"-->
-        <!--            android:layout_width="64dp"-->
-        <!--            android:layout_height="64dp"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:indeterminate="true"-->
-        <!--            android:indeterminateTint="@color/design_orange" />-->
+        <ProgressBar
+            android:id="@+id/progress_circular"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/design_orange" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/arch_default_margin"
+            android:fontFamily="@font/design_ubuntu_medium"
+            android:text="@string/recipe_search_recipe"
+            android:textAlignment="textStart"
+            android:lineSpacingExtra="@dimen/arch_default_margin"
+            android:textColor="@color/design_gray_light"
+            android:textSize="20sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -86,6 +98,7 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </ViewFlipper>
 

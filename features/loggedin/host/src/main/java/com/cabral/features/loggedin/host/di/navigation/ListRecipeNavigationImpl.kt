@@ -84,39 +84,6 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
         })
     }
 
-//    override fun observeRecipeChangeOnRecipeFragment(
-//        fragment: Fragment,
-//        lifecycleOwner: LifecycleOwner,
-//        insideFunction: (hasChanged: Boolean) -> Unit
-//    ) {
-//
-//
-//        val navBackStackEntry =
-//            fragment.findNavController().currentBackStackEntry
-//
-//        val observer = LifecycleEventObserver { _, event ->
-//            val contain = navBackStackEntry?.savedStateHandle?.contains(UPDATE_LIST_RECIPE)
-//            contain?.let {
-//                if (event == Lifecycle.Event.ON_RESUME && contain) {
-//                    val hasChanged =
-//                        navBackStackEntry.savedStateHandle.get<Boolean>(UPDATE_LIST_RECIPE)
-//                    navBackStackEntry.savedStateHandle.remove<Boolean>(UPDATE_LIST_RECIPE)
-//                    hasChanged?.let {
-//                        insideFunction(it)
-//                    }
-//                }
-//            }
-//        }
-//        lifecycleOwner.lifecycle.addObserver(observer)
-//        lifecycleOwner.lifecycle.addObserver(LifecycleEventObserver { _, event ->
-//
-//            if (event == Lifecycle.Event.ON_DESTROY) {
-//                lifecycleOwner.lifecycle.removeObserver(observer)
-//            }
-//
-//        })
-//    }
-
     override fun observeListRecipeHasChanged(fragment: Fragment) {
         fragment.findNavController().run {
             previousBackStackEntry?.savedStateHandle?.set(

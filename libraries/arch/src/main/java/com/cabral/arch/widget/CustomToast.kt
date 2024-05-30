@@ -11,6 +11,7 @@ class CustomToast(
     val context: Context,
     val message: String?,
     val icon: Int,
+    val backgroundColor: Int,
     val color: Int,
 ) {
     private val toast by lazy { Toast(context) }
@@ -41,6 +42,15 @@ class CustomToast(
             binding.customToastIconIv.setImageResource(icon)
         }
 
+        if (backgroundColor != -1) {
+            binding.card.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    context,
+                    backgroundColor
+                )
+            )
+        }
+
     }
 
     fun show() {
@@ -56,11 +66,15 @@ class CustomToast(
         private var message: String = ""
         private var icon: Int = -1
         private var color = -1
+        private var backgroundColor = -1
 
         fun message(message: String) = apply { this.message = message }
         fun icon(icon: Int) = apply { this.icon = icon }
         fun setIconColor(color: Int) = apply { this.color = color }
-        fun build() = CustomToast(context, message, icon, color)
+
+        fun setBackgroundColor(backgroundColor: Int) =
+            apply { this.backgroundColor = backgroundColor }
+        fun build() = CustomToast(context, message, icon,backgroundColor, color)
 
     }
 

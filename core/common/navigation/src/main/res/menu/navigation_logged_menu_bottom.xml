@@ -8,10 +8,6 @@
         android:id="@+id/ingredient_nav"
         android:icon="@drawable/ic_shopping_basket"
         android:title="@string/design_ingredients" />
-<!--    <item-->
-<!--        android:id="@+id/shopping"-->
-<!--        android:icon="@drawable/ic_profile"-->
-<!--        android:title="@string/shopping" />-->
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_profile"

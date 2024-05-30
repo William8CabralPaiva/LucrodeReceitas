@@ -18,5 +18,4 @@ interface RemoteDataSource {
     fun getAllIngredients(): Flow<List<Ingredient>>
     fun addIngredient(ingredientList: List<Ingredient>): Flow<Unit>
     fun deleteIngredient(ingredient: Ingredient): Flow<Unit>
-    fun changeIngredient(ingredient: Ingredient): Flow<Unit>
 }

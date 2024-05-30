@@ -46,7 +46,6 @@
         app:layout_constraintEnd_toStartOf="@+id/trash"
         app:layout_constraintTop_toTopOf="@+id/trash" />
 
-
     <ImageView
         android:id="@+id/trash"
         android:layout_width="25dp"

@@ -33,8 +33,8 @@ class IngredientsViewModel(
     private val _notifySuccess = MutableLiveData<Unit>()
     val notifySuccess: LiveData<Unit> = _notifySuccess
 
-    private val _notifyError = MutableLiveData<String>()
-    val notifyError: LiveData<String> = _notifyError
+    private val _notifyError = MutableLiveData<Unit>()
+    val notifyError: LiveData<Unit> = _notifyError
 
     private var countItem = 0
 
@@ -47,7 +47,7 @@ class IngredientsViewModel(
     fun save() {
         addIngredientUseCase(listIngredient)
             .catch {
-                _notifyError.postValue(it.message)
+                _notifyError.postValue(Unit)
             }.onEach {
                 _notifySuccess.postValue(Unit)
             }

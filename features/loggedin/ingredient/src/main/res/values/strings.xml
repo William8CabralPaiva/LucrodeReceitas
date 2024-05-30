@@ -1,11 +1,5 @@
 <resources>
-    <string name="ingredient_click_here_to_close_modal">Clique aqui para fechar a modal</string>
-
-    <string name="ingredients_price">Preço:</string>
     <string name="ingredients_list_title">Lista de Ingredients</string>
     <string name="ingredients_click_in_plus_to_add_it">Nenhum ingrediente encontrado.\n Clique no + para adicionar um ingrediente</string>
     <string name="ingredients_add">Clique aqui para adicionar um ingrediente</string>
-    <string name="ingredients_remove_modal_title">Deseja remover o item %1$s?</string>
-    <string name="ingredients_warning_remove">O item %1$s será removido de todas as receitas.</string>
-    <string name="ingredients_empty_list">Lista vazia, adicione um item</string>
 </resources>

@@ -37,6 +37,7 @@
     <string name="design_suggestion">Sugestão:</string>
     <string name="design_cost">Custo:</string>
     <string name="design_no_ingredients_register">Nenhum ingrediente cadastrado</string>
+    <string name="design_error_check_your_connection">Erro, verifique sua conexão</string>
 
     <string name="design_delete_in_edit">Não é possível deletar durante a exclusão</string>
     <string name="design_delete_error">Erro ao deletar o item %1$s</string>
@@ -48,4 +49,11 @@
     <string name="design_required_field">Campo obrigatório</string>
     <string name="design_select_field">Selecione um item</string>
     <string name="design_fill_field">Preencha o campo %1$s corretamente</string>
+
+
+    <string name="design_price_info">Preço:</string>
+    <string name="design_remove_modal_title">Deseja remover o item %1$s?</string>
+    <string name="design_warning_remove">O item %1$s será removido de todas as receitas.</string>
+    <string name="design_empty_list">Lista vazia, adicione um item</string>
+    <string name="design_item_already_add">Este item ja foi adicionado</string>
 </resources>

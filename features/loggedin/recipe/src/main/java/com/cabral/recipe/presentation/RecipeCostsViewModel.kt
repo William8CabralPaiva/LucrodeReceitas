@@ -1,6 +1,5 @@
 package com.cabral.recipe.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,6 +22,9 @@ class RecipeCostsViewModel(
     private val _notifyStartLoading = MutableLiveData<Unit>()
     val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
 
+    private val _notifyError = MutableLiveData<Unit>()
+    val notifyError: LiveData<Unit> = _notifyError
+
     private val _notifyTitle = MutableLiveData<String>()
     val notifyTitle: LiveData<String> = _notifyTitle
 
@@ -39,7 +41,7 @@ class RecipeCostsViewModel(
         costRecipeUseCase(recipe)
             .onStart { _notifyStartLoading.postValue(Unit) }
             .catch {
-                Log.e("testando custo", "erro")//erro internet
+                _notifyError.postValue(Unit)
             }.onEach { costs ->
                 costs.name?.let {
                     _notifyTitle.postValue(it)

@@ -157,7 +157,7 @@
                 android:layout_marginHorizontal="@dimen/arch_default_margin"
                 android:fontFamily="@font/design_ubuntu_medium"
                 android:gravity="start"
-                android:text="@string/recipe_search_ingredientes"
+                android:text="@string/recipe_search_ingredients"
                 android:textAlignment="textStart"
                 android:textColor="@color/design_gray_light"
                 android:textSize="20sp" />
