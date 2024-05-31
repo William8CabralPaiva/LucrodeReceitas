@@ -40,7 +40,7 @@ class RecipeViewHolder(
 
         if (recipe.profitPrice != null && recipe.profitPrice != 0f) {
             recipe.profitPrice?.let {
-                textInfo = context.getString(DesignR.string.design_suggestion)
+                textInfo = context.getString(DesignR.string.design_suggestion_by_unit)
                 color = context.getColor(DesignR.color.design_orange)
                 price = it
             }

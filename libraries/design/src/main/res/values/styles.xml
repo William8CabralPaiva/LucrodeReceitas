@@ -28,4 +28,12 @@
         <item name="fontFamily">@font/design_dancing_script_bold</item>
     </style>
 
+    <style name="CostsDescription" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineSpacingExtra">18sp</item>
+        <item name="fontFamily">@font/design_ubuntu</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
 </resources>

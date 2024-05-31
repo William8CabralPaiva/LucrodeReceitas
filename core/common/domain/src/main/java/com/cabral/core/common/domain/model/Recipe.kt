@@ -63,11 +63,41 @@ fun Recipe.toRecipeCosts(costs: List<Ingredient>): RecipeCosts {
 
     recipeCosts.let {
         it.name = name
-        it.total = totalRecipe
+        it.volume = volumeUnit
+        it.costs = totalRecipe
         expectedProfit?.let { expectedProfit ->
             if (expectedProfit != 0f) {
                 val profit = totalRecipe * expectedProfit / 100
-                it.profitPrice = totalRecipe + profit
+                it.totalProfit = totalRecipe + profit
+                it.profit = profit
+            }
+
+        }
+    }
+
+
+    recipeCosts.run {
+        volumeUnit?.let { volume ->
+
+            if (volume > 0) {
+
+                profit?.let {
+                    if (it > 0) {
+                        profitPerUnit = it / volume
+                    }
+                }
+
+                if (totalRecipe > 0) {
+                    costsPerUnit = totalRecipe / volume
+
+                    totalProfit?.let {
+                        if (it > 0) {
+                            totalPerUnit = it / volume
+                        }
+                    }
+                }
+
+
             }
         }
     }
@@ -77,7 +107,7 @@ fun Recipe.toRecipeCosts(costs: List<Ingredient>): RecipeCosts {
 
 
 fun Recipe.toRecipeProfitPrice(list: List<Ingredient>): RecipeProfitPrice {
-    var totalRecipe:Float = 0f
+    var totalRecipe: Float = 0f
 
 
     list.forEach { itemCost ->

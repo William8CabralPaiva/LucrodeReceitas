@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
@@ -53,24 +54,85 @@ class RecipeCostsFragment :
                 binding.title.text = it
             }
 
-            notifyPrices.observe(viewLifecycleOwner) {
-                val profitPrice = it.first
-                val total = it.second
 
-                profitPrice?.run {
-                    binding.profitPrice.text = String.format(
+            notifyTotalPerUnit.observe(viewLifecycleOwner) {
+                binding.titleSuggestion.isVisible = true
+                binding.profitPriceUnit.run {
+                    isVisible = true
+                    text = String.format(
                         getString(DesignR.string.design_profit_price),
-                        roundingNumber()
-                    )
-                }
-
-                total?.run {
-                    binding.total.text = String.format(
-                        getString(DesignR.string.design_total),
-                        roundingNumber()
+                        it.roundingNumber()
                     )
                 }
             }
+
+            notifyCostsPerUnit.observe(viewLifecycleOwner) {
+                binding.titleCosts.isVisible = true
+                binding.costsUnit.run {
+                    isVisible = true
+                    text = String.format(
+                        getString(DesignR.string.design_cost_unit),
+                        it.roundingNumber()
+                    )
+                }
+            }
+
+            notifyCosts.observe(viewLifecycleOwner) {
+                binding.titleCosts.isVisible = true
+                binding.costsTotal.run {
+                    isVisible = true
+                    text = String.format(
+                        getString(DesignR.string.design_cost_total_param),
+                        it.roundingNumber()
+                    )
+                }
+            }
+
+
+            notifyProfitPerUnit.observe(viewLifecycleOwner) {
+                binding.titleProfit.isVisible = true
+                binding.profitUnit.run {
+                    isVisible = true
+                    text = String.format(
+                        getString(DesignR.string.design_profit_unit),
+                        it.roundingNumber()
+                    )
+                }
+            }
+
+
+            notifyProfit.observe(viewLifecycleOwner) {
+                binding.titleProfit.isVisible = true
+                binding.profitTotal.run {
+                    isVisible = true
+                    text = String.format(
+                        getString(DesignR.string.design_profit_total),
+                        it.roundingNumber()
+                    )
+                }
+            }
+
+            notifyProfit.observe(viewLifecycleOwner) {
+                binding.titleProfit.isVisible = true
+                binding.profitTotal.run {
+                    isVisible = true
+                    text = String.format(
+                        getString(DesignR.string.design_profit_total),
+                        it.roundingNumber()
+                    )
+                }
+            }
+
+//            notifyProfit.observe(viewLifecycleOwner){
+//                binding.profitPrice.run {
+//                    isVisible = true
+//                    text = String.format(
+//                        getString(DesignR.string.design_total),
+//                        it.roundingNumber()
+//                    )
+//                }
+//            }
+
 
             notifyIngredients.observe(viewLifecycleOwner) {
                 it.forEach {
@@ -90,12 +152,13 @@ class RecipeCostsFragment :
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             typeface = Typeface.DEFAULT_BOLD
-            setTextColor(ContextCompat.getColor(context, com.cabral.design.R.color.design_black));
-            setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
+            setTextColor(context.getColor(com.cabral.design.R.color.design_black))
+            setTextAppearance(DesignR.style.DesignHandWriting)
             typeface = ResourcesCompat.getFont(
                 context,
                 DesignR.font.design_dancing_script_bold
             )
+
         }
     }
 

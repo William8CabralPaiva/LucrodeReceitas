@@ -48,9 +48,9 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/arch_default_margin"
             android:fontFamily="@font/design_ubuntu_medium"
+            android:lineSpacingExtra="@dimen/arch_default_margin"
             android:text="@string/recipe_search_recipe"
             android:textAlignment="textStart"
-            android:lineSpacingExtra="@dimen/arch_default_margin"
             android:textColor="@color/design_gray_light"
             android:textSize="20sp" />
 
@@ -69,33 +69,91 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/title_suggestion"
+                style="@style/CostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/arch_default_margin"
-                android:fontFamily="@font/design_ubuntu"
-                android:textColor="@color/design_dark_red"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:text="@string/design_suggestion"
+                android:textColor="@color/design_orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_costs"
-                tools:text="total" />
+                app:layout_constraintTop_toBottomOf="@id/ll_costs" />
 
             <TextView
-                android:id="@+id/profit_price"
+                android:id="@+id/profit_price_unit"
+                style="@style/CostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:fontFamily="@font/design_ubuntu"
-                android:textColor="@color/design_green"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textColor="@color/design_orange"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/total"
-                tools:text="Lucro" />
+                app:layout_constraintTop_toBottomOf="@id/title_suggestion" />
 
+            <TextView
+                android:id="@+id/title_costs"
+                style="@style/CostsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/arch_default_margin"
+                android:text="@string/design_costs"
+                android:textColor="@color/design_dark_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profit_price_unit" />
+
+            <TextView
+                android:id="@+id/costs_unit"
+                style="@style/CostsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_dark_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_costs" />
+
+            <TextView
+                android:id="@+id/costs_total"
+                style="@style/CostsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_dark_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/costs_unit" />
+
+            <TextView
+                android:id="@+id/title_profit"
+                style="@style/CostsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/arch_default_margin"
+                android:textColor="@color/design_green"
+                android:text="@string/design_profit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/costs_total" />
+
+            <TextView
+                android:id="@+id/profit_unit"
+                style="@style/CostsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_profit" />
+
+            <TextView
+                android:id="@+id/profit_total"
+                style="@style/CostsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_green"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profit_unit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

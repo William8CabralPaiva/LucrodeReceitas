@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="arch_default_margin">16dp</dimen>
+    <dimen name="arch_font_16">16sp</dimen>
+    <dimen name="arch_font_18">18sp</dimen>
 </resources>
