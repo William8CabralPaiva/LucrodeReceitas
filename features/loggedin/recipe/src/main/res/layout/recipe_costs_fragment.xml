@@ -70,7 +70,7 @@
 
             <TextView
                 android:id="@+id/title_suggestion"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/arch_default_margin"
@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/profit_price_unit"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -93,7 +93,7 @@
 
             <TextView
                 android:id="@+id/title_costs"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/arch_default_margin"
@@ -105,7 +105,7 @@
 
             <TextView
                 android:id="@+id/costs_unit"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_dark_red"
@@ -115,7 +115,7 @@
 
             <TextView
                 android:id="@+id/costs_total"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_dark_red"
@@ -125,7 +125,7 @@
 
             <TextView
                 android:id="@+id/title_profit"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/arch_default_margin"
@@ -137,7 +137,7 @@
 
             <TextView
                 android:id="@+id/profit_unit"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_green"
@@ -147,7 +147,7 @@
 
             <TextView
                 android:id="@+id/profit_total"
-                style="@style/CostsDescription"
+                style="@style/DesignCostsDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_green"

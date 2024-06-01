@@ -8,16 +8,10 @@
 
     <TextView
         android:id="@+id/title"
+        style="@style/DesignTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="@dimen/arch_default_margin"
-        android:drawablePadding="@dimen/arch_default_margin"
-        android:fontFamily="@font/design_bangers"
-        android:gravity="center"
         android:text="@string/ingredients_list_title"
-        android:textColor="@color/design_orange"
-        android:textSize="24sp"
         app:drawableStartCompat="@drawable/ingredients_list_ic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
