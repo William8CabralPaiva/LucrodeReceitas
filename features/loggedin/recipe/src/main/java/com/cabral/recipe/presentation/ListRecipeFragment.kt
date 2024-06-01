@@ -73,10 +73,10 @@ class ListRecipeFragment :
     private fun initAdapter() {
         adapter = RecipeAdapter(requireContext()).apply {
             onClick = {
-                navigationRecipe.openCostsFragment(this@ListRecipeFragment, it.toRecipeArgs())
+                navigationRecipe.openRecipe(this@ListRecipeFragment, it.toRecipeArgs())
             }
             onClickEdit = {
-                navigationRecipe.openRecipe(this@ListRecipeFragment, it.toRecipeArgs())
+                navigationRecipe.openCostsFragment(this@ListRecipeFragment, it.toRecipeArgs())
             }
             onClickTrash = {
                 it.name?.let { name ->

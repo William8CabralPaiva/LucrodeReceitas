@@ -16,6 +16,7 @@
     <string name="design_user">Usuário</string>
     <string name="design_email">E-mail</string>
     <string name="design_login">Entrar</string>
+    <string name="design_login_google">Entrar com o Google</string>
     <string name="design_save">Salvar</string>
     <string name="design_plus">+</string>
     <string name="design_name">Nome</string>
@@ -24,9 +25,9 @@
     <string name="design_save_back">Salvar e Voltar</string>
     <string name="design_edit">Editar</string>
     <string name="design_confirm_password">Confirme sua senha</string>
-    <string name="design_ic_cook">Ícone de Cozinheiro</string>
+    <string name="design_ic_app">Ícone App</string>
     <string name="design_img_trash">Imagem de uma lixeira</string>
-    <string name="design_img_edit">Imagem de um lápis</string>
+    <string name="design_img_edit">Imagem de um livro</string>
     <string name="design_value_format">R$ %s</string>
     <string name="design_ingredient_format">%1$s %2$s</string>
     <string name="design_ingredient_costs_details">%1$s %2$s de %3$s R$%4$s cada sai á R$%5$s</string>

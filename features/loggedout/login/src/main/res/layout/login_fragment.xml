@@ -16,11 +16,11 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_marginTop="60dp"
-            android:contentDescription="@string/design_ic_cook"
-            android:scaleType="center"
-            android:src="@drawable/arch_cook"
+            android:contentDescription="@string/design_ic_app"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_app"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -47,48 +47,49 @@
             app:layout_constraintTop_toBottomOf="@+id/bi_email" />
 
         <com.cabral.arch.widget.ActionButton
-            android:id="@+id/ac_enter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:arch_ab_text="@string/design_login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bi_password" />
-
-        <com.google.android.gms.common.SignInButton
             android:id="@+id/google_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/arch_default_margin"
-            app:colorScheme="dark"
+            app:arch_ab_color="blue"
+            app:arch_ab_text="@string/design_login_google"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ac_enter" />
+            app:layout_constraintTop_toBottomOf="@id/bi_password" />
+
+        <com.cabral.arch.widget.ActionButton
+            android:id="@+id/ac_enter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/arch_default_margin"
+            app:arch_ab_text="@string/design_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/google_login" />
 
         <TextView
             android:id="@+id/forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/arch_default_margin"
+            android:fontFamily="@font/design_ubuntu"
             android:linksClickable="true"
             android:text="@string/login_forgot_password"
             android:textColor="@color/design_orange"
-            android:fontFamily="@font/design_ubuntu"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/google_login" />
+            app:layout_constraintTop_toBottomOf="@id/ac_enter" />
 
         <TextView
             android:id="@+id/register_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/arch_default_margin"
+            android:fontFamily="@font/design_ubuntu"
             android:linksClickable="true"
             android:text="@string/login_register_user"
             android:textColor="@color/design_orange"
-            android:fontFamily="@font/design_ubuntu"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

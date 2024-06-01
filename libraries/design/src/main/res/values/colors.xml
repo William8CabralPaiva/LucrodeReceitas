@@ -2,7 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="design_purple_200">#FFBB86FC</color>
     <color name="design_mtrl_textinput_default_box_stroke_color" tools:override="true">@color/design_orange</color>
-    <color name="design_orange">#ee5006</color>
+    <color name="design_orange">#ee5006</color>x
+    <color name="design_blue_medium">#2B6EFF</color>x
+    <color name="design_blue_light">#2B9BFF</color>x
     <color name="design_orange_light">#DB7E2E</color>
     <color name="design_orange_dark">#F93934</color>
     <color name="design_purple_500">#FF6200EE</color>

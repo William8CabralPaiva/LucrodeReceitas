@@ -70,6 +70,14 @@ class LoginFragment : Fragment() {
                 binding.acEnter.stopLoading()
             }
 
+            notifyGoogleStartLoading.observe(viewLifecycleOwner){
+                binding.googleLogin.startLoading()
+            }
+
+            notifyGoogleStopLoading.observe(viewLifecycleOwner){
+                binding.googleLogin.stopLoading()
+            }
+
             notifyError.observe(viewLifecycleOwner) {
                 showToast(it)
             }

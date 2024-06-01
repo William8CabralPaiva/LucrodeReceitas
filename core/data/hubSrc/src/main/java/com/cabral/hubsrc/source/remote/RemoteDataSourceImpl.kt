@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -222,7 +223,11 @@ class RemoteDataSourceImpl(
     override fun getAllRecipes(): Flow<List<RecipeProfitPrice>> = flow {
         SingletonUser.getInstance().getKey()?.let { key ->
             val query =
-                db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).get()
+                db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+                    .orderBy(
+                        "name",
+                        Query.Direction.ASCENDING
+                    ).get()
             query.await()
 
             val list = mutableListOf<Recipe>()
@@ -241,7 +246,8 @@ class RemoteDataSourceImpl(
                 }
 
                 val queryIngredient =
-                    db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
+                    db.collection(DBConstants.USER).document(key)
+                        .collection(DBConstants.INGREDIENTS)
                         .get()
                 queryIngredient.await()
 
@@ -317,6 +323,10 @@ class RemoteDataSourceImpl(
         SingletonUser.getInstance().getKey()?.let { key ->
             val query =
                 db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
+                    .orderBy(
+                        "name",
+                        Query.Direction.ASCENDING
+                    )
                     .get()
             query.await()
 

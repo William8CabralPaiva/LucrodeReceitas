@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/arch_default_margin"
             app:arch_ab_text="@string/register_user_register"
-            app:arch_ab_type="shape"
+            app:arch_ab_color="orange"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

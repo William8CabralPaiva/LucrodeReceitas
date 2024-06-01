@@ -3,7 +3,6 @@ package com.cabral.arch.widget
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Looper
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -41,13 +40,13 @@ class ActionButton @JvmOverloads constructor(
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArchActionButton)
 
             val buttonType =
-                typedArray.getEnum(R.styleable.ArchActionButton_arch_ab_type, ButtonType.SHAPE)
+                typedArray.getEnum(R.styleable.ArchActionButton_arch_ab_color, ButtonType.ORANGE)
 
             val buttonText = typedArray.getText(R.styleable.ArchActionButton_arch_ab_text) ?: ""
             binding.textView.text = buttonText
 
             binding.container.background = getShape(buttonType)
-            setTextColors(buttonType)
+            setTextColors()
 
             val enabledButton =
                 typedArray.getBoolean(R.styleable.ArchActionButton_arch_ab_enabled, true)
@@ -57,38 +56,29 @@ class ActionButton @JvmOverloads constructor(
         }
     }
 
-     fun setAlpha(alpha:Boolean){
-        binding.container.alpha = if(!alpha){
+    fun setAlpha(alpha: Boolean) {
+        binding.container.alpha = if (!alpha) {
             1f
-        }else{
+        } else {
             0.5f
         }
     }
 
     private fun getShape(buttonType: ButtonType): Drawable? {
-        val drawable = when (buttonType) {
-            ButtonType.SHAPE -> {
+        var drawable = when (buttonType) {
+            ButtonType.ORANGE -> {
                 R.drawable.arch_ripple_shape_orange_button
             }
 
-            ButtonType.BORDER -> {
-                R.drawable.arch_ripple_border_orange_button
+            ButtonType.BLUE -> {
+                R.drawable.arch_ripple_shape_blue_button
             }
         }
         return AppCompatResources.getDrawable(context, drawable)
     }
 
-    private fun setTextColors(buttonType: ButtonType) {
-        val color = when (buttonType) {
-            ButtonType.SHAPE -> {
-                getColor(com.cabral.design.R.color.design_white)
-            }
-            ButtonType.BORDER -> {
-                getColor(com.cabral.design.R.color.design_orange)
-            }
-        }
-        //binding.progressCircularRing.setIconColor(color)
-        binding.textView.setTextColor(color)
+    private fun setTextColors() {
+        binding.textView.setTextColor(getColor(com.cabral.design.R.color.design_white))
     }
 
     private fun getColor(@ColorRes color: Int): Int {
@@ -193,8 +183,8 @@ class ActionButton @JvmOverloads constructor(
     }
 
     enum class ButtonType(type: String) {
-        SHAPE("shape"),
-        BORDER("border")
+        ORANGE("orange"),
+        BLUE("blue")
     }
 
 }

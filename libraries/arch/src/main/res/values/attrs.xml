@@ -28,9 +28,9 @@
     <declare-styleable name="ArchActionButton">
         <attr name="arch_ab_enabled" format="boolean" />
         <attr name="arch_ab_text" format="string" />
-        <attr name="arch_ab_type" format="enum">
-            <enum name="shape" value="0" />
-            <enum name="border" value="1" />
+        <attr name="arch_ab_color" format="enum">
+            <enum name="orange" value="0" />
+            <enum name="blue" value="1" />
         </attr>
     </declare-styleable>
 

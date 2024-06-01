@@ -15,7 +15,6 @@ object LoginModule {
     private val viewModelModules: Module = module {
         viewModel {
             LoginViewModel(
-                addUserUseCase = AddUserUseCase(get()),
                 loginUseCase = LoginUseCase(get()),
                 googleLoginUseCase = GoogleLoginUseCase(get()),
                 forgotPasswordUseCase = ForgotPasswordUseCase(get())

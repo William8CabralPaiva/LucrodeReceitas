@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val addUserUseCase: AddUserUseCase,
     private val loginUseCase: LoginUseCase,
     private val googleLoginUseCase: GoogleLoginUseCase,
     private val forgotPasswordUseCase: ForgotPasswordUseCase
@@ -34,8 +33,14 @@ class LoginViewModel(
     private val _notifyStartLoading = MutableLiveData<Unit>()
     val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
 
+    private val _notifyGoogleStartLoading = MutableLiveData<Unit>()
+    val notifyGoogleStartLoading: LiveData<Unit> = _notifyGoogleStartLoading
+
     private val _notifyStopLoading = MutableLiveData<Unit>()
     val notifyStopLoading: LiveData<Unit> = _notifyStopLoading
+
+    private val _notifyGoogleStopLoading = MutableLiveData<Unit>()
+    val notifyGoogleStopLoading: LiveData<Unit> = _notifyGoogleStopLoading
 
     private val _notifyError = MutableLiveData<String>()
     val notifyError: LiveData<String> = _notifyError
@@ -63,12 +68,15 @@ class LoginViewModel(
     fun googleEmail(email: String?, name: String?) {
         if (email != null && name != null) {
             googleLoginUseCase(email, name)
+                .onStart { _notifyGoogleStartLoading.postValue(Unit) }
                 .catch {
                     _notifyError.postValue(it.message)
                 }.onEach {
                     SingletonUser.getInstance().setUser(it)
                     _notifySuccess.postValue(it)
-                }.launchIn(viewModelScope)
+                }
+                .onCompletion { _notifyStopLoading.postValue(Unit) }
+                .launchIn(viewModelScope)
         }
     }
 

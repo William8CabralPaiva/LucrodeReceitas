@@ -1,14 +1,18 @@
 package com.cabral.recipe.adapter
 
 import android.content.Context
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.cabral.arch.extensions.roundingNumber
 import com.cabral.core.common.domain.model.RecipeProfitPrice
 import com.cabral.recipe.databinding.RecipeItemListBinding
 import com.cabral.design.R as DesignR
+
 
 class RecipeViewHolder(
     private val binding: RecipeItemListBinding,
@@ -28,7 +32,11 @@ class RecipeViewHolder(
             setPrices(recipe)
 
             container.setOnClickListener { onClick(recipe) }
-            pencil.setOnClickListener { onClickEdit(recipe) }
+            icListBook.setOnClickListener { onClickEdit(recipe) }
+            if (recipePrice.isVisible) {
+                textView.setOnClickListener { onClickEdit(recipe) }
+            }
+            recipePrice.setOnClickListener { onClickEdit(recipe) }
             trash.setOnClickListener { onClickTrash(recipe) }
         }
     }
@@ -68,20 +76,33 @@ class RecipeViewHolder(
         }
 
         binding.textView.run {
-            text = textInfo
+            if (price != null) {
+                val content = SpannableString(textInfo)
+                content.setSpan(UnderlineSpan(), 0, content.length, 0)
+                text = content
+            } else {
+                text = textInfo
+            }
             setTextColor(color)
             visibility = View.VISIBLE
         }
 
         price?.run {
-            binding.recipePrice.run {
-                text = String.format(
+            val content = SpannableString(
+                String.format(
                     context.getString(com.cabral.design.R.string.design_value_format),
                     roundingNumber()
                 )
+            )
+            content.setSpan(UnderlineSpan(), 0, content.length, 0)
+            binding.recipePrice.run {
+                text = content
                 setTextColor(color)
                 visibility = View.VISIBLE
+                binding.icListBook.visibility = View.VISIBLE
             }
+        } ?: run {
+            binding.icListBook.visibility = View.GONE
         }
 
     }
