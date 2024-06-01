@@ -71,7 +71,7 @@ class RecipeCostsFragment :
                 binding.costsUnit.run {
                     isVisible = true
                     text = String.format(
-                        getString(DesignR.string.design_cost_unit),
+                        getString(DesignR.string.design_cost_unit_param),
                         it.roundingNumber()
                     )
                 }

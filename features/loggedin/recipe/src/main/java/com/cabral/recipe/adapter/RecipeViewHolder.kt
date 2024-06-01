@@ -38,17 +38,28 @@ class RecipeViewHolder(
         var textInfo = ""
         var color = 0
 
-        if (recipe.profitPrice != null && recipe.profitPrice != 0f) {
-            recipe.profitPrice?.let {
-                textInfo = context.getString(DesignR.string.design_suggestion_by_unit)
+        if (recipe.ingredientList.size > 0) {
+            if (recipe.profitPrice != null && recipe.profitPrice != 0f && recipe.expectedProfit != null) {
                 color = context.getColor(DesignR.color.design_orange)
-                price = it
-            }
-        } else if (recipe.profitPrice != 0f && recipe.total != 0f) {
-            recipe.total?.let {
-                textInfo = context.getString(DesignR.string.design_cost)
-                color = context.getColor(DesignR.color.design_dark_red)
-                price = it
+                if (recipe.profitPriceUnit != null) {
+                    textInfo = context.getString(DesignR.string.design_suggestion_by_unit)
+                    price = recipe.profitPriceUnit
+                } else {
+                    textInfo = context.getString(DesignR.string.design_suggestion_total)
+                    price = recipe.profitPrice
+                }
+            } else if (recipe.volume == null && recipe.costsPerUnit == null) {
+                recipe.costs?.let {
+                    color = context.getColor(DesignR.color.design_dark_red)
+                    textInfo = context.getString(DesignR.string.design_cost_total)
+                    price = it
+                }
+            } else if (recipe.costs != 0f) {
+                recipe.costsPerUnit?.let {
+                    color = context.getColor(DesignR.color.design_dark_red)
+                    textInfo = context.getString(DesignR.string.design_cost_unit)
+                    price = it
+                }
             }
         } else {
             textInfo = context.getString(DesignR.string.design_no_ingredients_register)

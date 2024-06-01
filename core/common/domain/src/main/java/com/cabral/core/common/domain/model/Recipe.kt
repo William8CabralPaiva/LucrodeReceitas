@@ -3,7 +3,7 @@ package com.cabral.core.common.domain.model
 data class Recipe(
     var id: Int,
     var name: String? = null,
-    var volumeUnit: Float? = null,
+    var volume: Float? = null,
     var expectedProfit: Float? = null,
     var ingredientList: MutableList<IngredientRecipeRegister>? = null,
     var keyDocument: String? = null
@@ -17,7 +17,7 @@ fun Recipe.toRecipeRegister(key: String?): RecipeRegister {
         keyDocument
     }
 
-    return RecipeRegister(name, volumeUnit, expectedProfit, ingredientList, keyId)
+    return RecipeRegister(name, volume, expectedProfit, ingredientList, keyId)
 }
 
 
@@ -63,7 +63,7 @@ fun Recipe.toRecipeCosts(costs: List<Ingredient>): RecipeCosts {
 
     recipeCosts.let {
         it.name = name
-        it.volume = volumeUnit
+        it.volume = volume
         it.costs = totalRecipe
         expectedProfit?.let { expectedProfit ->
             if (expectedProfit != 0f) {
@@ -77,7 +77,7 @@ fun Recipe.toRecipeCosts(costs: List<Ingredient>): RecipeCosts {
 
 
     recipeCosts.run {
-        volumeUnit?.let { volume ->
+        this@toRecipeCosts.volume?.let { volume ->
 
             if (volume > 0) {
 
@@ -149,11 +149,13 @@ fun Recipe.toRecipeProfitPrice(list: List<Ingredient>): RecipeProfitPrice {
     val recipeProfitPrice = RecipeProfitPrice(
         id,
         name,
-        volumeUnit,
+        volume,
         expectedProfit,
         null,
-        totalRecipe,
-        ingredientList,
+        null,
+        costs = totalRecipe,
+        null,
+        ingredientList ?: mutableListOf<IngredientRecipeRegister>(),
         keyDocument
     )
 
@@ -162,6 +164,18 @@ fun Recipe.toRecipeProfitPrice(list: List<Ingredient>): RecipeProfitPrice {
             if (expectedProfit != 0f) {
                 val profit = totalRecipe * expectedProfit / 100
                 it.profitPrice = totalRecipe + profit
+            }
+        }
+    }
+
+    recipeProfitPrice.let {
+        it.volume?.let { volume ->
+            it.profitPrice?.let { value ->
+                it.profitPriceUnit = value / volume
+            }
+
+            it.costs?.let { value ->
+                it.costsPerUnit = value / volume
             }
         }
     }

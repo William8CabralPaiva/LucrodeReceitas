@@ -32,14 +32,8 @@ class RecipeViewModel(
     fun addRecipe(name: String?, volume: Float?, expectedProfit: Float?) {
         if (!name.isNullOrEmpty()) {
 
-            recipe.name = name
-            volume?.let {
-                recipe.volumeUnit = it
-            }
-
-            expectedProfit?.let {
-                recipe.expectedProfit = it
-            }
+            recipe.volume = volume
+            recipe.expectedProfit = expectedProfit
 
             addRecipeUseCase(recipe)
                 .catch {

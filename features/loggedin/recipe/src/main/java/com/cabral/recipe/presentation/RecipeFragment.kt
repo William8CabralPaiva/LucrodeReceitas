@@ -104,7 +104,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
         recipe?.run {
             binding.run {
                 name?.let { biRecipe.setInputText(it) }
-                volumeUnit?.let { biUnit.setInputText(it.toString()) }
+                volume?.let { biUnit.setInputText(it.toString()) }
                 expectedProfit?.let { biExpectedProfit.setInputText(it.toString()) }
             }
         }

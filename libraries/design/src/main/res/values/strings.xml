@@ -36,12 +36,14 @@
     <string name="design_no">Não</string>
     <string name="design_suggestion_by_unit">Sugestão por unidade:</string>
     <string name="design_suggestion">Sugestão</string>
+    <string name="design_suggestion_total">Sugestão total: </string>
     <string name="design_profit">Lucro</string>
     <string name="design_profit_unit">Lucro unidade: %1$s </string>
     <string name="design_profit_total">Lucro total: %1$s</string>
-    <string name="design_cost_total">Custo total:</string>
+    <string name="design_cost_total">Custo total: </string>
     <string name="design_cost_total_param">Custo total: %1$s</string>
-    <string name="design_cost_unit">Custo por unidade: %1$s</string>
+    <string name="design_cost_unit_param">Custo por unidade: %1$s</string>
+    <string name="design_cost_unit">Custo por unidade: </string>
     <string name="design_cost">Custo: </string>
     <string name="design_costs">Custos</string>
     <string name="design_no_ingredients_register">Nenhum ingrediente cadastrado</string>

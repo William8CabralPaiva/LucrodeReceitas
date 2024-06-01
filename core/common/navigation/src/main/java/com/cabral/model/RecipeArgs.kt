@@ -27,7 +27,7 @@ fun Recipe.toRecipeArgs(): RecipeArgs {
     return RecipeArgs(
         id,
         name,
-        volumeUnit,
+        volume,
         expectedProfit,
         listIngredient?.toIngredientRecipeRegisterArgs(),
         keyDocument
@@ -39,7 +39,7 @@ fun RecipeProfitPrice.toRecipeArgs(): RecipeArgs {
     return RecipeArgs(
         id,
         name,
-        volumeUnit,
+        volume,
         expectedProfit,
         listIngredient?.toIngredientRecipeRegisterArgs(),
         keyDocument
