@@ -1,4 +1,4 @@
-package com.cabral.profile
+package com.cabral.config
 
 import org.junit.Test
 

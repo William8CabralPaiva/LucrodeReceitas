@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profile"
-    app:startDestination="@id/profileFragment">
+    android:id="@+id/config"
+    app:startDestination="@id/configFragment">
 
     <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.cabral.profile.presentation.ProfileFragment"
+        android:id="@+id/configFragment"
+        android:name="com.cabral.config.presentation.ConfigFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/config_fragment" />
 </navigation>

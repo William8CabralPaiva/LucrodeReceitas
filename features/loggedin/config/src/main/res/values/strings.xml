@@ -1,0 +1,4 @@
+<resources>
+    <string name="config_title">Configurações</string>
+    <string name="config_disconnect">Desconectar</string>
+</resources>

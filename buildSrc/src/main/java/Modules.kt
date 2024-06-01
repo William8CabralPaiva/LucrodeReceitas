@@ -3,7 +3,7 @@ object Modules {
     const val arch = ":libraries:arch"
     const val splash = ":features:splash"
     const val login = ":features:loggedout:login"
-    const val profile = ":features:loggedin:profile"
+    const val config = ":features:loggedin:config"
     const val recipe = ":features:loggedin:recipe"
     const val ingredients = ":features:loggedin:ingredient"
     const val domain = ":core:common:domain"

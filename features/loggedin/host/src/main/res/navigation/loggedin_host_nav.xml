@@ -6,7 +6,7 @@
 
     <include app:graph="@navigation/recipe_nav" />
     <include app:graph="@navigation/ingredients_nav" />
-    <include app:graph="@navigation/profile_nav" />
+    <include app:graph="@navigation/config_nav" />
     <include app:graph="@navigation/ingredient_add_nav" />
 
 

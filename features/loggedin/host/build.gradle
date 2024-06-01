@@ -16,7 +16,7 @@ dependencies {
     implementation project(Modules.design)
     implementation project(Modules.navigation)
     implementation project(Modules.login)
-    implementation project(Modules.profile)
+    implementation project(Modules.config)
     implementation project(Modules.ingredients)
     implementation project(Modules.recipe)
 }

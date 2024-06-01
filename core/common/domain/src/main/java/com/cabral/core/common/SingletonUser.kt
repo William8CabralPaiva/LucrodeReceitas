@@ -6,6 +6,10 @@ class SingletonUser private constructor() {
 
     private var user: User? = null
 
+    fun reset() {
+        user = null
+    }
+
     fun getUser(): User? {
         return user
     }

@@ -5,8 +5,8 @@ plugins {
 apply from: "$rootDir/plugins/android-build.gradle"
 
 android {
-    namespace 'com.cabral.profile'
-    resourcePrefix "profile"
+    namespace 'com.cabral.config'
+    resourcePrefix "config"
 }
 
 dependencies {

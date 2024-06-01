@@ -1,7 +1,6 @@
 package com.cabral.features.loggedin.host.presentation
 
 import android.os.Bundle
-import androidx.annotation.IntegerRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
@@ -36,7 +35,7 @@ class LoggedInHostActivity : AppCompatActivity() {
                 setOf(
                     com.cabral.recipe.R.id.list_recipe,
                     com.cabral.ingredient.R.id.list_ingredients,
-                    com.cabral.profile.R.id.profileFragment
+                    com.cabral.config.R.id.configFragment
                 )
             )
 
