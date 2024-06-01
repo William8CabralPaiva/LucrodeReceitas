@@ -54,29 +54,23 @@ class LoginViewModel(
     fun login(email: String?, password: String?) {
         val user = User(email = email, password = password)
 
-        loginUseCase(user)
-            .onStart { _notifyStartLoading.postValue(Unit) }
-            .catch {
-                _notifyError.postValue(it.message)
-            }.onEach {
-                SingletonUser.getInstance().setUser(it)
-                _notifySuccess.postValue(user)
-            }.onCompletion { _notifyStopLoading.postValue(Unit) }
-            .launchIn(viewModelScope)
+        loginUseCase(user).onStart { _notifyStartLoading.postValue(Unit) }.catch {
+            _notifyError.postValue(it.message)
+        }.onEach {
+            SingletonUser.getInstance().setUser(it)
+            _notifySuccess.postValue(user)
+        }.onCompletion { _notifyStopLoading.postValue(Unit) }.launchIn(viewModelScope)
     }
 
     fun googleEmail(email: String?, name: String?) {
         if (email != null && name != null) {
-            googleLoginUseCase(email, name)
-                .onStart { _notifyGoogleStartLoading.postValue(Unit) }
+            googleLoginUseCase(email, name).onStart { _notifyGoogleStartLoading.postValue(Unit) }
                 .catch {
                     _notifyError.postValue(it.message)
                 }.onEach {
                     SingletonUser.getInstance().setUser(it)
                     _notifySuccess.postValue(it)
-                }
-                .onCompletion { _notifyStopLoading.postValue(Unit) }
-                .launchIn(viewModelScope)
+                }.onCompletion { _notifyStopLoading.postValue(Unit) }.launchIn(viewModelScope)
         }
     }
 
