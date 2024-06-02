@@ -53,47 +53,64 @@ class RecipeAddEditIngredientFragment :
     private fun initObservers() {
         viewModel.run {
 
-            notifyError.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 2
+            notifyError.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    binding.viewFlipper.displayedChild = 2
+                }
             }
 
-            notifyErrorSpinner.observe(viewLifecycleOwner){
-                binding.biIngredient.setError()
+            notifyErrorSpinner.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    binding.biIngredient.setError()
+                }
             }
 
-            notifyListIngredient.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 1
-                it?.let {
+            notifyListIngredient.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    binding.viewFlipper.displayedChild = 1
                     initAdapter(it.getIngredientName())
                 }
+
             }
 
-            notifyAddIngredient.observe(viewLifecycleOwner) {
-                it?.id?.let { ingredient ->
-                    ingredientAdapterIngredient.notifyItemInserted(ingredient)
+            notifyAddIngredient.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    ingredientAdapterIngredient.notifyItemInserted(id)
                     clearFields()
                 }
+
             }
 
-            notifyEditMode.observe(viewLifecycleOwner) {
-                val buttonText = if (it) {
-                    getString(DesignR.string.design_edit)
-                } else {
-                    getString(DesignR.string.design_add)
+            notifyEditMode.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    val buttonText = if (it) {
+                        getString(DesignR.string.design_edit)
+                    } else {
+                        getString(DesignR.string.design_add)
+                    }
+                    binding.abAdd.setText(buttonText)
                 }
-                binding.abAdd.setText(buttonText)
+
             }
 
-            notifyShowToast.observe(viewLifecycleOwner) {
-                showToast(it)
+            notifyShowToast.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    showToast(it)
+                }
             }
 
-            notifyRemoveIngredient.observe(viewLifecycleOwner) {
-                ingredientAdapterIngredient.notifyItemRemoved(it)
+            notifyRemoveIngredient.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    ingredientAdapterIngredient.notifyItemRemoved(it)
+                }
+
             }
 
-            notifySuccessEdit.observe(viewLifecycleOwner) {
-                ingredientAdapterIngredient.notifyItemChanged(it)
+            notifySuccessEdit.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    ingredientAdapterIngredient.notifyItemChanged(it)
+                }
+
             }
         }
     }

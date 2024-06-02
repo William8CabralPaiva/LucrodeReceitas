@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cabral.arch.Event
 import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.UnitMeasureType
@@ -18,23 +19,23 @@ class IngredientsViewModel(
 
     val listIngredient = mutableListOf<Ingredient>()
 
-    private val _notifyErrorAdd = MutableLiveData<IngredientThrowable>()
-    val notifyErrorAdd: LiveData<IngredientThrowable> = _notifyErrorAdd
+    private val _notifyErrorAdd = MutableLiveData<Event<IngredientThrowable>>()
+    val notifyErrorAdd: LiveData<Event<IngredientThrowable>> = _notifyErrorAdd
 
-    private val _notifySuccessAdd = MutableLiveData<Int>()
-    val notifySuccessAdd: LiveData<Int> = _notifySuccessAdd
+    private val _notifySuccessAdd = MutableLiveData<Event<Int>>()
+    val notifySuccessAdd: LiveData<Event<Int>> = _notifySuccessAdd
 
-    private val _notifySuccessEdit = MutableLiveData<Int?>()
-    val notifySuccessEdit: LiveData<Int?> = _notifySuccessEdit
+    private val _notifySuccessEdit = MutableLiveData<Event<Int?>>()
+    val notifySuccessEdit: LiveData<Event<Int?>> = _notifySuccessEdit
 
-    private val _notifyEditMode = MutableLiveData<Boolean>()
-    val notifyEditMode: LiveData<Boolean> = _notifyEditMode
+    private val _notifyEditMode = MutableLiveData<Event<Boolean>>()
+    val notifyEditMode: LiveData<Event<Boolean>> = _notifyEditMode
 
-    private val _notifySuccess = MutableLiveData<Unit>()
-    val notifySuccess: LiveData<Unit> = _notifySuccess
+    private val _notifySuccess = MutableLiveData<Event<Unit>>()
+    val notifySuccess: LiveData<Event<Unit>> = _notifySuccess
 
-    private val _notifyError = MutableLiveData<Unit>()
-    val notifyError: LiveData<Unit> = _notifyError
+    private val _notifyError = MutableLiveData<Event<Unit>>()
+    val notifyError: LiveData<Event<Unit>> = _notifyError
 
     private var countItem = 0
 
@@ -47,9 +48,9 @@ class IngredientsViewModel(
     fun save() {
         addIngredientUseCase(listIngredient)
             .catch {
-                _notifyError.postValue(Unit)
+                _notifyError.postValue(Event(Unit))
             }.onEach {
-                _notifySuccess.postValue(Unit)
+                _notifySuccess.postValue(Event(Unit))
             }
             .launchIn(viewModelScope)
     }
@@ -65,18 +66,18 @@ class IngredientsViewModel(
                         listIngredient[it] = ingredient
                     }
 
-                    _notifySuccessEdit.postValue(editPosition).also {
+                    _notifySuccessEdit.postValue(Event(editPosition)).also {
                         setEditMode(false, null)
                     }
 
                 } else {
                     listIngredient.add(ingredient)
-                    _notifySuccessAdd.postValue(listIngredient.size - 1)
+                    _notifySuccessAdd.postValue(Event(listIngredient.size - 1))
                     countItem += 1
                 }
             }
         } catch (t: IngredientThrowable) {
-            _notifyErrorAdd.postValue(t)
+            _notifyErrorAdd.postValue(Event(t))
         }
     }
 
@@ -141,14 +142,14 @@ class IngredientsViewModel(
             listIngredient.indexOf(ingredient)
         }
         editItemOnList = editMode
-        _notifyEditMode.postValue(editItemOnList)
+        _notifyEditMode.postValue(Event(editItemOnList))
     }
 
     fun changeIngredient(ingredient: Ingredient) {
         listIngredient.add(ingredient)
         editPosition = 0
         editItemOnList = true
-        _notifyEditMode.postValue(true)
+        _notifyEditMode.postValue(Event(true))
     }
 
     fun getEditMode(): Boolean {

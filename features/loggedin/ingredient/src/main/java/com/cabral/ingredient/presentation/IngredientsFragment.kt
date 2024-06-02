@@ -35,7 +35,6 @@ class IngredientsFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initArgs()
         initAdapter()
         initObservers()
@@ -56,61 +55,71 @@ class IngredientsFragment :
 
     private fun initObservers() {
         viewModel.run {
-            notifyErrorAdd.observe(viewLifecycleOwner) {
-                when (it) {
-                    is IngredientThrowable.NameThrowable -> {
-                        binding.biIngredient.setError()
-                    }
+            notifyErrorAdd.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    when (it) {
+                        is IngredientThrowable.NameThrowable -> {
+                            binding.biIngredient.setError()
+                        }
 
-                    is IngredientThrowable.UnitThrowable -> {
-                        binding.biUnit.setError(getString(DesignR.string.design_select_field))
-                    }
+                        is IngredientThrowable.UnitThrowable -> {
+                            binding.biUnit.setError(getString(DesignR.string.design_select_field))
+                        }
 
-                    is IngredientThrowable.SizeThrowable -> {
-                        binding.biVolume.setError(getString(DesignR.string.design_required_field))
-                    }
+                        is IngredientThrowable.SizeThrowable -> {
+                            binding.biVolume.setError(getString(DesignR.string.design_required_field))
+                        }
 
-                    else -> {
-                        binding.biPrice.setError()
+                        else -> {
+                            binding.biPrice.setError()
+                        }
                     }
                 }
             }
 
-            notifySuccessAdd.observe(viewLifecycleOwner) {
-                adapterIngredient.notifyItemInserted(it)
-                clearFields()
+            notifySuccessAdd.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    adapterIngredient.notifyItemInserted(it)
+                    clearFields()
+                }
             }
 
-            notifySuccessEdit.observe(viewLifecycleOwner) {
-                it?.let {
+            notifySuccessEdit.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
                     adapterIngredient.notifyItemChanged(it)
-                }
-                clearFields()
-            }
 
-            notifyEditMode.observe(viewLifecycleOwner) {
-                val buttonText = if (it) {
-                    getString(DesignR.string.design_edit)
-                } else {
-                    getString(DesignR.string.design_add)
-                }
-                binding.abAdd.setText(buttonText)
-            }
-
-            notifySuccess.observe(viewLifecycleOwner) {
-                navigationIngredient.backStackActionHasItemAdd(this@IngredientsFragment)
-            }
-
-            notifyError.observe(viewLifecycleOwner) {
-                context?.run {
-                    val text = getString(DesignR.string.design_error_check_your_connection)
-                    CustomToast.Builder(requireContext())
-                        .message(text)
-                        .setBackgroundColor(DesignR.color.design_dark_red)
-                        .build().show()
+                    clearFields()
                 }
             }
 
+            notifyEditMode.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    val buttonText = if (it) {
+                        getString(DesignR.string.design_edit)
+                    } else {
+                        getString(DesignR.string.design_add)
+                    }
+                    binding.abAdd.setText(buttonText)
+                }
+            }
+
+            notifySuccess.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    navigationIngredient.backStackActionHasItemAdd(this@IngredientsFragment)
+                }
+            }
+
+            notifyError.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    context?.run {
+                        val text = getString(DesignR.string.design_error_check_your_connection)
+                        CustomToast.Builder(requireContext())
+                            .message(text)
+                            .setBackgroundColor(DesignR.color.design_dark_red)
+                            .build().show()
+                    }
+                }
+            }
         }
     }
 

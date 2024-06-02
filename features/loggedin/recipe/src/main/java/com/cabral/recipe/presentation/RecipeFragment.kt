@@ -3,6 +3,7 @@ package com.cabral.recipe.presentation
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomToast
@@ -28,18 +29,25 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
     private fun initObservers() {
         viewModel.run {
-            notifySuccess.observe(viewLifecycleOwner) {
-                showToast(R.string.recipe_success_save)
-                binding.abAdd.setAlpha(false)
-                navigation.observeListRecipeHasChanged(this@RecipeFragment)
+            notifySuccess.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    showToast(R.string.recipe_success_save)
+                    binding.abAdd.setAlpha(false)
+                    navigation.observeListRecipeHasChanged(this@RecipeFragment)
+                }
+
             }
 
-            notifyError.observe(viewLifecycleOwner) {
-                showToast(R.string.recipe_save_error)
+            notifyError.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    showToast(R.string.recipe_save_error)
+                }
             }
 
-            notifyStopLoadingButton.observe(viewLifecycleOwner) {
-                binding.abSave.stopLoading()
+            notifyStopLoadingButton.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    binding.abSave.stopLoading()
+                }
             }
         }
     }
@@ -66,10 +74,14 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
         }
 
         binding.abSave.abSetOnClickListener {
-            binding.abSave.startLoading()
-            viewModel.run {
-                if (validateFields()) {
-                    saveRecipe()
+            binding.abSave.run {
+                startLoading()
+                viewModel.run {
+                    if (validateFields()) {
+                        saveRecipe()
+                    } else {
+                        stopLoading()
+                    }
                 }
             }
         }

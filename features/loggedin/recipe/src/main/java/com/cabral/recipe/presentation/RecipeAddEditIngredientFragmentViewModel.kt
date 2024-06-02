@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cabral.arch.Event
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe
@@ -20,29 +21,29 @@ class RecipeAddEditIngredientFragmentViewModel(
     private val listIngredientUseCase: ListIngredientUseCase,
 ) : ViewModel() {
 
-    private val _notifyListIngredient = MutableLiveData<List<Ingredient?>>()
-    val notifyListIngredient: LiveData<List<Ingredient?>> = _notifyListIngredient
+    private val _notifyListIngredient = MutableLiveData<Event<List<Ingredient?>>>()
+    val notifyListIngredient: LiveData<Event<List<Ingredient?>>> = _notifyListIngredient
 
-    private val _notifyRemoveIngredient = MutableLiveData<Int>()
-    val notifyRemoveIngredient: LiveData<Int> = _notifyRemoveIngredient
+    private val _notifyRemoveIngredient = MutableLiveData<Event<Int>>()
+    val notifyRemoveIngredient: LiveData<Event<Int>> = _notifyRemoveIngredient
 
-    private val _notifySuccessEdit = MutableLiveData<Int>()
-    val notifySuccessEdit: LiveData<Int> = _notifySuccessEdit
+    private val _notifySuccessEdit = MutableLiveData<Event<Int>>()
+    val notifySuccessEdit: LiveData<Event<Int>> = _notifySuccessEdit
 
-    private val _notifyError = MutableLiveData<String>()
-    val notifyError: LiveData<String> = _notifyError
+    private val _notifyError = MutableLiveData<Event<String>>()
+    val notifyError: LiveData<Event<String>> = _notifyError
 
-    private val _notifyErrorSpinner = MutableLiveData<Unit>()
-    val notifyErrorSpinner: LiveData<Unit> = _notifyErrorSpinner
+    private val _notifyErrorSpinner = MutableLiveData<Event<Unit>>()
+    val notifyErrorSpinner: LiveData<Event<Unit>> = _notifyErrorSpinner
 
-    private val _notifyShowToast = MutableLiveData<Int>()
-    val notifyShowToast: LiveData<Int> = _notifyShowToast
+    private val _notifyShowToast = MutableLiveData<Event<Int>>()
+    val notifyShowToast: LiveData<Event<Int>> = _notifyShowToast
 
-    private val _notifyAddIngredient = MutableLiveData<Ingredient?>()
-    val notifyAddIngredient: LiveData<Ingredient?> = _notifyAddIngredient
+    private val _notifyAddIngredient = MutableLiveData<Event<Ingredient?>>()
+    val notifyAddIngredient: LiveData<Event<Ingredient?>> = _notifyAddIngredient
 
-    private val _notifyEditMode = MutableLiveData<Boolean>()
-    val notifyEditMode: LiveData<Boolean> = _notifyEditMode
+    private val _notifyEditMode = MutableLiveData<Event<Boolean>>()
+    val notifyEditMode: LiveData<Event<Boolean>> = _notifyEditMode
 
     var listAllIngredients = mutableListOf<Ingredient?>()
 
@@ -61,7 +62,7 @@ class RecipeAddEditIngredientFragmentViewModel(
             }
         }
         editMode = _editMode
-        _notifyEditMode.postValue(editMode)
+        _notifyEditMode.postValue(Event(editMode))
     }
 
     fun getEditMode(): Boolean {
@@ -93,12 +94,12 @@ class RecipeAddEditIngredientFragmentViewModel(
     fun getAllIngredients() {
         listIngredientUseCase()
             .catch {
-                _notifyError.postValue(it.message)
+                _notifyError.postValue(Event(it.message))
             }.onEach {
                 if (it.isNotEmpty()) {
                     listAllIngredients = it.convertToGOrMl()
                     prepareLists().also {
-                        _notifyListIngredient.postValue(listAllIngredients)
+                        _notifyListIngredient.postValue(Event(listAllIngredients))
                     }
                 }
             }
@@ -139,12 +140,12 @@ class RecipeAddEditIngredientFragmentViewModel(
                     }
                     editMode = false
                     recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
-                    _notifyEditMode.postValue(false)
+                    _notifyEditMode.postValue(Event(false))
 
                     val position =
                         recipe.ingredientList?.indexOf(ingredientList[it]?.toIngredientRecipeRegister())
                     position?.let {
-                        _notifySuccessEdit.postValue(it)
+                        _notifySuccessEdit.postValue(Event(it))
                     }
                 }
             }
@@ -159,9 +160,9 @@ class RecipeAddEditIngredientFragmentViewModel(
                     ingredientList.add(selectedIngredient)
                     selectedIngredient.volume = volume
                     recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
-                    _notifyAddIngredient.postValue(selectedIngredient)
+                    _notifyAddIngredient.postValue(Event(selectedIngredient))
                 } else {
-                    _notifyShowToast.postValue(DesignR.string.design_item_already_add)
+                    _notifyShowToast.postValue(Event(DesignR.string.design_item_already_add))
                 }
             }
         }
@@ -173,7 +174,7 @@ class RecipeAddEditIngredientFragmentViewModel(
                 val position = ingredientList.getPositionIngredient(it)
                 ingredientList.remove(ingredientList[position])
                 recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
-                _notifyRemoveIngredient.postValue(ingredient.id)
+                _notifyRemoveIngredient.postValue(Event(ingredient.id))
             }
         }
     }
@@ -184,7 +185,7 @@ class RecipeAddEditIngredientFragmentViewModel(
                 ingredient?.name == name
             }
         } catch (_: Exception) {
-            _notifyErrorSpinner.postValue(Unit)
+            _notifyErrorSpinner.postValue(Event(Unit))
             null
         }
     }

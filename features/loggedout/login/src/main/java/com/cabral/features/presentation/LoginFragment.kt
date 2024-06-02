@@ -103,10 +103,9 @@ class LoginFragment : Fragment() {
             result?.let {
                 viewModel.googleEmail(it.email, it.displayName)
             }
-
         })
 
-        binding.googleLogin.setOnClickListener {
+        binding.googleLogin.abSetOnClickListener {
             val signInIntent = gsc.signInIntent
             launcher.launch(signInIntent)
         }
