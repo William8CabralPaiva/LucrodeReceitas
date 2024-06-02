@@ -6,16 +6,21 @@ import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
+import com.cabral.arch.MoneyTextMask
 import com.cabral.arch.R
 import com.cabral.arch.databinding.ArchBorderInputViewBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import com.cabral.design.R.string as DesignR
+
 
 class BorderInputView @JvmOverloads constructor(
     context: Context,
@@ -30,6 +35,8 @@ class BorderInputView @JvmOverloads constructor(
 
     private var labelInput = ""
 
+    private var inputType = BorderInputView.BIInputType.TEXT
+
     init {
         bindingLayout(attrs)
     }
@@ -42,9 +49,9 @@ class BorderInputView @JvmOverloads constructor(
             val hint = typedArray.getText(R.styleable.ArchBorderInputView_arch_ei_label) ?: ""
             setLabelText(hint.toString())
 
-            val BIInputType =
+            inputType =
                 typedArray.getEnum(R.styleable.ArchBorderInputView_arch_ei_type, BIInputType.TEXT)
-            setInputType(BIInputType)
+            setInputType(inputType)
 
             val drawableTop =
                 typedArray.getDrawable(R.styleable.ArchBorderInputView_arch_drawable_top)
@@ -88,7 +95,14 @@ class BorderInputView @JvmOverloads constructor(
                     biTextInput.inputType = InputType.TYPE_CLASS_NUMBER or
                             InputType.TYPE_NUMBER_FLAG_DECIMAL or
                             InputType.TYPE_NUMBER_FLAG_SIGNED
+                    biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
+                }
 
+                BorderInputView.BIInputType.REAL -> {
+                    biTextInput.inputType = InputType.TYPE_CLASS_NUMBER or
+                            InputType.TYPE_NUMBER_FLAG_DECIMAL or
+                            InputType.TYPE_NUMBER_FLAG_SIGNED
+                    biTextInput.addRealMask()
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
             }
@@ -103,7 +117,8 @@ class BorderInputView @JvmOverloads constructor(
     enum class BIInputType(val inputType: String) {
         TEXT("text"),
         PASSWORD("password"),
-        NUMBER("number")
+        NUMBER("number"),
+        REAL("real")
     }
 
     private fun setDrawableTop(drawableTop: Drawable?) {
@@ -130,11 +145,27 @@ class BorderInputView @JvmOverloads constructor(
     }
 
     fun clearInputText() {
-        binding.biTextInput.setText("")
+        binding.biTextInput.text?.clear()
     }
 
     fun setFocus() {
         binding.biTextInput.requestFocus()
+    }
+
+    fun getRawText(): String? {
+        binding.biTextInput.text.toString().run {
+            if (inputType == BIInputType.REAL) {
+                val pattern: Pattern = Pattern.compile("[0-9.,]+")
+                val matcher: Matcher = pattern.matcher(this)
+                val builder = StringBuilder()
+                while (matcher.find()) {
+                    builder.append(matcher.group())
+                }
+                val text = builder.toString().replace(",", ".")
+                return text
+            }
+        }
+        return null
     }
 
 
@@ -163,6 +194,11 @@ class BorderInputView @JvmOverloads constructor(
         binding.biTextInput.addTextChangedListener {
             insideFunction()
         }
+    }
+
+
+    private fun EditText.addRealMask() {
+        addTextChangedListener(MoneyTextMask(this))
     }
 
     fun setError(errorText: String? = null) {

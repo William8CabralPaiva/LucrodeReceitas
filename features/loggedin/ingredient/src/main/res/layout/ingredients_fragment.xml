@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/arch_default_margin"
                 app:arch_ei_label="@string/design_price"
-                app:arch_ei_type="number"
+                app:arch_ei_type="real"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />

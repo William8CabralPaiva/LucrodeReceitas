@@ -47,6 +47,16 @@
             app:layout_constraintTop_toBottomOf="@+id/bi_email" />
 
         <com.cabral.arch.widget.ActionButton
+            android:id="@+id/ac_enter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/arch_default_margin"
+            app:arch_ab_text="@string/design_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bi_password" />
+
+        <com.cabral.arch.widget.ActionButton
             android:id="@+id/google_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,17 +65,7 @@
             app:arch_ab_text="@string/design_login_google"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bi_password" />
-
-        <com.cabral.arch.widget.ActionButton
-            android:id="@+id/ac_enter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/arch_default_margin"
-            app:arch_ab_text="@string/design_login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/google_login" />
+            app:layout_constraintTop_toBottomOf="@id/ac_enter" />
 
         <TextView
             android:id="@+id/forgot_password"
@@ -80,7 +80,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ac_enter" />
+            app:layout_constraintTop_toBottomOf="@id/google_login" />
 
         <TextView
             android:id="@+id/register_user"

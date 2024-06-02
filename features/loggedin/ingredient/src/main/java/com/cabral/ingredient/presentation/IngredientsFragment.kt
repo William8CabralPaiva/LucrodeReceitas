@@ -81,6 +81,7 @@ class IngredientsFragment :
                 event.getContentIfNotHandled()?.let {
                     adapterIngredient.notifyItemInserted(it)
                     clearFields()
+                    binding.biIngredient.setFocus()
                 }
             }
 
@@ -139,7 +140,7 @@ class IngredientsFragment :
         binding.run {
             abAdd.abSetOnClickListener {
                 val volume = biVolume.getText()
-                val price = biPrice.getText()
+                val price = biPrice.getRawText()
                 val unit = biUnit.getSpinner().editableText.toString()
                 viewModel.addOrEditIngredient(biIngredient.getText(), volume, unit, price)
             }
