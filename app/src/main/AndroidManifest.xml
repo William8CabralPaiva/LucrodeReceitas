@@ -18,6 +18,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/design_preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-6708943710891548~5764130160"/>
+
     </application>
 
 </manifest>

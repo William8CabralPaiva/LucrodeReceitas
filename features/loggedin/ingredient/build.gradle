@@ -15,4 +15,5 @@ dependencies {
     implementation project(Modules.design)
     implementation project(Modules.domain)
     implementation project(Modules.navigation)
+    implementation Libs.ad_mob
 }

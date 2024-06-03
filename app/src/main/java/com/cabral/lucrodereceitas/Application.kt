@@ -10,6 +10,7 @@ import com.cabral.ingredient.di.IngredientModule
 import com.cabral.ingredient.di.ListIngredientsModule
 import com.cabral.recipe.di.RecipeModule
 import com.cabral.registeruser.di.RegisterUserModule
+import com.google.android.gms.ads.MobileAds
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.loadKoinModules
@@ -38,6 +39,11 @@ class Application : Application() {
         super.onCreate()
         startKoin(appDeclaration = appDeclaration())
         modules.load()
+
+        Thread {
+            MobileAds.initialize(this)
+        }.start()
+
     }
 
     override fun onTerminate() {

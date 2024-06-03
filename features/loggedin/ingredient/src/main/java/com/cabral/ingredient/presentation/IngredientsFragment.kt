@@ -2,6 +2,7 @@ package com.cabral.ingredient.presentation
 
 import android.R
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.StringRes
@@ -18,6 +19,10 @@ import com.cabral.core.common.domain.model.listMeasure
 import com.cabral.ingredient.databinding.IngredientsFragmentBinding
 import com.cabral.ingredient.presentation.adapter.IngredientAdapter
 import com.cabral.model.toIngredient
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
@@ -37,8 +42,16 @@ class IngredientsFragment :
         super.onViewCreated(view, savedInstanceState)
         initArgs()
         initAdapter()
+        AdRequest.DEVICE_ID_EMULATOR
+        val adRequest = AdRequest.Builder().add(AdRequest.DEVICE_ID_EMULATOR).build()
+        binding.adView.loadAd(adRequest)
         initObservers()
         initListeners()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        MobileAds.initialize(requireContext()) { }
     }
 
     private fun initArgs() {
@@ -135,6 +148,45 @@ class IngredientsFragment :
         }
         prepareAdapter()
     }
+
+    // Determine the screen width (less decorations) to use for the ad width.
+// If the ad hasn't been laid out, default to the full screen width.
+    private val adSize: AdSize
+        get() {
+            val display = activity?.windowManager?.defaultDisplay
+            val outMetrics = DisplayMetrics()
+            display?.getMetrics(outMetrics)
+
+            val density = outMetrics.density
+
+            var adWidthPixels = binding.adView.width.toFloat()
+            if (adWidthPixels == 0f) {
+                adWidthPixels = outMetrics.widthPixels.toFloat()
+            }
+
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                requireContext(),
+                adWidth
+            )
+        }
+
+    private fun loadBanner() {
+
+        // Create a new ad view.
+        context?.let {
+            val adView = AdView(it)
+            adView.setAdSize(AdSize.BANNER)
+            adView.adUnitId = "ca-app-pub-6708943710891548/9492456331"
+
+            // Create an ad request.
+            val adRequest = AdRequest.Builder().build()
+
+            // Start loading the ad in the background.
+            adView.loadAd(adRequest)
+        }
+    }
+
 
     private fun initListeners() {
         binding.run {

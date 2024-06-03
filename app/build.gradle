@@ -30,5 +30,6 @@ dependencies {
     implementation project(Modules.registerUser)
     implementation platform(Libs.firebase_bom)
     implementation Libs.firebase_analytics
+    implementation Libs.ad_mob
 
 }
