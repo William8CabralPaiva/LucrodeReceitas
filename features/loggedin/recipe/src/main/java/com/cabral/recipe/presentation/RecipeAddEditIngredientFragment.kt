@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.arch.widget.CustomToast
+import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
@@ -33,6 +36,8 @@ class RecipeAddEditIngredientFragment :
 
     private val navigation: ListRecipeNavigation by inject()
 
+    private val navigationIngredient: ListIngredientNavigation by inject()
+
     override fun onResume() {
         super.onResume()
         viewModel.getAllIngredients()
@@ -42,6 +47,16 @@ class RecipeAddEditIngredientFragment :
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initArgs()
+        initListeners()
+        initGlide()
+
+    }
+
+    private fun initGlide() {
+        Glide.with(requireActivity()).asGif()
+            .load(com.cabral.recipe.R.drawable.listrecipe_hand_down)
+            .into(binding.ivHand)
+
     }
 
     private fun initArgs() {
@@ -69,8 +84,18 @@ class RecipeAddEditIngredientFragment :
                 event.getContentIfNotHandled()?.let {
                     binding.viewFlipper.displayedChild = 1
                     initAdapter(it.getIngredientName())
+                    binding.ivHand.isVisible = false
                 }
 
+            }
+
+            notifyDisableSpinner.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    binding.viewFlipper.displayedChild = 1
+                    binding.biIngredient.setError()
+                    binding.biIngredient.setError(getString(DesignR.string.design_ingredients_register))
+                    binding.ivHand.isVisible = true
+                }
             }
 
             notifyAddIngredient.observe(viewLifecycleOwner) { event ->
@@ -123,7 +148,6 @@ class RecipeAddEditIngredientFragment :
             threshold = 1
         }
         prepareAdapter()
-        initListeners()
     }
 
     private fun clearFields() {
@@ -136,8 +160,8 @@ class RecipeAddEditIngredientFragment :
 
     private fun initListeners() {
 
-        val list = viewModel.listAllIngredients.getIngredientName()
         binding.biIngredient.getSpinner().addTextChangedListener { ed ->
+            val list = viewModel.listAllIngredients.getIngredientName()
             if (list.contains(ed.toString())) {
                 val ingredient =
                     viewModel.listAllIngredients.first { ingredient -> ingredient?.name == ed.toString() }
@@ -169,8 +193,12 @@ class RecipeAddEditIngredientFragment :
             )
         }
 
-        binding.addIngredient.abSetOnClickListener {
+        binding.abAddIngredient.abSetOnClickListener {
             navigation.openIngredient(this)
+        }
+
+        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
+            viewModel.getAllIngredients()
         }
     }
 

@@ -55,8 +55,8 @@ class CustomToast(
 
     fun show() {
         toast.apply {
-            setGravity(Gravity.FILL_HORIZONTAL or Gravity.TOP, 0, 0)
-            duration = Toast.LENGTH_LONG
+            setGravity(Gravity.FILL_HORIZONTAL or Gravity.TOP, 0, 100)
+            duration = Toast.LENGTH_SHORT
             this.view = binding.root
             show()
         }

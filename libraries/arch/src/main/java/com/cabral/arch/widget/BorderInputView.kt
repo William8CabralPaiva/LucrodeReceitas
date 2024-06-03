@@ -81,7 +81,7 @@ class BorderInputView @JvmOverloads constructor(
         binding.run {
             when (BIInputType) {
                 BorderInputView.BIInputType.TEXT -> {
-                    biTextInput.inputType = InputType.TYPE_CLASS_TEXT
+                    biTextInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
 

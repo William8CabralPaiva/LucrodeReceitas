@@ -49,9 +49,10 @@
     <string name="design_cost">Custo: </string>
     <string name="design_costs">Custos</string>
     <string name="design_no_ingredients_register">Nenhum ingrediente cadastrado</string>
+    <string name="design_ingredients_register">Cadastre um ingrediente</string>
     <string name="design_error_check_your_connection">Erro, verifique sua conexão</string>
 
-    <string name="design_delete_in_edit">Não é possível deletar durante a exclusão</string>
+    <string name="design_delete_in_edit">Não é possível deletar durante a edição</string>
     <string name="design_delete_error">Erro ao deletar o item %1$s</string>
     <string name="design_delete_title">Aviso de Exclusão!</string>
     <string name="design_delete_message">Deseja deletar o item %1$s ?</string>

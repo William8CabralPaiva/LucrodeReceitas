@@ -8,4 +8,5 @@ object Libs {
     const val firebase_store = "com.google.firebase:firebase-firestore-ktx"
     const val services_auth = "com.google.android.gms:play-services-auth:${Versions.services_auth}"
     const val ad_mob = "com.google.android.gms:play-services-ads:${Versions.ad_mob}"
+    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
 }

@@ -24,6 +24,9 @@ class RecipeAddEditIngredientFragmentViewModel(
     private val _notifyListIngredient = MutableLiveData<Event<List<Ingredient?>>>()
     val notifyListIngredient: LiveData<Event<List<Ingredient?>>> = _notifyListIngredient
 
+    private val _notifyDisableSpinner = MutableLiveData<Event<Unit>>()
+    val notifyDisableSpinner: LiveData<Event<Unit>> = _notifyDisableSpinner
+
     private val _notifyRemoveIngredient = MutableLiveData<Event<Int>>()
     val notifyRemoveIngredient: LiveData<Event<Int>> = _notifyRemoveIngredient
 
@@ -101,6 +104,8 @@ class RecipeAddEditIngredientFragmentViewModel(
                     prepareLists().also {
                         _notifyListIngredient.postValue(Event(listAllIngredients))
                     }
+                } else {
+                    _notifyDisableSpinner.postValue(Event(Unit))
                 }
             }
             .launchIn(viewModelScope)
