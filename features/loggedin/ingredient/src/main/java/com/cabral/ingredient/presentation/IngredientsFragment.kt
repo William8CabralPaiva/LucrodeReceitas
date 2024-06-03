@@ -43,7 +43,7 @@ class IngredientsFragment :
         initArgs()
         initAdapter()
         AdRequest.DEVICE_ID_EMULATOR
-        val adRequest = AdRequest.Builder().add(AdRequest.DEVICE_ID_EMULATOR).build()
+        val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
         initObservers()
         initListeners()
