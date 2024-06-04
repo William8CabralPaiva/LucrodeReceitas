@@ -5,6 +5,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.widget.CustomAlertDialog
+import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
@@ -43,24 +44,51 @@ class ListIngredientsFragment :
     private fun initObservers() {
         viewModel.run {
 
-            notifyStartLoading.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 0
+            notifyStartLoading.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.run {
+                    binding.viewFlipper.displayedChild = 0
+                }
             }
 
-            notifyEmptyList.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 1
+            notifyEmptyList.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.run {
+                    binding.viewFlipper.displayedChild = 1
+                }
+
             }
 
             notifyListIngredient.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 2
-                initAdapter()
+                if (it.isNotEmpty()) {
+                    binding.viewFlipper.displayedChild = 2
+                    initAdapter()
+                } else {
+                    binding.viewFlipper.displayedChild = 1
+                }
             }
 
-            notifySuccessRemove.observe(viewLifecycleOwner) {
-                it.deleteItem()
+            notifySuccessRemove.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.run {
+                    deleteItem()
+                }
+            }
+
+            notifyErrorRemove.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    val text = String.format(getString(R.string.design_delete_error), it)
+                    showToast(text)
+                }
             }
 
 
+        }
+    }
+
+    private fun showToast(text: String) {
+        context?.run {
+            CustomToast.Builder(this)
+                .setBackgroundColor(R.color.design_dark_red)
+                .message(text)
+                .build().show()
         }
     }
 
@@ -94,6 +122,9 @@ class ListIngredientsFragment :
         if (position >= 0) {
             adapter.notifyItemRemoved(position)
             viewModel.listIngredient.remove(viewModel.listIngredient[position])
+        }
+        if (viewModel.listIngredient.isEmpty()) {
+            binding.viewFlipper.displayedChild = 1
         }
     }
 

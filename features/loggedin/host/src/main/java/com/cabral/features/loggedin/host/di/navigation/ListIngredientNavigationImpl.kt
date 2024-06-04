@@ -20,7 +20,6 @@ internal class ListIngredientNavigationImpl : ListIngredientNavigation {
     override fun backStackActionHasItemAdd(fragment: Fragment) {
         fragment.findNavController().run {
             previousBackStackEntry?.savedStateHandle?.set(Redirection.HAS_ADD_ITEM, true)
-            popBackStack()
         }
     }
 

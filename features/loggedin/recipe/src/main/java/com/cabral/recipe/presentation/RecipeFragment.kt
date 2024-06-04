@@ -33,7 +33,6 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
                 event.getContentIfNotHandled()?.let {
                     showToast(R.string.recipe_success_save)
                     binding.abAdd.setAlpha(false)
-                    navigation.observeListRecipeHasChanged(this@RecipeFragment)
                 }
 
             }
@@ -57,6 +56,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
         binding.abAdd.setAlpha(true)
         initObservers()
+        navigation.observeListRecipeHasChanged(this@RecipeFragment)
 
         args.currentRecipe?.let {
             if (!alreadySetCurrentRecipe) {

@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.StringRes
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.IngredientThrowable
@@ -42,15 +43,11 @@ class IngredientsFragment :
         super.onViewCreated(view, savedInstanceState)
         initArgs()
         initAdapter()
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+        initAds()
+
+        prepareLoad()
         initObservers()
         initListeners()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        MobileAds.initialize(requireContext()) { }
     }
 
     private fun initArgs() {
@@ -63,6 +60,15 @@ class IngredientsFragment :
             }
         } catch (_: Exception) {
         }
+    }
+
+    private fun prepareLoad() {
+        navigationIngredient.backStackActionHasItemAdd(this@IngredientsFragment)
+    }
+
+    private fun initAds() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun initObservers() {
@@ -118,7 +124,7 @@ class IngredientsFragment :
 
             notifySuccess.observe(viewLifecycleOwner) { event ->
                 event.getContentIfNotHandled()?.let {
-                    navigationIngredient.backStackActionHasItemAdd(this@IngredientsFragment)
+                    findNavController().popBackStack()
                 }
             }
 

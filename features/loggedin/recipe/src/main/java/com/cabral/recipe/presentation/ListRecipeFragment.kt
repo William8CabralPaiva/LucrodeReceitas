@@ -37,26 +37,41 @@ class ListRecipeFragment :
     private fun initObservers() {
         viewModel.run {
 
-            notifyStartLoading.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 0
+            notifyStartLoading.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.run {
+                    binding.viewFlipper.displayedChild = 0
+                }
             }
 
-            notifyEmptyList.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 1
+            notifyEmptyList.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.run {
+                    binding.viewFlipper.displayedChild = 1
+                }
             }
 
             notifyListRecipe.observe(viewLifecycleOwner) {
-                binding.viewFlipper.displayedChild = 2
-                initAdapter()
+                if (it.isNotEmpty()) {
+                    binding.viewFlipper.displayedChild = 2
+                    initAdapter()
+                } else {
+                    binding.viewFlipper.displayedChild = 1
+                }
             }
 
-            notifySuccessDelete.observe(viewLifecycleOwner) {
-                it.deleteItem()
+            notifySuccessDelete.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.run {
+                    deleteItem()
+                    if (listRecipe.isEmpty()) {
+                        binding.viewFlipper.displayedChild = 1
+                    }
+                }
             }
 
-            notifyErrorDelete.observe(viewLifecycleOwner) {
-                val text = String.format(getString(R.string.design_delete_error), it)
-                showToast(text)
+            notifyErrorDelete.observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+                    val text = String.format(getString(R.string.design_delete_error), it)
+                    showToast(text)
+                }
             }
 
         }
@@ -101,34 +116,15 @@ class ListRecipeFragment :
         }
     }
 
-//    private fun initRecycleView() {
-//        adapter = Adapter(requireContext()).apply {
-//            onClick = {
-//                Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
-//            }
-//            onClickTrash = {
-//                Toast.makeText(requireContext(), it.name, Toast.LENGTH_LONG).show()
-//            }
-//        }
-//
-//        binding.recycleView.adapter = adapter
-//
-//        val r = Recipe(0, "receita 1", 50.00f)
-//        val r2 = Recipe(0, "receita 2", 25.10f)
-//
-//        val list = listOf(r, r2, r, r2, r, r2, r, r2, r, r2, r, r2, r, r2)
-//
-//        adapter.submitList(list)
-//
-//        val dragDrop = SwipeGesture(list)
-//        val itemTouchHelper = ItemTouchHelper(dragDrop)
-//        itemTouchHelper.attachToRecyclerView(binding.recycleView)
-//    }
 
     private fun showToast(text: String) {
         CustomToast.Builder(requireContext())
             .message(text)
             .build().show()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
     }
 
     private fun showAlertDialog(

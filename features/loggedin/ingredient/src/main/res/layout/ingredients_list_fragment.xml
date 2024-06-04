@@ -58,6 +58,8 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/ingredients_item_list" />
 
+
+
     </ViewFlipper>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
