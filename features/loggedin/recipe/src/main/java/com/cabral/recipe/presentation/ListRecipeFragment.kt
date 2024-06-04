@@ -123,10 +123,6 @@ class ListRecipeFragment :
             .build().show()
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-    }
-
     private fun showAlertDialog(
         @StringRes titleRes: Int,
         @StringRes messageRes: Int,

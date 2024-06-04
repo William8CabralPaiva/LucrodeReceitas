@@ -48,7 +48,7 @@ class ListRecipeViewModel(
                     listRecipe = it.toMutableList()
                     _notifyListRecipe.postValue(it)
                 } else {
-                    _notifyEmptyList.postValue(Event(Unit))
+                    _notifyListRecipe.postValue(mutableListOf())
                 }
             }.launchIn(viewModelScope)
     }

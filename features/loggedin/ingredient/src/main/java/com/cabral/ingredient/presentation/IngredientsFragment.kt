@@ -26,6 +26,7 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 import com.cabral.design.R as DesignR
 
 class IngredientsFragment :
@@ -225,8 +226,8 @@ class IngredientsFragment :
             unit?.let { unit ->
                 biUnit.setInputText(unit)
             }
-
-            biPrice.setInputText(price.removeEndZero())
+            val priceText = String.format(Locale.US,"%.2f", price)
+            biPrice.setInputText(priceText)
             biVolume.setInputText(volume.removeEndZero())
         }
     }

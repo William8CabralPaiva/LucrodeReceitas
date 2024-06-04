@@ -111,6 +111,8 @@ class RecipeAddEditIngredientFragment :
                     val buttonText = if (it) {
                         getString(DesignR.string.design_edit)
                     } else {
+                        binding.biIngredient.clearInputText()
+                        binding.biVolume.clearInputText()
                         getString(DesignR.string.design_add)
                     }
                     binding.abAdd.setText(buttonText)
