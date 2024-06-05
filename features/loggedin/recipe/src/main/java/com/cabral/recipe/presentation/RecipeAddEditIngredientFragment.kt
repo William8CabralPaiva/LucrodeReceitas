@@ -21,6 +21,7 @@ import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.adapter.IngredientAdapter
 import com.cabral.recipe.databinding.RecipeAddEditIngredientFragmentBinding
+import com.google.android.gms.ads.AdRequest
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
@@ -49,7 +50,12 @@ class RecipeAddEditIngredientFragment :
         initArgs()
         initListeners()
         initGlide()
+        initAds()
+    }
 
+    private fun initAds() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun initGlide() {

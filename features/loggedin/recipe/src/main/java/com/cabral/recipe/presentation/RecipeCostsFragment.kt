@@ -15,6 +15,7 @@ import com.cabral.core.common.domain.model.IngredientCosts
 import com.cabral.core.common.domain.model.UnitMeasureType
 import com.cabral.model.toRecipe
 import com.cabral.recipe.databinding.RecipeCostsFragmentBinding
+import com.google.android.gms.ads.AdRequest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.cabral.design.R as DesignR
 
@@ -28,6 +29,7 @@ class RecipeCostsFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initArgs()
+        initAds()
         initObservers()
     }
 
@@ -185,7 +187,11 @@ class RecipeCostsFragment :
             viewModel.recipe = toRecipe()
             viewModel.load()
         }
+    }
 
+    private fun initAds() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
 

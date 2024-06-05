@@ -14,6 +14,7 @@ import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.R
 import com.cabral.recipe.databinding.RecipeFragmentBinding
+import com.google.android.gms.ads.AdRequest
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -56,6 +57,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
         binding.abAdd.setAlpha(true)
         initObservers()
+        initAds()
         navigation.observeListRecipeHasChanged(this@RecipeFragment)
 
         args.currentRecipe?.let {
@@ -99,6 +101,11 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
         }
 
+    }
+
+    private fun initAds() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun backFromAddRecipeEdit(recipe: RecipeArgs?) {

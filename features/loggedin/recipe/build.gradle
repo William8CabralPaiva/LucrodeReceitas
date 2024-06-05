@@ -17,4 +17,5 @@ dependencies {
     implementation project(Modules.navigation)
     implementation project(Modules.domain)
     implementation Libs.glide
+    implementation Libs.ad_mob
 }
