@@ -1,5 +1,5 @@
 <resources>
-    <string name="login_web_client_id">816571225632-61isi8dcpb44i07mlfiela6ekgc84i6j.apps.googleusercontent.com</string>
+    <string name="login_web_client_id">816571225632-m2gvi7mfra8ou9jkhjdft66ud5p3j11j.apps.googleusercontent.com</string>
     <string name="login_check_internet">Ocorreu um erro com a conexão, verifique sua internet</string>
     <string name="login_forgot_password">Esqueceu a senha?</string>
     <string name="login_register_user">Cadastre um usuário</string>

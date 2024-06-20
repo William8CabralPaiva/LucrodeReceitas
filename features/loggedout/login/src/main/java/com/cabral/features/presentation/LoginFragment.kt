@@ -33,7 +33,9 @@ class LoginFragment : Fragment() {
     private val navigationNotLogged: NotLoggedNavigation by inject()
 
     private val gso: GoogleSignInOptions by lazy {
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+            .requestIdToken(getString(R.string.login_web_client_id))
+            .build()
     }
 
     private val gsc: GoogleSignInClient by lazy { GoogleSignIn.getClient(requireActivity(), gso) }
