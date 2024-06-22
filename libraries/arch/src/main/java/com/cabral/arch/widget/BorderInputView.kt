@@ -105,6 +105,10 @@ class BorderInputView @JvmOverloads constructor(
                     biTextInput.addRealMask()
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
+                BorderInputView.BIInputType.EMAIL ->{
+                    biTextInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                    biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
+                }
             }
         }
     }
@@ -118,7 +122,8 @@ class BorderInputView @JvmOverloads constructor(
         TEXT("text"),
         PASSWORD("password"),
         NUMBER("number"),
-        REAL("real")
+        REAL("real"),
+        EMAIL("email")
     }
 
     private fun setDrawableTop(drawableTop: Drawable?) {

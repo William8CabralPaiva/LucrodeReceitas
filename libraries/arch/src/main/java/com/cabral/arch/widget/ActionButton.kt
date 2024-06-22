@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.cabral.arch.R
 import com.cabral.arch.databinding.ArchActionButtonBinding
@@ -44,6 +45,9 @@ class ActionButton @JvmOverloads constructor(
 
             val buttonText = typedArray.getText(R.styleable.ArchActionButton_arch_ab_text) ?: ""
             binding.textView.text = buttonText
+
+            val buttonIcon = typedArray.getResourceId(R.styleable.ArchActionButton_arch_ab_icon_text, 0)
+            setIconText(buttonIcon)
 
             binding.container.background = getShape(buttonType)
             setTextColors()
@@ -156,6 +160,22 @@ class ActionButton @JvmOverloads constructor(
 
     fun setText(text: String) {
         binding.textView.text = text
+    }
+
+    private fun setIconText(resourceId: Int) {
+        if (resourceId != 0) {
+            val drawable = ContextCompat.getDrawable(context, resourceId)
+            drawable?.let {
+                binding.textView.run {
+                    setCompoundDrawablesWithIntrinsicBounds(
+                        drawable,
+                        null,
+                        null,
+                        null
+                    )
+                }
+            }
+        }
     }
 
     fun abSetEnabled(enabled: Boolean) {

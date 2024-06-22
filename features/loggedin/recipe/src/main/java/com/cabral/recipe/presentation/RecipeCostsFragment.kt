@@ -49,7 +49,7 @@ class RecipeCostsFragment :
             }
 
             notifyTitle.observe(viewLifecycleOwner) {
-                binding.title.text = it
+                binding.title.setTitle(it)
             }
 
 
@@ -121,16 +121,6 @@ class RecipeCostsFragment :
                 }
             }
 
-//            notifyProfit.observe(viewLifecycleOwner){
-//                binding.profitPrice.run {
-//                    isVisible = true
-//                    text = String.format(
-//                        getString(DesignR.string.design_total),
-//                        it.roundingNumber()
-//                    )
-//                }
-//            }
-
 
             notifyIngredients.observe(viewLifecycleOwner) {
                 it.forEach {
@@ -175,7 +165,6 @@ class RecipeCostsFragment :
                 volume.removeEndZero(),
                 unit,
                 name,
-                priceUnit.roundingNumber(),
                 total.roundingNumber()
             )
         }

@@ -18,5 +18,4 @@ dependencies {
     implementation Libs.services_auth
     implementation Libs.firebase_store
     implementation project(Modules.domain)
-    //implementation project(path: ':core:common:domain')
 }

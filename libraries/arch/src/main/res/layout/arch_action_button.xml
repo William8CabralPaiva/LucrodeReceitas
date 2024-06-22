@@ -14,12 +14,15 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:drawablePadding="@dimen/arch_default_margin"
         android:fontFamily="@font/design_ubuntu_bold"
         android:gravity="center"
         android:textColor="@color/design_orange"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="Button" />
 
     <ImageView

@@ -45,17 +45,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
+                <com.cabral.arch.widget.TitleView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:drawablePadding="@dimen/arch_default_margin"
-                    android:fontFamily="@font/design_bangers"
-                    android:gravity="center"
-                    android:text="@string/design_ingredients"
-                    android:textColor="@color/design_orange"
-                    android:textSize="24sp"
+                    android:layout_marginTop="@dimen/arch_default_margin"
+                    app:arch_title="@string/design_ingredients"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -167,6 +162,7 @@
                     android:layout_centerHorizontal="true"
                     ads:adSize="BANNER"
                     ads:adUnitId="ca-app-pub-6708943710891548/9981079918"
+                    ads:layout_constraintTop_toBottomOf="@id/ab_save"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

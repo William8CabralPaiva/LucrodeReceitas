@@ -6,7 +6,7 @@
         <item name="android:buttonBarPositiveButtonStyle">@style/DesignAlert.Button.Positive</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/DesignAlert.Button.Negative</item>
     </style>
-<!--android:Widget-->
+    <!--android:Widget-->
     <style name="DesignAlert.Button.Positive" parent="Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:textColor">@color/design_white</item>
         <item name="android:textStyle">bold</item>
@@ -38,11 +38,11 @@
 
     <style name="DesignTitle" parent="Widget.AppCompat.TextView">
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginTop">16dp</item>
-        <item name="android:drawablePadding">16dp</item>
+        <item name="android:includeFontPadding">false</item>
         <item name="android:fontFamily">@font/design_bangers</item>
         <item name="android:textColor">@color/design_orange</item>
         <item name="android:textSize">24sp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
 

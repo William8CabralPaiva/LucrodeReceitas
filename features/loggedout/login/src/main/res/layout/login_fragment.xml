@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:arch_ei_label="@string/design_email"
-            app:arch_ei_type="text"
+            app:arch_ei_type="email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -62,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/arch_default_margin"
             app:arch_ab_color="blue"
+            app:arch_ab_icon_text="@drawable/ic_google"
             app:arch_ab_text="@string/design_login_google"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

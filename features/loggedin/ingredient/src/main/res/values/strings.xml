@@ -1,5 +1,5 @@
 <resources>
-    <string name="ingredients_list_title">Lista de Ingredients</string>
+    <string name="ingredients_list_title">Lista de Ingredientes</string>
     <string name="ingredients_error_remove">Erro ao excluir ingrediente</string>
     <string name="ingredients_click_in_plus_to_add_it">Nenhum ingrediente encontrado.\n Clique no + para adicionar um ingrediente</string>
     <string name="ingredients_add">Clique aqui para adicionar um ingrediente</string>

@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ListIngredientsFragment">
 
-    <TextView
+    <com.cabral.arch.widget.TitleView
         android:id="@+id/title"
-        style="@style/DesignTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ingredients_list_title"
-        app:drawableStartCompat="@drawable/ingredients_list_ic"
+        android:layout_marginTop="@dimen/arch_default_margin"
+        app:arch_icon="@drawable/ingredients_list_ic"
+        app:arch_title="@string/ingredients_list_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

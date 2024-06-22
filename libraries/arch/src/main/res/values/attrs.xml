@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ArchTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/design_orange</item>
         <item name="boxStrokeWidth">2dp</item>
@@ -14,6 +15,7 @@
             <enum name="password" value="1" />
             <enum name="number" value="2" />
             <enum name="real" value="3" />
+            <enum name="email" value="4" />
         </attr>
     </declare-styleable>
 
@@ -28,6 +30,7 @@
 
     <declare-styleable name="ArchActionButton">
         <attr name="arch_ab_enabled" format="boolean" />
+        <attr name="arch_ab_icon_text" format="boolean" />
         <attr name="arch_ab_text" format="string" />
         <attr name="arch_ab_color" format="enum">
             <enum name="orange" value="0" />
@@ -37,6 +40,11 @@
 
     <declare-styleable name="ArchRecipeSpinner">
         <attr name="arch_rs_hint_text" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ArchTitleView">
+        <attr name="arch_title" format="string" />
+        <attr name="arch_icon" format="reference" />
     </declare-styleable>
 
     <style name="ArchTextLabel" parent="TextAppearance.Design.Hint">

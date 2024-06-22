@@ -7,21 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".presentation.RecipeCostsFragment">
 
-    <TextView
+    <com.cabral.arch.widget.TitleView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
         android:layout_marginTop="@dimen/arch_default_margin"
-        android:drawablePadding="@dimen/arch_default_margin"
-        android:fontFamily="@font/design_bangers"
-        android:gravity="center"
-        android:textColor="@color/design_orange"
-        android:textSize="24sp"
+        app:arch_title="@string/design_ingredients"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/design_recipes" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ViewFlipper
         android:id="@+id/view_flipper"
