@@ -29,6 +29,7 @@ class ListIngredientsFragment :
         super.onViewCreated(view, savedInstanceState)
         initObservers()
         initClicks()
+        viewModel.getAllIngredients()
     }
 
     private fun initClicks() {
@@ -36,9 +37,9 @@ class ListIngredientsFragment :
             navigationIngredient.openIngredient(this)
         }
 
-        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
-            viewModel.getAllIngredients()
-        }
+//        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
+//            viewModel.getAllIngredients()
+//        }
     }
 
     private fun initObservers() {

@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp">
 
-        <TextView
+        <com.cabral.arch.widget.TitleView
             android:id="@+id/title"
-            style="@style/DesignTitle"
-            android:text="@string/register_user_create_register"
-            android:textAlignment="center"
-            android:textColor="@color/design_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/arch_default_margin"
+            app:arch_title="@string/register_user_create_register"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
