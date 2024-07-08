@@ -32,14 +32,6 @@ class LoginFragment : Fragment() {
 
     private val navigationNotLogged: NotLoggedNavigation by inject()
 
-    private val gso: GoogleSignInOptions by lazy {
-        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
-            .requestIdToken(getString(R.string.login_web_client_id))
-            .build()
-    }
-
-    private val gsc: GoogleSignInClient by lazy { GoogleSignIn.getClient(requireActivity(), gso) }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -68,15 +60,15 @@ class LoginFragment : Fragment() {
                 binding.acEnter.startLoading()
             }
 
-            notifyStopLoading.observe(viewLifecycleOwner){
+            notifyStopLoading.observe(viewLifecycleOwner) {
                 binding.acEnter.stopLoading()
             }
 
-            notifyGoogleStartLoading.observe(viewLifecycleOwner){
+            notifyGoogleStartLoading.observe(viewLifecycleOwner) {
                 binding.googleLogin.startLoading()
             }
 
-            notifyGoogleStopLoading.observe(viewLifecycleOwner){
+            notifyGoogleStopLoading.observe(viewLifecycleOwner) {
                 binding.googleLogin.stopLoading()
             }
 
@@ -108,6 +100,14 @@ class LoginFragment : Fragment() {
         })
 
         binding.googleLogin.abSetOnClickListener {
+
+            val gso =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
+                    .requestIdToken(getString(R.string.login_web_client_id))
+                    .build()
+
+            val gsc: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
             val signInIntent = gsc.signInIntent
             launcher.launch(signInIntent)
         }
