@@ -1,25 +1,24 @@
 package com.cabral.features.loggedin.host.di.navigation
 
-import android.app.Activity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.cabral.core.ListRecipeNavigation
-import com.cabral.features.loggedin.host.R
 import com.cabral.model.RecipeArgs
-import com.cabral.recipe.presentation.ListRecipeFragmentDirections
-import com.cabral.recipe.presentation.RecipeFragmentDirections
 
 internal class ListRecipeNavigationImpl : ListRecipeNavigation {
 
-    val SAVE_RECIPE = "SAVE_RECIPE"
-    val UPDATE_LIST_RECIPE = "UPDATE_LIST_RECIPE"
+    private val SAVE_RECIPE = "SAVE_RECIPE"
+    private val UPDATE_LIST_RECIPE = "UPDATE_LIST_RECIPE"
+    private val CURRENT_RECIPE = "currentRecipe"
 
     override fun openRecipe(fragment: Fragment, recipeArgs: RecipeArgs?) {
-        val directions = ListRecipeFragmentDirections.actionListRecipeToRecipe(recipeArgs)
-        fragment.findNavController().navigate(directions)
+        val directions = bundleOf(CURRENT_RECIPE to recipeArgs)
+        fragment.findNavController()
+            .navigate(com.cabral.recipe.R.id.action_listRecipe_to_recipe, directions)
     }
 
     override fun openIngredient(fragment: Fragment) {
@@ -30,8 +29,7 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
     override fun backToRecipeFragment(fragment: Fragment, recipeArgs: RecipeArgs?) {
         fragment.findNavController().run {
             previousBackStackEntry?.savedStateHandle?.set(
-                SAVE_RECIPE,
-                recipeArgs
+                SAVE_RECIPE, recipeArgs
             )
             popBackStack()
         }
@@ -60,15 +58,13 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
         lifecycleOwner: LifecycleOwner,
         key: String
     ) {
-        val navBackStackEntry =
-            fragment.findNavController().currentBackStackEntry
+        val navBackStackEntry = fragment.findNavController().currentBackStackEntry
 
         val observer = LifecycleEventObserver { _, event ->
             val contain = navBackStackEntry?.savedStateHandle?.contains(key)
             contain?.let {
                 if (event == Lifecycle.Event.ON_RESUME && contain) {
-                    val obj =
-                        navBackStackEntry.savedStateHandle.get<T>(key)
+                    val obj = navBackStackEntry.savedStateHandle.get<T>(key)
                     navBackStackEntry.savedStateHandle.remove<T>(key)
                     insideFunction(obj)
                 }
@@ -87,20 +83,22 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
     override fun observeListRecipeHasChanged(fragment: Fragment) {
         fragment.findNavController().run {
             previousBackStackEntry?.savedStateHandle?.set(
-                UPDATE_LIST_RECIPE,
-                true
+                UPDATE_LIST_RECIPE, true
             )
         }
     }
 
     override fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?) {
-        val directions = RecipeFragmentDirections.recipeToAddEditIngredient(recipeArgs)
-        fragment.findNavController().navigate(directions)
+        val directions = bundleOf(CURRENT_RECIPE to recipeArgs)
+        fragment.findNavController().navigate(
+            com.cabral.recipe.R.id.loggedin_hostRecipeaddeditingredientfragment, directions
+        )
     }
 
 
     override fun openCostsFragment(fragment: Fragment, recipeArgs: RecipeArgs?) {
-        val directions = ListRecipeFragmentDirections.actionListRecipeToCostsRecipe(recipeArgs)
-        fragment.findNavController().navigate(directions)
+        val directions = bundleOf(CURRENT_RECIPE to recipeArgs)
+        fragment.findNavController()
+            .navigate(com.cabral.recipe.R.id.action_list_recipe_to_costs_recipe, directions)
     }
 }

@@ -52,14 +52,11 @@ class IngredientsFragment :
     }
 
     private fun initArgs() {
-        try {
-            args?.currentIngredient?.let {
-                viewModel.editExistItem = true
-                val ingredient = it.toIngredient()
-                ingredient.setAllInputsText()
-                viewModel.changeIngredient(ingredient)
-            }
-        } catch (_: Exception) {
+        args?.currentIngredient?.let {
+            viewModel.editExistItem = true
+            val ingredient = it.toIngredient()
+            ingredient.setAllInputsText()
+            viewModel.changeIngredient(ingredient)
         }
     }
 
@@ -226,7 +223,7 @@ class IngredientsFragment :
             unit?.let { unit ->
                 biUnit.setInputText(unit)
             }
-            val priceText = String.format(Locale.US,"%.2f", price)
+            val priceText = String.format(Locale.US, "%.2f", price)
             biPrice.setInputText(priceText)
             biVolume.setInputText(volume.removeEndZero())
         }

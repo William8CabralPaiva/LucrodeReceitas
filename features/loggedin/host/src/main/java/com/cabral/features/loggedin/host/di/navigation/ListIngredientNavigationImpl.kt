@@ -1,5 +1,6 @@
 package com.cabral.features.loggedin.host.di.navigation
 
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -7,14 +8,18 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.cabral.arch.Redirection
 import com.cabral.core.ListIngredientNavigation
+import com.cabral.features.loggedin.host.R
 import com.cabral.ingredient.presentation.ListIngredientsFragmentDirections
 import com.cabral.model.IngredientArgs
 
 internal class ListIngredientNavigationImpl : ListIngredientNavigation {
+
+    private val CURRENT_INGREDIENT = "currentIngredient"
+
     override fun openIngredient(fragment: Fragment, ingredientsArgs: IngredientArgs?) {
-        val directions =
-            ListIngredientsFragmentDirections.actionListIngredientsToIngredients(ingredientsArgs)
-        fragment.findNavController().navigate(directions)
+        val directions = bundleOf(CURRENT_INGREDIENT to ingredientsArgs)
+        fragment.findNavController()
+            .navigate(com.cabral.ingredient.R.id.action_list_ingredients_to_ingredients, directions)
     }
 
     override fun backStackActionHasItemAdd(fragment: Fragment) {

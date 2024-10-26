@@ -5,9 +5,8 @@ import android.content.Intent
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.cabral.core.NotLoggedNavigation
-import com.cabral.features.presentation.LoginFragmentDirections
+import com.cabral.features.loggedout.host.R
 import com.cabral.host.presentation.NotLoggedActivity
-import com.cabral.registeruser.presentation.RegisterUserFragment
 
 internal class NotLoggedNavigationImpl : NotLoggedNavigation {
     override fun openNotLogged(activity: Activity) {
@@ -17,7 +16,6 @@ internal class NotLoggedNavigationImpl : NotLoggedNavigation {
     }
 
     override fun openUserRegister(fragment: Fragment) {
-        val directions = LoginFragmentDirections.loginfragmentToUserfragment()
-        fragment.findNavController().navigate(directions)
+        fragment.findNavController().navigate(R.id.loggedout_hostRegisterUserFragment)
     }
 }
