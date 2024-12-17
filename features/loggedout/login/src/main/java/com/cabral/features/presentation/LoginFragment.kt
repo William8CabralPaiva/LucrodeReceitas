@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.cabral.arch.EmailUtils
+import com.cabral.arch.GoogleSignInUtils
 import com.cabral.arch.PasswordUtils
 import com.cabral.arch.extensions.UserThrowable
 import com.cabral.arch.saveUserKey
@@ -14,10 +15,8 @@ import com.cabral.core.LoggedNavigation
 import com.cabral.core.NotLoggedNavigation
 import com.cabral.features.R
 import com.cabral.features.databinding.LoginFragmentBinding
-import com.cabral.features.extensions.singInLauncher
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -93,23 +92,19 @@ class LoginFragment : Fragment() {
     }
 
     private fun initListeners() {
-        val launcher = singInLauncher(successBlock = {
-            result?.let {
-                viewModel.googleEmail(it.email, it.displayName)
-            }
-        })
 
         binding.googleLogin.abSetOnClickListener {
+            GoogleSignInUtils.doGoogleSignIn(
+                requireContext(), CoroutineScope(Dispatchers.IO),
+                login = { email, displayName ->
+                    viewModel.googleEmail(email, displayName)
+                },
+                error = { error ->
+                    showToast(error.message)
+                }
+            )
 
-            val gso =
-                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
-                    .requestIdToken(getString(R.string.login_web_client_id))
-                    .build()
 
-            val gsc: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-
-            val signInIntent = gsc.signInIntent
-            launcher.launch(signInIntent)
         }
 
         binding.acEnter.abSetOnClickListener {

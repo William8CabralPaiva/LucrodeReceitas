@@ -11,4 +11,13 @@ android {
 
 dependencies {
     implementation project(Modules.design)
+
+    implementation platform(Libs.firebase_bom)
+    implementation Libs.firebase_auth
+    implementation Libs.services_auth
+    implementation Libs.firebase_store
+    implementation Libs.credentials
+    implementation Libs.credentials_services
+    implementation Libs.google_id
+
 }

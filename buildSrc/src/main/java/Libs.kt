@@ -9,4 +9,7 @@ object Libs {
     const val services_auth = "com.google.android.gms:play-services-auth:${Versions.services_auth}"
     const val ad_mob = "com.google.android.gms:play-services-ads:${Versions.ad_mob}"
     const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
+    const val credentials = "androidx.credentials:credentials:${Versions.credentials}"
+    const val credentials_services = "androidx.credentials:credentials-play-services-auth:${Versions.credentials}"
+    const val google_id = "com.google.android.libraries.identity.googleid:googleid:${Versions.google_id}"
 }
