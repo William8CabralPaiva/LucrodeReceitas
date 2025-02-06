@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import com.cabral.arch.extensions.UserThrowable
+import com.cabral.arch.extensions.collectIn
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomToast
 import com.cabral.registeruser.R
@@ -53,36 +52,40 @@ class RegisterUserFragment : Fragment() {
     }
 
     private fun initObservers() {
-        viewModel.run {
-            notifyStartLoading.observe(viewLifecycleOwner) {
-                binding.abRegister.startLoading()
-            }
 
-            notifyError.observe(viewLifecycleOwner) {
-                binding.abRegister.finishLoading(false, hideIcon = true)
-                showToast(R.string.register_user_already_exists)
-            }
 
-            notifySuccess.observe(viewLifecycleOwner) {
-                binding.abRegister.finishLoading(true)
-                showToast(R.string.register_user_check_email_conclude_register)
-                requireActivity().onBackPressed()
-            }
+        viewModel.uiEvent.collectIn(this) {
+            when (it) {
+                is UiEvent.StartLoading -> {
+                    binding.abRegister.startLoading()
+                }
 
-            notifyErrorUsername.observe(viewLifecycleOwner) {
-                binding.biName.setErrorFocus(it)
-            }
+                is UiEvent.Error -> {
+                    binding.abRegister.finishLoading(false, hideIcon = true)
+                    showToast(R.string.register_user_already_exists)
+                }
 
-            notifyErrorEmail.observe(viewLifecycleOwner) {
-                binding.biEmail.setErrorFocus(it)
-            }
+                is UiEvent.Success -> {
+                    binding.abRegister.finishLoading(true)
+                    showToast(R.string.register_user_check_email_conclude_register)
+                    requireActivity().onBackPressed()
+                }
 
-            notifyErrorPassword.observe(viewLifecycleOwner) {
-                binding.biPassword.setErrorFocus(it)
-            }
+                is UiEvent.ErrorEmail -> {
+                    binding.biEmail.setErrorFocus(it.message)
+                }
 
-            notifyErrorConfirmPassword.observe(viewLifecycleOwner) {
-                binding.biConfirmPassword.setErrorFocus(it)
+                is UiEvent.ErrorUsername -> {
+                    binding.biName.setErrorFocus(it.message)
+                }
+
+                is UiEvent.ErrorPassword -> {
+                    binding.biPassword.setErrorFocus(it.message)
+                }
+
+                is UiEvent.ErrorConfirmPassword -> {
+                    binding.biConfirmPassword.setErrorFocus(it.message)
+                }
             }
         }
     }

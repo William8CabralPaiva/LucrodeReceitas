@@ -1,7 +1,5 @@
 package com.cabral.registeruser.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cabral.arch.EmailUtils
@@ -9,75 +7,59 @@ import com.cabral.arch.PasswordUtils
 import com.cabral.arch.extensions.UserThrowable
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.AddUserUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 
 class RegisterUserViewModel(
     private val addUserUseCase: AddUserUseCase
 ) : ViewModel() {
 
-    private val _notifySuccess = MutableLiveData<Unit>()
-    val notifySuccess: LiveData<Unit> = _notifySuccess
-
-    private val _notifyError = MutableLiveData<Unit>()
-    val notifyError: LiveData<Unit> = _notifyError
-
-    private val _notifyErrorUsername = MutableLiveData<String>()
-    val notifyErrorUsername: LiveData<String> = _notifyErrorUsername
-
-    private val _notifyErrorEmail = MutableLiveData<String>()
-    val notifyErrorEmail: LiveData<String> = _notifyErrorEmail
-
-    private val _notifyErrorPassword = MutableLiveData<String>()
-    val notifyErrorPassword: LiveData<String> = _notifyErrorPassword
-
-    private val _notifyErrorConfirmPassword = MutableLiveData<String>()
-    val notifyErrorConfirmPassword: LiveData<String> = _notifyErrorConfirmPassword
-
-    private val _notifyStartLoading = MutableLiveData<Unit>()
-    val notifyStartLoading: LiveData<Unit> = _notifyStartLoading
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     fun registerUser(
-        name: String?,
-        email: String?,
-        password: String?,
-        confirmPassword: String?
+        name: String?, email: String?, password: String?, confirmPassword: String?
     ) {
         try {
-            if (name.validateName() &&
-                EmailUtils.validateEmail(email) &&
-                PasswordUtils.validatePassword(password) &&
-                equalPassword(password, confirmPassword)
+            if (name.validateName() && EmailUtils.validateEmail(email) && PasswordUtils.validatePassword(
+                    password
+                ) && equalPassword(password, confirmPassword)
             ) {
                 val user = User(email, name, password)
-                addUserUseCase(user)
-                    .onStart {
-                        _notifyStartLoading.postValue(Unit)
-                    }
-                    .catch {
-                        _notifyError.postValue(Unit)
-                    }.onEach {
-                        _notifySuccess.postValue(Unit)
-                    }.launchIn(viewModelScope)
+                addUserUseCase(user).onStart {
+                    _uiEvent.emit(UiEvent.StartLoading)
+                }.catch {
+                    _uiEvent.emit(UiEvent.Error)
+                }.onEach {
+                    _uiEvent.emit(UiEvent.Success)
+                }.launchIn(viewModelScope)
             }
         } catch (error: Throwable) {
-            when (error) {
-                is UserThrowable.AuthenticatePasswordThrowable -> {
-                    _notifyErrorPassword.postValue(error.message)
-                }
+            viewModelScope.launch {
+                when (error) {
+                    is UserThrowable.AuthenticatePasswordThrowable -> {
+                        _uiEvent.emit(UiEvent.ErrorPassword(error.message))
+                    }
 
-                is UserThrowable.AuthenticateEmailThrowable -> {
-                    _notifyErrorEmail.postValue(error.message)
-                }
+                    is UserThrowable.AuthenticateEmailThrowable -> {
+                        _uiEvent.emit(UiEvent.ErrorEmail(error.message))
+                    }
 
-                is UserThrowable.UsernameRegisterThrowable -> {
-                    _notifyErrorUsername.postValue(error.message)
-                }
+                    is UserThrowable.UsernameRegisterThrowable -> {
+                        _uiEvent.emit(UiEvent.ErrorUsername(error.message))
+                    }
 
-                else -> {
-                    _notifyErrorConfirmPassword.postValue(error.message)
+                    else -> {
+                        error.message?.let {
+                            _uiEvent.emit(UiEvent.ErrorConfirmPassword(it))
+                        }
+                    }
                 }
             }
         }
