@@ -10,6 +10,7 @@ import com.cabral.arch.EmailUtils
 import com.cabral.arch.GoogleSignInUtils
 import com.cabral.arch.PasswordUtils
 import com.cabral.arch.extensions.UserThrowable
+import com.cabral.arch.extensions.collectIn
 import com.cabral.arch.saveUserKey
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.LoggedNavigation
@@ -44,46 +45,40 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initListeners()
         initObservers()
-
     }
 
     private fun initObservers() {
-        viewModel.run {
 
-            notifySuccess.observe(viewLifecycleOwner) {
-                it.key?.let { it1 -> context?.saveUserKey(it1) }
-                navigation.openActivityLogged(requireActivity())
-            }
+        viewModel.uiEvent.collectIn(this){
+            when (it) {
+                is UiState.StartLoading -> {
+                    binding.acEnter.startLoading()
+                }
+                is UiState.StopLoading -> {
+                    binding.acEnter.stopLoading()
+                }
+                is UiState.GoogleStartLoading -> {
+                    binding.googleLogin.startLoading()
+                }
+                is UiState.GoogleStopLoading -> {
+                    binding.googleLogin.stopLoading()
+                }
+                is UiState.Success -> {
+                    it.user.key?.let { it1 -> context?.saveUserKey(it1) }
+                    navigation.openActivityLogged(requireActivity())
+                }
+                is UiState.Error -> {
+                    showToast(it.message)
+                }
+                is UiState.ForgotPassword -> {
+                    showToast(getString(R.string.login_redefine_password))
+                }
 
-            notifyStartLoading.observe(viewLifecycleOwner) {
-                binding.acEnter.startLoading()
-            }
-
-            notifyStopLoading.observe(viewLifecycleOwner) {
-                binding.acEnter.stopLoading()
-            }
-
-            notifyGoogleStartLoading.observe(viewLifecycleOwner) {
-                binding.googleLogin.startLoading()
-            }
-
-            notifyGoogleStopLoading.observe(viewLifecycleOwner) {
-                binding.googleLogin.stopLoading()
-            }
-
-            notifyError.observe(viewLifecycleOwner) {
-                showToast(it)
-            }
-
-            notifyForgotPassword.observe(viewLifecycleOwner) {
-                showToast(getString(R.string.login_redefine_password))
-            }
-
-            notifyErrorForgotPassword.observe(viewLifecycleOwner) {
-                showToast(it)
+                is UiState.ForgotPasswordError -> {
+                    showToast(it.message)
+                }
             }
         }
     }
