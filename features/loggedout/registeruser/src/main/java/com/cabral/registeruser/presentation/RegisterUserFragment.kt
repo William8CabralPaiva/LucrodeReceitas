@@ -32,6 +32,7 @@ class RegisterUserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         initObservers()
+        setDefaultFieldsState()
     }
 
     private fun initListeners() {
@@ -48,45 +49,71 @@ class RegisterUserFragment : Fragment() {
                     biConfirmPassword.getText()
                 )
             }
+
         }
     }
 
     private fun initObservers() {
+        observeUiEvents()
+        observeUiStates()
+    }
 
-
-        viewModel.uiEvent.collectIn(this) {
-            when (it) {
-                is UiEvent.StartLoading -> {
-                    binding.abRegister.startLoading()
-                }
-
-                is UiEvent.Error -> {
-                    binding.abRegister.finishLoading(false, hideIcon = true)
-                    showToast(R.string.register_user_already_exists)
-                }
-
-                is UiEvent.Success -> {
-                    binding.abRegister.finishLoading(true)
-                    showToast(R.string.register_user_check_email_conclude_register)
-                    requireActivity().onBackPressed()
-                }
-
-                is UiEvent.ErrorEmail -> {
-                    binding.biEmail.setErrorFocus(it.message)
-                }
-
-                is UiEvent.ErrorUsername -> {
-                    binding.biName.setErrorFocus(it.message)
-                }
-
-                is UiEvent.ErrorPassword -> {
-                    binding.biPassword.setErrorFocus(it.message)
-                }
-
-                is UiEvent.ErrorConfirmPassword -> {
-                    binding.biConfirmPassword.setErrorFocus(it.message)
-                }
+    private fun observeUiEvents() {
+        viewModel.uiEvent.collectIn(this) { event ->
+            when (event) {
+                is UiEvent.StartLoading -> handleStartLoading()
+                is UiEvent.Error -> handleError()
+                is UiEvent.Success -> handleSuccess()
             }
+        }
+    }
+
+    private fun observeUiStates() {
+        viewModel.uiState.collectIn(this) { state ->
+            when (state) {
+                is UiState.ErrorEmail -> binding.biEmail.handleErrorState(state.message)
+                is UiState.ErrorUsername -> binding.biName.handleErrorState(state.message)
+                is UiState.ErrorPassword -> binding.biPassword.handleErrorState(state.message)
+                is UiState.ErrorConfirmPassword -> binding.biConfirmPassword.handleErrorState(state.message)
+                UiState.DefaultFieldsState -> Unit
+            }
+        }
+    }
+
+    private fun handleStartLoading() {
+        binding.abRegister.startLoading()
+    }
+
+    private fun handleError() {
+        binding.abRegister.finishLoading(false, hideIcon = true)
+        showToast(R.string.register_user_already_exists)
+    }
+
+    private fun handleSuccess() {
+        binding.abRegister.finishLoading(true)
+        showToast(R.string.register_user_check_email_conclude_register)
+        requireActivity().onBackPressed()
+    }
+
+    private fun BorderInputView.handleErrorState(message: String) {
+        setErrorFocus(message)
+    }
+
+    private fun BorderInputView.errorInputHasChanged() {
+        if (this.isError()) {
+            viewModel.setDefaultFieldsState()
+        }
+    }
+
+    private fun setDefaultFieldsState() {
+        allInputs().forEach {
+            it.errorInputHasChanged()
+        }
+    }
+
+    private fun allInputs(): List<BorderInputView> {
+        binding.run {
+            return listOf(biName, biEmail, biPassword, biConfirmPassword)
         }
     }
 

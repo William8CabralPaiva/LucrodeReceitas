@@ -23,6 +23,9 @@ class RegisterUserViewModel(
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
+    private val _uiState = MutableSharedFlow<UiState>()
+    val uiState: SharedFlow<UiState> = _uiState.asSharedFlow()
+
     fun registerUser(
         name: String?, email: String?, password: String?, confirmPassword: String?
     ) {
@@ -44,20 +47,20 @@ class RegisterUserViewModel(
             viewModelScope.launch {
                 when (error) {
                     is UserThrowable.AuthenticatePasswordThrowable -> {
-                        _uiEvent.emit(UiEvent.ErrorPassword(error.message))
+                        _uiState.emit(UiState.ErrorPassword(error.message))
                     }
 
                     is UserThrowable.AuthenticateEmailThrowable -> {
-                        _uiEvent.emit(UiEvent.ErrorEmail(error.message))
+                        _uiState.emit(UiState.ErrorEmail(error.message))
                     }
 
                     is UserThrowable.UsernameRegisterThrowable -> {
-                        _uiEvent.emit(UiEvent.ErrorUsername(error.message))
+                        _uiState.emit(UiState.ErrorUsername(error.message))
                     }
 
                     else -> {
                         error.message?.let {
-                            _uiEvent.emit(UiEvent.ErrorConfirmPassword(it))
+                            _uiState.emit(UiState.ErrorConfirmPassword(it))
                         }
                     }
                 }
@@ -80,5 +83,11 @@ class RegisterUserViewModel(
             return true
         }
         throw UserThrowable.NotEqualPasswordThrowable()
+    }
+
+    fun setDefaultFieldsState() {
+        viewModelScope.launch {
+            _uiState.emit(UiState.DefaultFieldsState)
+        }
     }
 }

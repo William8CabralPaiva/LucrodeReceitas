@@ -33,7 +33,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun initObservers() {
         viewModel.uiEvent.collectIn(this) {
-            if (it == SplashEvent.Logged) {
+            if (it == UiEvent.Logged) {
                 navigationLogged.openActivityLogged(this@SplashScreenActivity)
             } else {
                 navigationNotLogged.openNotLogged(this@SplashScreenActivity)
