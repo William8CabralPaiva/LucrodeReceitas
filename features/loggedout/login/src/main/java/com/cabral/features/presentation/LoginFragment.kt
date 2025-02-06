@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.cabral.arch.EmailUtils
 import com.cabral.arch.GoogleSignInUtils
 import com.cabral.arch.PasswordUtils
@@ -17,6 +18,8 @@ import com.cabral.features.R
 import com.cabral.features.databinding.LoginFragmentBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -92,7 +95,6 @@ class LoginFragment : Fragment() {
     }
 
     private fun initListeners() {
-
         binding.googleLogin.abSetOnClickListener {
             GoogleSignInUtils.doGoogleSignIn(
                 requireContext(), CoroutineScope(Dispatchers.IO),
@@ -100,10 +102,13 @@ class LoginFragment : Fragment() {
                     viewModel.googleEmail(email, displayName)
                 },
                 error = { error ->
-                    showToast(error.message)
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            showToast(error.message)
+                        }
+                    }
                 }
             )
-
 
         }
 
