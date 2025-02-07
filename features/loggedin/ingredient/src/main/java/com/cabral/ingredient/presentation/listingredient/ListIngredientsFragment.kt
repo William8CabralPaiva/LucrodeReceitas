@@ -42,15 +42,17 @@ class ListIngredientsFragment :
 
     private fun initObservers() {
 
-        viewModel.uiState.collectIn(this){
-            when(it){
+        viewModel.uiState.collectIn(this) {
+            when (it) {
                 is UiState.StartLoading -> {
                     binding.viewFlipper.displayedChild = 0
                 }
+
                 is UiState.EmptyList -> {
                     binding.viewFlipper.displayedChild = 1
                 }
-                is UiState.ListIngredient ->{
+
+                is UiState.ListIngredient -> {
                     if (it.list.isNotEmpty()) {
                         binding.viewFlipper.displayedChild = 2
                         initAdapter()
@@ -61,13 +63,15 @@ class ListIngredientsFragment :
             }
         }
 
-        viewModel.uiEvent.collectIn(this){
-            when(it){
+        viewModel.uiEvent.collectIn(this) {
+            when (it) {
                 is UiEvent.SuccessRemoveIngredient -> {
                     it.ingredient.deleteItem()
                 }
+
                 is UiEvent.ErrorRemoveIngredient -> {
-                    val text = String.format(getString(R.string.design_delete_error), it.ingredientName)
+                    val text =
+                        String.format(getString(R.string.design_delete_error), it.ingredientName)
                     showToast(text)
                 }
             }
