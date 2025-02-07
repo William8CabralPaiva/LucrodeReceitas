@@ -8,8 +8,11 @@ import com.cabral.arch.extensions.UserThrowable
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.AddUserUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -23,8 +26,8 @@ class RegisterUserViewModel(
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
-    private val _uiState = MutableSharedFlow<UiState>()
-    val uiState: SharedFlow<UiState> = _uiState.asSharedFlow()
+    private val _uiState = MutableStateFlow<UiState>(UiState.DefaultFieldsState)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     fun registerUser(
         name: String?, email: String?, password: String?, confirmPassword: String?
