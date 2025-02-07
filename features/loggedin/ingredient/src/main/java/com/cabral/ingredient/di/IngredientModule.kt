@@ -1,6 +1,6 @@
 package com.cabral.ingredient.di
 
-import com.cabral.ingredient.presentation.IngredientsViewModel
+import com.cabral.ingredient.presentation.ingredient.IngredientsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module

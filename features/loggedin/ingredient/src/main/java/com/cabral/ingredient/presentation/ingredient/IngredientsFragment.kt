@@ -1,8 +1,7 @@
-package com.cabral.ingredient.presentation
+package com.cabral.ingredient.presentation.ingredient
 
 import android.R
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.StringRes
@@ -21,9 +20,6 @@ import com.cabral.ingredient.databinding.IngredientsFragmentBinding
 import com.cabral.ingredient.presentation.adapter.IngredientAdapter
 import com.cabral.model.toIngredient
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale

@@ -8,8 +8,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import com.cabral.arch.Redirection
 import com.cabral.core.ListIngredientNavigation
-import com.cabral.features.loggedin.host.R
-import com.cabral.ingredient.presentation.ListIngredientsFragmentDirections
 import com.cabral.model.IngredientArgs
 
 internal class ListIngredientNavigationImpl : ListIngredientNavigation {

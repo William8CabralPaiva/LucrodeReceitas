@@ -1,4 +1,4 @@
-package com.cabral.ingredient.presentation
+package com.cabral.ingredient.presentation.ingredient
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

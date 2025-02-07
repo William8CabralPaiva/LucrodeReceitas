@@ -1,9 +1,10 @@
-package com.cabral.ingredient.presentation
+package com.cabral.ingredient.presentation.listingredient
 
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import com.cabral.arch.BaseFragment
+import com.cabral.arch.extensions.collectIn
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListIngredientNavigation
@@ -37,51 +38,41 @@ class ListIngredientsFragment :
             navigationIngredient.openIngredient(this)
         }
 
-//        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
-//            viewModel.getAllIngredients()
-//        }
     }
 
     private fun initObservers() {
-        viewModel.run {
 
-            notifyStartLoading.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.run {
+        viewModel.uiState.collectIn(this){
+            when(it){
+                is UiState.StartLoading -> {
                     binding.viewFlipper.displayedChild = 0
                 }
-            }
-
-            notifyEmptyList.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.run {
+                is UiState.EmptyList -> {
                     binding.viewFlipper.displayedChild = 1
                 }
-
-            }
-
-            notifyListIngredient.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    binding.viewFlipper.displayedChild = 2
-                    initAdapter()
-                } else {
-                    binding.viewFlipper.displayedChild = 1
+                is UiState.ListIngredient ->{
+                    if (it.list.isNotEmpty()) {
+                        binding.viewFlipper.displayedChild = 2
+                        initAdapter()
+                    } else {
+                        binding.viewFlipper.displayedChild = 1
+                    }
                 }
             }
+        }
 
-            notifySuccessRemove.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.run {
-                    deleteItem()
+        viewModel.uiEvent.collectIn(this){
+            when(it){
+                is UiEvent.SuccessRemoveIngredient -> {
+                    it.ingredient.deleteItem()
                 }
-            }
-
-            notifyErrorRemove.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    val text = String.format(getString(R.string.design_delete_error), it)
+                is UiEvent.ErrorRemoveIngredient -> {
+                    val text = String.format(getString(R.string.design_delete_error), it.ingredientName)
                     showToast(text)
                 }
             }
-
-
         }
+
     }
 
     private fun showToast(text: String) {

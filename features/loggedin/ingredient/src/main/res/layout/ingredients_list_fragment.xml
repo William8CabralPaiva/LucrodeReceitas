@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ListIngredientsFragment">
+    tools:context=".presentation.listingredient.ListIngredientsFragment">
 
     <com.cabral.arch.widget.TitleView
         android:id="@+id/title"
