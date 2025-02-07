@@ -14,6 +14,7 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
     private val SAVE_RECIPE = "SAVE_RECIPE"
     private val UPDATE_LIST_RECIPE = "UPDATE_LIST_RECIPE"
     private val CURRENT_RECIPE = "currentRecipe"
+    private val CURRENT_INGREDIENT = "currentIngredient"
 
     override fun openRecipe(fragment: Fragment, recipeArgs: RecipeArgs?) {
         val directions = bundleOf(CURRENT_RECIPE to recipeArgs)
@@ -22,8 +23,9 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
     }
 
     override fun openIngredient(fragment: Fragment) {
+        val directions = bundleOf(CURRENT_INGREDIENT to null)
         val id = com.cabral.ingredient.R.id.ingredient_add_nav
-        fragment.findNavController().navigate(id)
+        fragment.findNavController().navigate(id, directions)
     }
 
     override fun backToRecipeFragment(fragment: Fragment, recipeArgs: RecipeArgs?) {
