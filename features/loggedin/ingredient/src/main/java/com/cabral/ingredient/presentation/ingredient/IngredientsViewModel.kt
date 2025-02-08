@@ -148,7 +148,7 @@ class IngredientsViewModel(
     private fun validateUnit(unit: String?): UnitMeasureType? {
         try {
             unit?.let {
-                val selected = UnitMeasureType.values().filter { enum -> enum.unit == unit }
+                val selected = UnitMeasureType.entries.filter { enum -> enum.unit == unit }
                 if (selected.isNotEmpty()) {
                     return selected.first()
                 }
