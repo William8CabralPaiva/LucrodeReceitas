@@ -77,7 +77,7 @@ class IngredientsViewModel(
 
     private fun validateField(
         name: String?, volume: String?, unit: String?, price: String?
-    ): Ingredient? {
+    ): Ingredient {
         if (name.isNullOrEmpty()) {
             throw IngredientThrowable.NameThrowable()
         }
