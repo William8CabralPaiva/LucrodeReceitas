@@ -3,7 +3,7 @@ package com.cabral.recipe.di
 import com.cabral.recipe.presentation.listrecipe.ListRecipeViewModel
 import com.cabral.recipe.presentation.RecipeAddEditIngredientFragmentViewModel
 import com.cabral.recipe.presentation.RecipeCostsViewModel
-import com.cabral.recipe.presentation.RecipeViewModel
+import com.cabral.recipe.presentation.recipe.RecipeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
