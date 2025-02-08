@@ -1,6 +1,6 @@
 package com.cabral.recipe.di
 
-import com.cabral.recipe.presentation.ListRecipeViewModel
+import com.cabral.recipe.presentation.listrecipe.ListRecipeViewModel
 import com.cabral.recipe.presentation.RecipeAddEditIngredientFragmentViewModel
 import com.cabral.recipe.presentation.RecipeCostsViewModel
 import com.cabral.recipe.presentation.RecipeViewModel

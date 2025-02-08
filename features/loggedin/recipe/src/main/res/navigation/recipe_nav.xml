@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/list_recipe"
-        android:name="com.cabral.recipe.presentation.ListRecipeFragment"
+        android:name="com.cabral.recipe.presentation.listrecipe.ListRecipeFragment"
         android:label="ListRecipeFragment"
         tools:layout="@layout/recipe_list_fragment">
 
