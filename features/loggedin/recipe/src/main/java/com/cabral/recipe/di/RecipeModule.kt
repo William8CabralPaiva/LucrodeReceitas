@@ -1,7 +1,7 @@
 package com.cabral.recipe.di
 
+import com.cabral.recipe.presentation.addeditrecipe.RecipeAddEditIngredientViewModel
 import com.cabral.recipe.presentation.listrecipe.ListRecipeViewModel
-import com.cabral.recipe.presentation.addeditrecipe.RecipeAddEditIngredientFragmentViewModel
 import com.cabral.recipe.presentation.recipe.RecipeViewModel
 import com.cabral.recipe.presentation.recipecosts.RecipeCostsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -14,7 +14,7 @@ object RecipeModule {
 
     private val viewModelModules: Module = module {
         viewModel {
-            RecipeAddEditIngredientFragmentViewModel(get())
+            RecipeAddEditIngredientViewModel(get())
         }
         viewModel { ListRecipeViewModel(get(), get()) }
         viewModel { RecipeViewModel(get()) }

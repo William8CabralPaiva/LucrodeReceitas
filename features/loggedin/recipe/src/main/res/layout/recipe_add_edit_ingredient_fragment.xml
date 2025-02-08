@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     android:paddingHorizontal="@dimen/arch_default_margin"
     android:paddingTop="@dimen/arch_default_margin"
-    tools:context=".presentation.RecipeAddEditIngredientFragment">
+    tools:context=".presentation.addeditrecipe.RecipeAddEditIngredientFragment">
 
     <ScrollView
         android:id="@+id/scroll"
@@ -31,7 +31,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title"
-            tools:context=".presentation.ListRecipeFragment">
+            tools:context=".presentation.listrecipe.ListRecipeFragment">
 
             <ProgressBar
                 android:id="@+id/progress_circular"
