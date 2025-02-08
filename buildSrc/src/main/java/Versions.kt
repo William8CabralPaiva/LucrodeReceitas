@@ -12,4 +12,7 @@ object Versions {
     const val mockito_inline_version = "4.8.0"
     const val mockk_version = "1.13.11"
     const val kotlin_test_version = "2.0.0"
+    const val arch_core_version = "2.2.0"
+    const val cash_turbine_version = "1.1.0"
+
 }

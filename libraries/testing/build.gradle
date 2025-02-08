@@ -10,10 +10,13 @@ android {
 }
 
 dependencies {
+    implementation project(Modules.domain)
     implementation(Libs.kotlin_coroutines_test)
     implementation(Libs.mockito_kotlin)
     implementation(Libs.mockito_core)
     implementation(Libs.mockito_inline)
     implementation(Libs.mockk)
     implementation(Libs.kotlin_test)
+    implementation(Libs.cash_turbine)
+    implementation(Libs.arch_core)
 }
