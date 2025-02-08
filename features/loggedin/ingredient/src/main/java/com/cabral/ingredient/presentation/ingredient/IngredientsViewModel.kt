@@ -39,36 +39,35 @@ class IngredientsViewModel(
 
     fun save() {
         addIngredientUseCase(listIngredient).catch {
-                _uiEvent.emit(UiEvent.Error)
-            }.onEach {
-                _uiEvent.emit(UiEvent.Success)
-            }.launchIn(viewModelScope)
+            _uiEvent.emit(UiEvent.Error)
+        }.onEach {
+            _uiEvent.emit(UiEvent.Success)
+        }.launchIn(viewModelScope)
     }
 
     fun addOrEditIngredient(name: String?, volume: String?, unit: String?, price: String?) {
         viewModelScope.launch {
             try {
                 val ingredient = validateField(name, volume, unit, price)
-                if (ingredient != null) {
 
-                    if (editItemOnList) {
-                        editPosition?.let {
-                            ingredient.id = it
-                            listIngredient[it] = ingredient
-                        }
-
-                        editPosition?.let {
-                            _uiState.emit(UiState.SuccessEdit(it)).also {
-                                setEditMode(false, null)
-                            }
-                        }
-
-                    } else {
-                        listIngredient.add(ingredient)
-                        _uiState.emit(UiState.SuccessAdd(listIngredient.size - 1))
-                        countItem += 1
+                if (editItemOnList) {
+                    editPosition?.let {
+                        ingredient.id = it
+                        listIngredient[it] = ingredient
                     }
+
+                    editPosition?.let {
+                        _uiState.emit(UiState.SuccessEdit(it)).also {
+                            setEditMode(false, null)
+                        }
+                    }
+
+                } else {
+                    listIngredient.add(ingredient)
+                    _uiState.emit(UiState.SuccessAdd(listIngredient.size - 1))
+                    countItem += 1
                 }
+
             } catch (t: IngredientThrowable) {
                 _uiState.emit(UiState.ErrorAddEdit(t))
             }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.annotation.ColorRes
-import androidx.annotation.IntegerRes
 import androidx.annotation.StringRes
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
