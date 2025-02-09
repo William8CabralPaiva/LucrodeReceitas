@@ -3,6 +3,7 @@ package com.cabral.features.splash.presentation
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.cabral.arch.extensions.collectIn
 import com.cabral.arch.getUserKey
 import com.cabral.core.LoggedNavigation
 import com.cabral.core.NotLoggedNavigation
@@ -31,11 +32,11 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.notifyLogged.observe(this) {
-            if (it) {
-                navigationLogged.openActivityLogged(this)
+        viewModel.uiEvent.collectIn(this) {
+            if (it == UiEvent.Logged) {
+                navigationLogged.openActivityLogged(this@SplashScreenActivity)
             } else {
-                navigationNotLogged.openNotLogged(this)
+                navigationNotLogged.openNotLogged(this@SplashScreenActivity)
             }
         }
     }

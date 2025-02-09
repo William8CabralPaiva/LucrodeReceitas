@@ -1,9 +1,10 @@
-package com.cabral.recipe.presentation
+package com.cabral.recipe.presentation.listrecipe
 
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import com.cabral.arch.BaseFragment
+import com.cabral.arch.extensions.collectIn
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
@@ -35,45 +36,38 @@ class ListRecipeFragment :
     }
 
     private fun initObservers() {
-        viewModel.run {
 
-            notifyStartLoading.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.run {
-                    binding.viewFlipper.displayedChild = 0
-                }
+        viewModel.uiEvent.collectIn(this) {
+            if (it is UiEvent.ErrorDelete) {
+                val text = String.format(getString(R.string.design_delete_error), it)
+                showToast(text)
             }
+        }
 
-            notifyEmptyList.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.run {
-                    binding.viewFlipper.displayedChild = 1
-                }
+        viewModel.uiState.collectIn(this) {
+            when (it) {
+                is UiState.StartLoading -> binding.viewFlipper.displayedChild = 0
+                is UiState.EmptyList -> binding.viewFlipper.displayedChild = 1
+                is UiState.ListRecipe -> setList(it.listRecipe)
+                is UiState.SuccessDelete -> successDelete(it.recipeProfitPrice)
+
             }
+        }
+    }
 
-            notifyListRecipe.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    binding.viewFlipper.displayedChild = 2
-                    initAdapter()
-                } else {
-                    binding.viewFlipper.displayedChild = 1
-                }
-            }
+    private fun successDelete(recipeProfitPrice: RecipeProfitPrice) {
+        recipeProfitPrice.deleteItem()
+        if (viewModel.listRecipe.isEmpty()) {
+            binding.viewFlipper.displayedChild = 1
+        }
+    }
 
-            notifySuccessDelete.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.run {
-                    deleteItem()
-                    if (listRecipe.isEmpty()) {
-                        binding.viewFlipper.displayedChild = 1
-                    }
-                }
-            }
-
-            notifyErrorDelete.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    val text = String.format(getString(R.string.design_delete_error), it)
-                    showToast(text)
-                }
-            }
-
+    private fun setList(listRecipe: List<RecipeProfitPrice>) {
+        if (listRecipe.isNotEmpty()) {
+            binding.viewFlipper.displayedChild = 2
+            initAdapter()
+        } else {
+            binding.viewFlipper.displayedChild = 1
         }
     }
 

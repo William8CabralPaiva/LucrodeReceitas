@@ -1,4 +1,4 @@
-package com.cabral.recipe.presentation
+package com.cabral.recipe.presentation.addeditrecipe
 
 import android.os.Bundle
 import android.view.View
@@ -9,6 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.cabral.arch.BaseFragment
+import com.cabral.arch.extensions.collectIn
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
@@ -31,7 +32,7 @@ class RecipeAddEditIngredientFragment :
 
     private lateinit var ingredientAdapterIngredient: IngredientAdapter
 
-    private val viewModel: RecipeAddEditIngredientFragmentViewModel by viewModel()
+    private val viewModel: RecipeAddEditIngredientViewModel by viewModel()
 
     private val args: RecipeAddEditIngredientFragmentArgs by navArgs()
 
@@ -72,80 +73,65 @@ class RecipeAddEditIngredientFragment :
     }
 
     private fun initObservers() {
-        viewModel.run {
 
-            notifyError.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    binding.viewFlipper.displayedChild = 2
-                }
-            }
-
-            notifyErrorSpinner.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    binding.biIngredient.setError()
-                }
-            }
-
-            notifyListIngredient.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    binding.viewFlipper.displayedChild = 1
-                    initAdapter(it.getIngredientName())
-                    binding.ivHand.isVisible = false
-                }
-
-            }
-
-            notifyDisableSpinner.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    binding.viewFlipper.displayedChild = 1
-                    binding.biIngredient.setError()
-                    binding.biIngredient.setError(getString(DesignR.string.design_ingredients_register))
-                    binding.ivHand.isVisible = true
-                }
-            }
-
-            notifyAddIngredient.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    ingredientAdapterIngredient.notifyItemInserted(id)
-                    clearFields()
-                }
-
-            }
-
-            notifyEditMode.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    val buttonText = if (it) {
-                        getString(DesignR.string.design_edit)
-                    } else {
-                        binding.biIngredient.clearInputText()
-                        binding.biVolume.clearInputText()
-                        getString(DesignR.string.design_add)
-                    }
-                    binding.abAdd.setText(buttonText)
-                }
-
-            }
-
-            notifyShowToast.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    showToast(it)
-                }
-            }
-
-            notifyRemoveIngredient.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    ingredientAdapterIngredient.notifyItemRemoved(it)
-                }
-
-            }
-
-            notifySuccessEdit.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    ingredientAdapterIngredient.notifyItemChanged(it)
-                }
-
+        viewModel.uiEvent.collectIn(this) {
+            if (it is UiEvent.ShowToast) {
+                showToast(it.text)
             }
         }
+
+        viewModel.uiState.collectIn(this) {
+            when (it) {
+                is UiState.Default -> Unit
+                is UiState.Error -> binding.viewFlipper.displayedChild = 2
+                is UiState.ErrorSpinner -> binding.biIngredient.setError()
+                is UiState.DisableSpinner -> disableSpinner()
+                is UiState.EditMode -> editMode(it.editMode)
+                is UiState.RemoveIngredient -> ingredientAdapterIngredient.notifyItemRemoved(it.id)
+                is UiState.SuccessEdit -> successEdit(it.position)
+                is UiState.AddIngredient -> addIngredient(it.ingredient?.id)
+                is UiState.ListIngredient -> showList(it.list)
+            }
+        }
+    }
+
+    private fun successEdit(position: Int) {
+        ingredientAdapterIngredient.notifyItemChanged(position)
+        editMode(false)
+    }
+
+    private fun addIngredient(id: Int?) {
+        id?.let {
+            ingredientAdapterIngredient.notifyItemInserted(id)
+            clearFields()
+        }
+    }
+
+    private fun showList(list: List<Ingredient?>) {
+        binding.viewFlipper.displayedChild = 1
+        initAdapter(list.getIngredientName())
+        binding.ivHand.isVisible = false
+    }
+
+    private fun editMode(editMode: Boolean) {
+        binding.run {
+            val buttonText = if (editMode) {
+                getString(DesignR.string.design_edit)
+            } else {
+                biIngredient.clearInputText()
+                biVolume.clearInputText()
+                getString(DesignR.string.design_add)
+            }
+            biIngredient.enableInput(!editMode)
+            abAdd.setText(buttonText)
+        }
+    }
+
+    private fun disableSpinner() {
+        binding.viewFlipper.displayedChild = 1
+        binding.biIngredient.setError()
+        binding.biIngredient.setError(getString(DesignR.string.design_ingredients_register))
+        binding.ivHand.isVisible = true
     }
 
     private fun initAdapter(list: MutableList<String?>) {

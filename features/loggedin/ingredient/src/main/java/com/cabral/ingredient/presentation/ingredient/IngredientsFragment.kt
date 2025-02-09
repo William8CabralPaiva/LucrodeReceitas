@@ -1,15 +1,15 @@
-package com.cabral.ingredient.presentation
+package com.cabral.ingredient.presentation.ingredient
 
-import android.R
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
 import com.cabral.arch.extensions.IngredientThrowable
+import com.cabral.arch.extensions.collectIn
 import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.arch.widget.CustomToast
@@ -21,9 +21,6 @@ import com.cabral.ingredient.databinding.IngredientsFragmentBinding
 import com.cabral.ingredient.presentation.adapter.IngredientAdapter
 import com.cabral.model.toIngredient
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -70,79 +67,75 @@ class IngredientsFragment :
     }
 
     private fun initObservers() {
-        viewModel.run {
-            notifyErrorAdd.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    when (it) {
-                        is IngredientThrowable.NameThrowable -> {
-                            binding.biIngredient.setError()
-                        }
 
-                        is IngredientThrowable.UnitThrowable -> {
-                            binding.biUnit.setError(getString(DesignR.string.design_select_field))
-                        }
-
-                        is IngredientThrowable.SizeThrowable -> {
-                            binding.biVolume.setError(getString(DesignR.string.design_required_field))
-                        }
-
-                        else -> {
-                            binding.biPrice.setError()
-                        }
-                    }
+        viewModel.uiEvent.collectIn(this) {
+            when (it) {
+                UiEvent.Error -> {
+                    val text = DesignR.string.design_error_check_your_connection
+                    showToast(text, DesignR.color.design_dark_red)
                 }
-            }
 
-            notifySuccessAdd.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    adapterIngredient.notifyItemInserted(it)
-                    clearFields()
-                    binding.biIngredient.setFocus()
-                }
-            }
-
-            notifySuccessEdit.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    adapterIngredient.notifyItemChanged(it)
-
-                    clearFields()
-                }
-            }
-
-            notifyEditMode.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    val buttonText = if (it) {
-                        getString(DesignR.string.design_edit)
-                    } else {
-                        getString(DesignR.string.design_add)
-                    }
-                    binding.abAdd.setText(buttonText)
-                }
-            }
-
-            notifySuccess.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
+                UiEvent.Success -> {
                     findNavController().popBackStack()
                 }
             }
+        }
 
-            notifyError.observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
-                    context?.run {
-                        val text = getString(DesignR.string.design_error_check_your_connection)
-                        CustomToast.Builder(requireContext())
-                            .message(text)
-                            .setBackgroundColor(DesignR.color.design_dark_red)
-                            .build().show()
-                    }
-                }
+        viewModel.uiState.collectIn(this) {
+            when (it) {
+                is UiState.Default -> Unit
+                is UiState.ErrorAddEdit -> addErrorByThrowable(it.ingredientThrowable)
+                is UiState.EditMode -> controlButtonAddEdit(it.editMode)
+                is UiState.SuccessEdit -> successEdit(it.position)
+                is UiState.SuccessAdd -> successAdd(it.position)
+
+            }
+        }
+    }
+
+    private fun successAdd(position: Int) {
+        adapterIngredient.notifyItemInserted(position)
+        clearFields()
+        binding.biIngredient.setFocus()
+    }
+
+    private fun successEdit(position: Int) {
+        adapterIngredient.notifyItemChanged(position)
+        clearFields()
+    }
+
+    private fun controlButtonAddEdit(it: Boolean) {
+        val buttonText = if (it) {
+            getString(DesignR.string.design_edit)
+        } else {
+            getString(DesignR.string.design_add)
+        }
+        binding.abAdd.setText(buttonText)
+    }
+
+    private fun addErrorByThrowable(it: IngredientThrowable) {
+        when (it) {
+            is IngredientThrowable.NameThrowable -> {
+                binding.biIngredient.setError()
+            }
+
+            is IngredientThrowable.UnitThrowable -> {
+                binding.biUnit.setError(getString(DesignR.string.design_select_field))
+            }
+
+            is IngredientThrowable.SizeThrowable -> {
+                binding.biVolume.setError(getString(DesignR.string.design_required_field))
+            }
+
+            else -> {
+                binding.biPrice.setError()
             }
         }
     }
 
     private fun initAdapter() {
         val list = listMeasure(allUnitMeasure())
-        val adapter = ArrayAdapter(requireContext(), R.layout.select_dialog_item, list)
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.select_dialog_item, list)
         binding.biIngredient.setFocus()
 
         binding.biUnit.getSpinner().run {
@@ -238,10 +231,14 @@ class IngredientsFragment :
         }
     }
 
-    private fun showToast(@StringRes text: Int) {
+    private fun showToast(
+        @StringRes text: Int,
+        @ColorRes backgroundColor: Int = DesignR.color.design_orange
+    ) {
         CustomToast.Builder(requireContext())
             .message(getString(text))
-            .build().show()
+            .setBackgroundColor(backgroundColor)
+            .build()
     }
 
     private fun showAlertDialog(

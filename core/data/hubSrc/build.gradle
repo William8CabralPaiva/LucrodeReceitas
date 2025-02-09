@@ -1,4 +1,3 @@
-
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
@@ -14,6 +13,7 @@ dependencies {
     implementation project(Modules.arch)
     implementation project(Modules.remote)
     implementation project(Modules.domain)
+    testImplementation project(Modules.testing)
     implementation platform(Libs.firebase_bom)
     implementation Libs.services_auth
     implementation Libs.firebase_auth

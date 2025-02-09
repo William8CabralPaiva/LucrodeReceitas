@@ -10,7 +10,7 @@ android {
     namespace Config.applicationId
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 

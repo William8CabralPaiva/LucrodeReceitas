@@ -1,30 +1,26 @@
-package com.cabral.recipe.presentation
+package com.cabral.recipe.presentation.recipe
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cabral.arch.Event
 import com.cabral.arch.extensions.RecipeThrowable
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.usecase.AddRecipeUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 
 class RecipeViewModel(
     private val addRecipeUseCase: AddRecipeUseCase
 ) : ViewModel() {
 
-    private val _notifySuccess = MutableLiveData<Event<Unit>>()
-    val notifySuccess: LiveData<Event<Unit>> = _notifySuccess
-
-    private val _notifyError = MutableLiveData<Event<String>>()
-    val notifyError: LiveData<Event<String>> = _notifyError
-
-    private val _notifyStopLoadingButton = MutableLiveData<Event<Unit>>()
-    val notifyStopLoadingButton: LiveData<Event<Unit>> = _notifyStopLoadingButton
+    private val _uiEvent = MutableSharedFlow<UiEvent>(replay = 0)
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     var recipeAlreadyCreate = false
 
@@ -35,21 +31,26 @@ class RecipeViewModel(
             recipe.name = name
             recipe.volume = volume
             recipe.expectedProfit = expectedProfit
+
             addRecipeUseCase(recipe)
+                .onStart {
+                    _uiEvent.emit(UiEvent.StartLoading)
+                }
                 .catch {
-                    _notifyError.postValue(Event(it.message))
-                    _notifyStopLoadingButton.postValue(Event(Unit))
+                    _uiEvent.emit(UiEvent.Error(it.message))
                 }.onEach {
                     recipeAlreadyCreate = true
                     recipe.keyDocument = it
-
-                    _notifySuccess.postValue(Event(Unit))
+                    _uiEvent.emit(UiEvent.Success)
                 }
-                .onCompletion { _notifyStopLoadingButton.postValue(Event(Unit)) }
+                .onCompletion { _uiEvent.emit(UiEvent.StopLoading) }
                 .launchIn(viewModelScope)
+
         } else {
-            _notifyStopLoadingButton.postValue(Event(Unit))
-            _notifyError.postValue(Event(RecipeThrowable.AddRecipeThrowable().message))
+            viewModelScope.launch {
+                _uiEvent.emit(UiEvent.StopLoading)
+                _uiEvent.emit(UiEvent.Error(RecipeThrowable.AddRecipeThrowable().message))
+            }
         }
     }
 

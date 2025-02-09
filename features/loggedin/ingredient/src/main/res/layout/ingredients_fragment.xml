@@ -8,7 +8,7 @@
     android:background="@color/design_white"
     android:fitsSystemWindows="true"
     android:padding="@dimen/arch_default_margin"
-    tools:context=".presentation.IngredientsFragment">
+    tools:context=".presentation.ingredient.IngredientsFragment">
 
     <ScrollView
         android:id="@+id/scroll"

@@ -1,17 +1,21 @@
-package com.cabral.ingredient.presentation
+package com.cabral.ingredient.presentation.ingredient
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cabral.arch.Event
 import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.UnitMeasureType
 import com.cabral.core.common.domain.usecase.AddIngredientUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class IngredientsViewModel(
     private val addIngredientUseCase: AddIngredientUseCase
@@ -19,23 +23,11 @@ class IngredientsViewModel(
 
     val listIngredient = mutableListOf<Ingredient>()
 
-    private val _notifyErrorAdd = MutableLiveData<Event<IngredientThrowable>>()
-    val notifyErrorAdd: LiveData<Event<IngredientThrowable>> = _notifyErrorAdd
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
-    private val _notifySuccessAdd = MutableLiveData<Event<Int>>()
-    val notifySuccessAdd: LiveData<Event<Int>> = _notifySuccessAdd
-
-    private val _notifySuccessEdit = MutableLiveData<Event<Int?>>()
-    val notifySuccessEdit: LiveData<Event<Int?>> = _notifySuccessEdit
-
-    private val _notifyEditMode = MutableLiveData<Event<Boolean>>()
-    val notifyEditMode: LiveData<Event<Boolean>> = _notifyEditMode
-
-    private val _notifySuccess = MutableLiveData<Event<Unit>>()
-    val notifySuccess: LiveData<Event<Unit>> = _notifySuccess
-
-    private val _notifyError = MutableLiveData<Event<Unit>>()
-    val notifyError: LiveData<Event<Unit>> = _notifyError
+    private val _uiState = MutableStateFlow<UiState>(UiState.Default)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private var countItem = 0
 
@@ -46,19 +38,17 @@ class IngredientsViewModel(
     var editExistItem = false
 
     fun save() {
-        addIngredientUseCase(listIngredient)
-            .catch {
-                _notifyError.postValue(Event(Unit))
-            }.onEach {
-                _notifySuccess.postValue(Event(Unit))
-            }
-            .launchIn(viewModelScope)
+        addIngredientUseCase(listIngredient).catch {
+            _uiEvent.emit(UiEvent.Error)
+        }.onEach {
+            _uiEvent.emit(UiEvent.Success)
+        }.launchIn(viewModelScope)
     }
 
     fun addOrEditIngredient(name: String?, volume: String?, unit: String?, price: String?) {
-        try {
-            val ingredient = validateField(name, volume, unit, price)
-            if (ingredient != null) {
+        viewModelScope.launch {
+            try {
+                val ingredient = validateField(name, volume, unit, price)
 
                 if (editItemOnList) {
                     editPosition?.let {
@@ -66,27 +56,27 @@ class IngredientsViewModel(
                         listIngredient[it] = ingredient
                     }
 
-                    _notifySuccessEdit.postValue(Event(editPosition)).also {
-                        setEditMode(false, null)
+                    editPosition?.let {
+                        _uiState.emit(UiState.SuccessEdit(it)).also {
+                            setEditMode(false, null)
+                        }
                     }
 
                 } else {
                     listIngredient.add(ingredient)
-                    _notifySuccessAdd.postValue(Event(listIngredient.size - 1))
+                    _uiState.emit(UiState.SuccessAdd(listIngredient.size - 1))
                     countItem += 1
                 }
+
+            } catch (t: IngredientThrowable) {
+                _uiState.emit(UiState.ErrorAddEdit(t))
             }
-        } catch (t: IngredientThrowable) {
-            _notifyErrorAdd.postValue(Event(t))
         }
     }
 
     private fun validateField(
-        name: String?,
-        volume: String?,
-        unit: String?,
-        price: String?
-    ): Ingredient? {
+        name: String?, volume: String?, unit: String?, price: String?
+    ): Ingredient {
         if (name.isNullOrEmpty()) {
             throw IngredientThrowable.NameThrowable()
         }
@@ -125,31 +115,30 @@ class IngredientsViewModel(
         }
 
         return Ingredient(
-            countItem,
-            name,
-            volume.toFloat(),
-            unit,
-            price.toFloat(),
-            key
+            countItem, name, volume.toFloat(), unit, price.toFloat(), key
         )
 
     }
 
     fun setEditMode(editMode: Boolean, ingredient: Ingredient?) {
-        editPosition = if (ingredient == null) {
-            null
-        } else {
-            listIngredient.indexOf(ingredient)
+        viewModelScope.launch {
+            editPosition = if (ingredient == null) {
+                null
+            } else {
+                listIngredient.indexOf(ingredient)
+            }
+            editItemOnList = editMode
+            _uiState.emit(UiState.EditMode(editItemOnList))
         }
-        editItemOnList = editMode
-        _notifyEditMode.postValue(Event(editItemOnList))
     }
 
     fun changeIngredient(ingredient: Ingredient) {
-        listIngredient.add(ingredient)
-        editPosition = 0
-        editItemOnList = true
-        _notifyEditMode.postValue(Event(true))
+        viewModelScope.launch {
+            listIngredient.add(ingredient)
+            editPosition = 0
+            editItemOnList = true
+            _uiState.emit(UiState.EditMode(true))
+        }
     }
 
     fun getEditMode(): Boolean {
@@ -159,7 +148,7 @@ class IngredientsViewModel(
     private fun validateUnit(unit: String?): UnitMeasureType? {
         try {
             unit?.let {
-                val selected = UnitMeasureType.values().filter { enum -> enum.unit == unit }
+                val selected = UnitMeasureType.entries.filter { enum -> enum.unit == unit }
                 if (selected.isNotEmpty()) {
                     return selected.first()
                 }

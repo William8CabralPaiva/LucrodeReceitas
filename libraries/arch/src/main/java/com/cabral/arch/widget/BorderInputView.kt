@@ -81,7 +81,8 @@ class BorderInputView @JvmOverloads constructor(
         binding.run {
             when (BIInputType) {
                 BorderInputView.BIInputType.TEXT -> {
-                    biTextInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                    biTextInput.inputType =
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
 
@@ -105,8 +106,10 @@ class BorderInputView @JvmOverloads constructor(
                     biTextInput.addRealMask()
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
-                BorderInputView.BIInputType.EMAIL ->{
-                    biTextInput.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+
+                BorderInputView.BIInputType.EMAIL -> {
+                    biTextInput.inputType =
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                     biHint.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
                 }
             }
@@ -216,6 +219,10 @@ class BorderInputView @JvmOverloads constructor(
             isErrorEnabled = true
             error = errorText ?: text
         }
+    }
+
+    fun isError(): Boolean {
+        return binding.biHint.isErrorEnabled
     }
 
     private fun getColor(@ColorRes color: Int): Int {

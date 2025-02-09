@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/list_ingredients"
-        android:name="com.cabral.ingredient.presentation.ListIngredientsFragment"
+        android:name="com.cabral.ingredient.presentation.listingredient.ListIngredientsFragment"
         android:label="ListIngredientsFragment"
         tools:layout="@layout/ingredients_list_fragment"
         >
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/ingredient"
-        android:name="com.cabral.ingredient.presentation.IngredientsFragment"
+        android:name="com.cabral.ingredient.presentation.ingredient.IngredientsFragment"
         tools:layout="@layout/ingredients_fragment" >
         <argument
             android:name="currentIngredient"
