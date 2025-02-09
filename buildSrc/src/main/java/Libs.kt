@@ -19,4 +19,6 @@ object Libs {
     const val mockito_inline = "org.mockito:mockito-inline:${Versions.mockito_inline_version}"
     const val mockk = "io.mockk:mockk:${Versions.mockk_version}"
     const val kotlin_test = "org.jetbrains.kotlin:kotlin-test:${Versions.kotlin_test_version}"
+    const val arch_core = "androidx.arch.core:core-testing:${Versions.arch_core_version}"
+    const val cash_turbine = "app.cash.turbine:turbine:${Versions.cash_turbine_version}"
 }

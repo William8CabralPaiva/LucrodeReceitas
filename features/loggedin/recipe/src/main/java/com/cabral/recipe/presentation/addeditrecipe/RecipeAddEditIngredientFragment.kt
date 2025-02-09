@@ -88,11 +88,16 @@ class RecipeAddEditIngredientFragment :
                 is UiState.DisableSpinner -> disableSpinner()
                 is UiState.EditMode -> editMode(it.editMode)
                 is UiState.RemoveIngredient -> ingredientAdapterIngredient.notifyItemRemoved(it.id)
-                is UiState.SuccessEdit -> ingredientAdapterIngredient.notifyItemChanged(it.position)
+                is UiState.SuccessEdit -> successEdit(it.position)
                 is UiState.AddIngredient -> addIngredient(it.ingredient?.id)
                 is UiState.ListIngredient -> showList(it.list)
             }
         }
+    }
+
+    private fun successEdit(position: Int) {
+        ingredientAdapterIngredient.notifyItemChanged(position)
+        editMode(false)
     }
 
     private fun addIngredient(id: Int?) {
@@ -109,14 +114,17 @@ class RecipeAddEditIngredientFragment :
     }
 
     private fun editMode(editMode: Boolean) {
-        val buttonText = if (editMode) {
-            getString(DesignR.string.design_edit)
-        } else {
-            binding.biIngredient.clearInputText()
-            binding.biVolume.clearInputText()
-            getString(DesignR.string.design_add)
+        binding.run {
+            val buttonText = if (editMode) {
+                getString(DesignR.string.design_edit)
+            } else {
+                biIngredient.clearInputText()
+                biVolume.clearInputText()
+                getString(DesignR.string.design_add)
+            }
+            biIngredient.enableInput(!editMode)
+            abAdd.setText(buttonText)
         }
-        binding.abAdd.setText(buttonText)
     }
 
     private fun disableSpinner() {

@@ -39,6 +39,11 @@ class RecipeSpinner @JvmOverloads constructor(
         }
     }
 
+    fun enableInput(enabled: Boolean) {
+        binding.biHint.isEnabled = enabled
+        binding.spinner.isEnabled = enabled
+    }
+
     fun getSpinner(): AutoCompleteTextView {
         return binding.spinner
     }

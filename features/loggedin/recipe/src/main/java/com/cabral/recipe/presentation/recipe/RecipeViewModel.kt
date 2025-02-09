@@ -19,7 +19,7 @@ class RecipeViewModel(
     private val addRecipeUseCase: AddRecipeUseCase
 ) : ViewModel() {
 
-    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    private val _uiEvent = MutableSharedFlow<UiEvent>(replay = 0)
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     var recipeAlreadyCreate = false

@@ -3,9 +3,10 @@ package com.cabral.recipe.presentation.recipe
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import com.cabral.arch.BaseFragment
-import com.cabral.arch.extensions.collectIn
+import com.cabral.arch.extensions.collectInLasts
 import com.cabral.arch.widget.CustomToast
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
@@ -30,7 +31,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
 
     private fun initObservers() {
 
-        viewModel.uiEvent.collectIn(this) {
+        viewModel.uiEvent.collectInLasts(viewLifecycleOwner, Lifecycle.State.CREATED) {
             when (it) {
                 is UiEvent.StartLoading -> binding.abSave.startLoading()
                 is UiEvent.StopLoading -> binding.abSave.stopLoading()

@@ -111,7 +111,6 @@ class RecipeAddEditIngredientViewModel(
                         listAddIngredients[position]?.copy(name = name, volume = volume)
                     editMode = false
                     recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
-                    _uiState.emit(UiState.EditMode(false))
                     _uiState.emit(UiState.SuccessEdit(position))
                 }
             } else {
