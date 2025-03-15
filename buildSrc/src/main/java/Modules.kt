@@ -9,6 +9,7 @@ object Modules {
     const val ingredients = ":features:loggedin:ingredient"
     const val domain = ":core:common:domain"
     const val navigation = ":core:common:navigation"
+    const val test_utils = ":core:common:test-utils"
     const val design = ":libraries:design"
     const val loggedNavigation = ":features:loggedin:host"
     const val notLoggedNavigation = ":features:loggedout:host"

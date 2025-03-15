@@ -1,7 +1,7 @@
 package com.cabral.core.common.domain.usecase
 
 import com.cabral.core.common.domain.repository.RecipeRepository
-import com.cabral.stubs.recipeStub
+import com.cabral.test_utils.stubs.recipeStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

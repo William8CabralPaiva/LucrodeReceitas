@@ -1,4 +1,4 @@
-package com.cabral.stubs
+package com.cabral.test_utils.stubs
 
 import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe

@@ -1,7 +1,7 @@
 package com.cabral.core.common.domain.usecase
 
 import com.cabral.core.common.domain.repository.RecipeRepository
-import com.cabral.stubs.listRecipeProfitPriceStub
+import com.cabral.test_utils.stubs.listRecipeProfitPriceStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -14,7 +14,7 @@ import kotlin.test.assertFailsWith
 
 
 @ExperimentalCoroutinesApi
- class GetListRecipeUseCaseTest {
+class GetListRecipeUseCaseTest {
 
     private val repository: RecipeRepository = mockk()
     private val subject = GetListRecipeUseCase(repository)

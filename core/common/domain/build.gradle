@@ -13,6 +13,8 @@ compileKotlin {
 }
 
 dependencies {
+
+    testImplementation project(Modules.test_utils)
     implementation Libs.coroutines
 
     testImplementation(Libs.kotlin_coroutines_test)
