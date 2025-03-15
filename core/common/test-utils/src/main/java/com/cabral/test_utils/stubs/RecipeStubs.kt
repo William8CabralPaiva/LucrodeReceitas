@@ -21,7 +21,7 @@ fun recipeProfitPriceStub(): RecipeProfitPrice {
     )
 }
 
-fun listRecipeProfitPriceStub(): List<RecipeProfitPrice> {
+fun recipeProfitPriceListStub(): List<RecipeProfitPrice> {
     return listOf(
         recipeProfitPriceStub(),
         recipeProfitPriceStub()
@@ -30,4 +30,11 @@ fun listRecipeProfitPriceStub(): List<RecipeProfitPrice> {
 
 fun recipeStub(): Recipe {
     return Recipe(id = 1, name = "Fermento", volume = 10f, expectedProfit = 10f)
+}
+
+fun recipeListStub(): List<Recipe> {
+    return listOf(
+        recipeStub(),
+        recipeStub()
+    )
 }

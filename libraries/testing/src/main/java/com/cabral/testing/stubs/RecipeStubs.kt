@@ -22,7 +22,7 @@ fun recipeProfitPriceStub(): RecipeProfitPrice {
     )
 }
 
-fun listRecipeProfitPriceStub(): List<RecipeProfitPrice> {
+fun recipeListStub(): List<RecipeProfitPrice> {
     return listOf(
         recipeProfitPriceStub(),
         recipeProfitPriceStub()
