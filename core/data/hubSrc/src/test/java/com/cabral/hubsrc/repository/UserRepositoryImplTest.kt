@@ -12,7 +12,6 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class UserRepositoryImplTest {
 
     private val remoteDataSource: RemoteDataSource = mockk()

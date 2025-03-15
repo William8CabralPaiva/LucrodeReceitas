@@ -8,7 +8,7 @@ fun ingredientStub(): Ingredient {
 
 fun ingredientListStub(): List<Ingredient> {
     return listOf(
-        Ingredient(id = 1, name = "Arroz", volume = 1000.0f, unit = "g", price = 2.0f),
-        Ingredient(id = 1, name = "Arroz", volume = 1000.0f, unit = "g", price = 2.0f)
+        ingredientStub(),
+        ingredientStub()
     )
 }
