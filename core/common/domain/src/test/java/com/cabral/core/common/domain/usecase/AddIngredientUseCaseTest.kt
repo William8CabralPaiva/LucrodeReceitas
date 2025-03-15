@@ -25,7 +25,7 @@ class AddIngredientUseCaseTest {
         coEvery { repository.addIngredient(ingredients) } returns flowOf(Unit)
 
         // Act
-        val result = subject(ingredients)
+       subject(ingredients)
 
         // Assert
         coVerify { repository.addIngredient(ingredients) }
