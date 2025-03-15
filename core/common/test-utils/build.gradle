@@ -14,6 +14,6 @@ compileKotlin {
 
 dependencies {
 
-    testImplementation project(Modules.domain)
+    implementation project(Modules.domain)
 
 }

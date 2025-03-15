@@ -1,7 +1,7 @@
 package com.cabral.core.common.domain.usecase
 
 import com.cabral.core.common.domain.repository.RecipeRepository
-import com.cabral.test_utils.stubs.listRecipeProfitPriceStub
+import com.cabral.test_utils.stubs.recipeProfitPriceListStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -22,7 +22,7 @@ class GetListRecipeUseCaseTest {
     @Test
     fun `getAllRecipes Should return recipe list`() = runTest {
         //Arrange
-        val expectedResult = flowOf(listRecipeProfitPriceStub())
+        val expectedResult = flowOf(recipeProfitPriceListStub())
         coEvery { repository.getAllRecipes() } returns expectedResult
 
         //Act

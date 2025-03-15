@@ -14,9 +14,9 @@ compileKotlin {
 
 dependencies {
 
-    testImplementation project(Modules.test_utils)
     implementation Libs.coroutines
 
+    testImplementation project(Modules.test_utils)
     testImplementation(Libs.kotlin_coroutines_test)
     testImplementation(Libs.mockito_kotlin)
     testImplementation(Libs.mockito_core)
