@@ -1,0 +1,56 @@
+package com.cabral.core.common.domain.usecase
+
+import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.model.RecipeCosts
+import com.cabral.core.common.domain.model.toRecipeCosts
+import com.cabral.core.common.domain.repository.IngredientRepository
+import com.cabral.stubs.ingredientListStub
+import com.cabral.stubs.recipeStub
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Test
+import kotlin.test.assertFailsWith
+
+@ExperimentalCoroutinesApi
+class CostRecipeUseCaseTest {
+
+    private val repository: IngredientRepository = mockk()
+    private val subject = CostRecipeUseCase(repository)
+
+    @Test
+    fun `invoke Should calculate recipe costs successfully`() = runTest {
+        // Arrange
+        val recipe = recipeStub()
+        val ingredients = ingredientListStub()
+        val expectedCosts = recipe.toRecipeCosts(ingredients)
+        coEvery { repository.getAllIngredients() } returns flowOf(ingredients)
+
+        // Act
+        subject(recipe).collect { result ->
+            // Assert
+            assertEquals(expectedCosts, result)
+        }
+        coVerify { repository.getAllIngredients() }
+    }
+
+    @Test
+    fun `invoke Should return failure when repository throws an error`() = runTest {
+        // Arrange
+        val recipe = recipeStub()
+        val expectedResult = "Test error"
+        val throwable = Throwable(expectedResult)
+        coEvery { repository.getAllIngredients() } throws throwable
+
+        // Act
+        val result = assertFailsWith<Throwable> { subject(recipe).collect {} }
+
+        // Assert
+        assertEquals(expectedResult, result.message)
+        coVerify { repository.getAllIngredients() }
+    }
+}
