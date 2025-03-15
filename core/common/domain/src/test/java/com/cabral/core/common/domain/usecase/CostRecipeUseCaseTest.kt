@@ -8,7 +8,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -37,18 +39,20 @@ class CostRecipeUseCaseTest {
     }
 
     @Test
-    fun `invoke Should return failure when repository throws an error`() = runTest {
-        // Arrange
-        val recipe = recipeStub()
-        val expectedResult = "Test error"
-        val throwable = Throwable(expectedResult)
-        coEvery { repository.getAllIngredients() } throws throwable
+    fun `invoke Should return failure when repository throws an error during getAllIngredients`() =
+        runTest {
+            // Arrange
+            val recipe = recipeStub()
+            val expectedResult = "Test error"
+            val throwable = Throwable(expectedResult)
+            coEvery { repository.getAllIngredients() } throws throwable
 
-        // Act
-        val result = assertFailsWith<Throwable> { subject(recipe).collect {} }
+            // Act
+            val result = assertFailsWith<Throwable> { subject(recipe).collect {} }
 
-        // Assert
-        assertEquals(expectedResult, result.message)
-        coVerify { repository.getAllIngredients() }
-    }
+            // Assert
+            assertEquals(expectedResult, result.message)
+            coVerify { repository.getAllIngredients() }
+        }
+
 }
