@@ -2,6 +2,7 @@ package com.cabral.test_utils.stubs
 
 import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.model.RecipeCosts
 import com.cabral.core.common.domain.model.RecipeProfitPrice
 
 fun recipeProfitPriceStub(): RecipeProfitPrice {
@@ -36,5 +37,14 @@ fun recipeListStub(): List<Recipe> {
     return listOf(
         recipeStub(),
         recipeStub()
+    )
+}
+
+fun recipeCostsStub(): RecipeCosts {
+    return RecipeCosts(
+        name = "Arroz",
+        volume = 1000.0f,
+        profit = 0.5f,
+        profitPerUnit = 2.0f,
     )
 }

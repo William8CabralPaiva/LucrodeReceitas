@@ -3,7 +3,6 @@ package com.cabral.recipe.presentation.recipecosts
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cabral.core.common.domain.model.IngredientCosts
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.usecase.CostRecipeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,8 +35,11 @@ class RecipeCostsViewModel(
                         costs = costsRecipe.costs ?: 0f,
                         totalPerUnit = costsRecipe.totalPerUnit ?: 0f,
                         profit = costsRecipe.profit ?: 0f,
-                        profitPerUnit = if ((costsRecipe.volume ?: 1f) > 1f) costsRecipe.profitPerUnit ?: 0f else null,
-                        costsPerUnit = if ((costsRecipe.volume ?: 1f) > 1f) costsRecipe.costsPerUnit ?: 0f else null
+                        profitPerUnit = if ((costsRecipe.volume
+                                ?: 1f) > 1f
+                        ) costsRecipe.profitPerUnit ?: 0f else null,
+                        costsPerUnit = if ((costsRecipe.volume ?: 1f) > 1f) costsRecipe.costsPerUnit
+                            ?: 0f else null
                     )
                 )
             }

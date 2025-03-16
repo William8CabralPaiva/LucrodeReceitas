@@ -18,4 +18,8 @@ dependencies {
     implementation project(Modules.domain)
     implementation Libs.glide
     implementation Libs.ad_mob
+
+    testImplementation project(Modules.test_utils)
+    testImplementation Libs.mockk
+    testImplementation Libs.kotlin_coroutines_test
 }
