@@ -19,4 +19,5 @@ dependencies {
     testImplementation project(Modules.test_utils)
     testImplementation Libs.mockk
     testImplementation Libs.kotlin_coroutines_test
+    testImplementation Libs.cash_turbine
 }

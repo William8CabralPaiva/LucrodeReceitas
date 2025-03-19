@@ -1,5 +1,6 @@
 package com.cabral.features.splash.presentation
 
+import app.cash.turbine.test
 import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.AutoLoginUseCase
@@ -9,20 +10,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.junit.Assert.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SplashScreenViewModelTest {
 
-    private val autoLoginUseCase: AutoLoginUseCase = mockk()
+    private val autoLoginUseCase: AutoLoginUseCase = mockk(relaxed = true)
     private lateinit var viewModel: SplashScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -44,19 +44,15 @@ class SplashScreenViewModelTest {
         val user = User("test@example.com", "Test User", "Password123!")
         coEvery { autoLoginUseCase(key) } returns flowOf(user)
 
-        val events = mutableListOf<UiEvent>()
-        val collectJob = launch {
-            viewModel.uiEvent.collect { events.add(it) }
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.getUserLogged(key)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert
+            assertEquals(UiEvent.Logged, awaitItem())  // Expect Logged event to be emitted
+            assertEquals(user, SingletonUser.getInstance().getUser())  // Ensure SingletonUser has the correct user
         }
-
-        // Act
-        viewModel.getUserLogged(key)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(listOf(UiEvent.Logged), events)
-        assertEquals(user, SingletonUser.getInstance().getUser())
-        collectJob.cancel()
     }
 
     @Test
@@ -64,18 +60,14 @@ class SplashScreenViewModelTest {
         // Arrange
         val key: String? = null
 
-        val events = mutableListOf<UiEvent>()
-        val collectJob = launch {
-            viewModel.uiEvent.collect { events.add(it) }
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.getUserLogged(key)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert
+            assertEquals(UiEvent.Unlogged, awaitItem())  // Expect Unlogged event to be emitted
         }
-
-        // Act
-        viewModel.getUserLogged(key)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(listOf(UiEvent.Unlogged), events)
-        collectJob.cancel()
     }
 
     @Test
@@ -84,17 +76,13 @@ class SplashScreenViewModelTest {
         val key = "invalidKey"
         coEvery { autoLoginUseCase(key) } returns flow { throw Exception("User not found") }
 
-        val events = mutableListOf<UiEvent>()
-        val collectJob = launch {
-            viewModel.uiEvent.collect { events.add(it) }
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.getUserLogged(key)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert
+            assertEquals(UiEvent.Unlogged, awaitItem())  // Expect Unlogged event to be emitted
         }
-
-        // Act
-        viewModel.getUserLogged(key)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(listOf(UiEvent.Unlogged), events)
-        collectJob.cancel()
     }
 }

@@ -1,7 +1,7 @@
-package com.cabral.recipe.presentation.recipecosts
-
 import app.cash.turbine.test
 import com.cabral.core.common.domain.usecase.CostRecipeUseCase
+import com.cabral.recipe.presentation.recipecosts.RecipeCostsViewModel
+import com.cabral.recipe.presentation.recipecosts.UiState
 import com.cabral.test_utils.stubs.recipeCostsStub
 import com.cabral.test_utils.stubs.recipeStub
 import io.mockk.coEvery

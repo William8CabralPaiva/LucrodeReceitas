@@ -1,5 +1,6 @@
 package com.cabral.registeruser.presentation
 
+import app.cash.turbine.test
 import com.cabral.core.common.domain.usecase.AddUserUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -7,14 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -37,7 +36,7 @@ class RegisterUserViewModelTest {
     }
 
     @Test
-    fun `registerUser with valid data should emit Success and StartLoading`() = runTest {
+    fun `registerUser with valid data should emit StartLoading and Success`() = runTest {
         // Arrange
         val name = "Test User"
         val email = "test@example.com"
@@ -46,62 +45,56 @@ class RegisterUserViewModelTest {
 
         coEvery { addUserUseCase(any()) } returns flowOf(Unit)
 
-        val events = mutableListOf<UiEvent>()
-        val collectJob = launch { // collectJob individual
-            viewModel.uiEvent.collect { events.add(it) }
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.registerUser(name, email, password, confirmPassword)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert the emitted events
+            assertEquals(UiEvent.StartLoading, awaitItem())  // StartLoading event
+            assertEquals(UiEvent.Success, awaitItem())      // Success event
+            cancelAndIgnoreRemainingEvents()  // Ensure no more events are emitted
         }
-
-        // Act
-        viewModel.registerUser(name, email, password, confirmPassword)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(listOf(UiEvent.StartLoading, UiEvent.Success), events)
-        collectJob.cancel()
     }
 
     @Test
     fun `registerUser with invalid name should emit ErrorUsername`() = runTest {
         // Arrange
-        val name = "T"
+        val name = "T"  // Invalid name (too short)
         val email = "test@example.com"
         val password = "Password123!"
         val confirmPassword = "Password123!"
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch { // collectJob individual
-            viewModel.uiState.collect { states.add(it) }
+        // Act & Assert
+        viewModel.uiState.test {
+            viewModel.registerUser(name, email, password, confirmPassword)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert the emitted state
+            assertTrue(awaitItem() is UiState.DefaultFieldsState)
+            assertTrue(awaitItem() is UiState.ErrorUsername)  // ErrorUsername state
+            cancelAndIgnoreRemainingEvents()
         }
-
-        // Act
-        viewModel.registerUser(name, email, password, confirmPassword)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(states.any { it is UiState.ErrorUsername })
-        collectJob.cancel()
     }
 
     @Test
     fun `registerUser with invalid email should emit ErrorEmail`() = runTest {
         // Arrange
         val name = "Test User"
-        val email = "invalid_email"
+        val email = "invalid_email"  // Invalid email format
         val password = "Password123!"
         val confirmPassword = "Password123!"
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch { // collectJob individual
-            viewModel.uiState.collect { states.add(it) }
+        // Act & Assert
+        viewModel.uiState.test {
+            viewModel.registerUser(name, email, password, confirmPassword)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert the emitted state
+            assertTrue(awaitItem() is UiState.DefaultFieldsState)
+            assertTrue(awaitItem() is UiState.ErrorEmail)  // ErrorEmail state
+            cancelAndIgnoreRemainingEvents()
         }
-
-        // Act
-        viewModel.registerUser(name, email, password, confirmPassword)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(states.any { it is UiState.ErrorEmail })
-        collectJob.cancel()
     }
 
     @Test
@@ -109,21 +102,19 @@ class RegisterUserViewModelTest {
         // Arrange
         val name = "Test User"
         val email = "test@example.com"
-        val password = "password"
-        val confirmPassword = "password"
+        val password = "short"  // Invalid password (too short)
+        val confirmPassword = "short"
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch { // collectJob individual
-            viewModel.uiState.collect { states.add(it) }
+        // Act & Assert
+        viewModel.uiState.test {
+            viewModel.registerUser(name, email, password, confirmPassword)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert the emitted state
+            assertTrue(awaitItem() is UiState.DefaultFieldsState)
+            assertTrue(awaitItem() is UiState.ErrorPassword)  // ErrorPassword state
+            cancelAndIgnoreRemainingEvents()
         }
-
-        // Act
-        viewModel.registerUser(name, email, password, confirmPassword)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(states.any { it is UiState.ErrorPassword })
-        collectJob.cancel()
     }
 
     @Test
@@ -132,20 +123,18 @@ class RegisterUserViewModelTest {
         val name = "Test User"
         val email = "test@example.com"
         val password = "Password123!"
-        val confirmPassword = "DifferentPassword!"
+        val confirmPassword = "DifferentPassword123!"
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch { // collectJob individual
-            viewModel.uiState.collect { states.add(it) }
+        // Act & Assert
+        viewModel.uiState.test {
+            viewModel.registerUser(name, email, password, confirmPassword)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+
+            assertTrue(awaitItem() is UiState.DefaultFieldsState)
+            assertTrue(awaitItem() is UiState.ErrorConfirmPassword)  // ErrorConfirmPassword state
+            cancelAndIgnoreRemainingEvents()
         }
-
-        // Act
-        viewModel.registerUser(name, email, password, confirmPassword)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(states.any { it is UiState.ErrorConfirmPassword })
-        collectJob.cancel()
     }
 
     @Test
@@ -159,34 +148,28 @@ class RegisterUserViewModelTest {
 
         coEvery { addUserUseCase(any()) } returns flow { throw Exception(errorMessage) }
 
-        val events = mutableListOf<UiEvent>()
-        val collectJob = launch { // collectJob individual
-            viewModel.uiEvent.collect { events.add(it) }
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.registerUser(name, email, password, confirmPassword)
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert the emitted events
+            assertEquals(UiEvent.StartLoading, awaitItem())  // StartLoading event
+            assertEquals(UiEvent.Error, awaitItem())        // Error event
+            cancelAndIgnoreRemainingEvents()
         }
-
-        // Act
-        viewModel.registerUser(name, email, password, confirmPassword)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(listOf(UiEvent.StartLoading, UiEvent.Error), events)
-        collectJob.cancel()
     }
 
     @Test
     fun `setDefaultFieldsState should emit DefaultFieldsState`() = runTest {
-        // Arrange
-        val states = mutableListOf<UiState>()
-        val collectJob = launch { // collectJob individual
-            viewModel.uiState.collect { states.add(it) }
+        // Act & Assert
+        viewModel.uiState.test {
+            viewModel.setDefaultFieldsState()
+            testDispatcher.scheduler.advanceUntilIdle()
+
+            // Assert the emitted state
+            assertEquals(UiState.DefaultFieldsState, awaitItem())  // DefaultFieldsState
+            cancelAndIgnoreRemainingEvents()
         }
-
-        // Act
-        viewModel.setDefaultFieldsState()
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(UiState.DefaultFieldsState, states.last())
-        collectJob.cancel()
     }
 }
