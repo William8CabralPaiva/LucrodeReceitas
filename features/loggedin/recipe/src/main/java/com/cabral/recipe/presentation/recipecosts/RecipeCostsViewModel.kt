@@ -1,6 +1,5 @@
 package com.cabral.recipe.presentation.recipecosts
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cabral.core.common.domain.model.Recipe
