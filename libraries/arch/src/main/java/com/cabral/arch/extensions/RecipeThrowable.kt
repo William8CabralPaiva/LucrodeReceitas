@@ -7,6 +7,4 @@ sealed class RecipeThrowable(cause: Throwable?) : Throwable(cause) {
         throwable: Throwable? = null
     ) : RecipeThrowable(throwable)
 
-
-
 }
