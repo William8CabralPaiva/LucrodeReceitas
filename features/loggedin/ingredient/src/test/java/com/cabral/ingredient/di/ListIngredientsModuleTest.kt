@@ -7,7 +7,6 @@ import io.mockk.mockk
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
@@ -15,7 +14,6 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 import kotlin.test.assertNotNull
 
-@OptIn(KoinExperimentalAPI::class)
 class ListIngredientsModuleTest : KoinTest {
 
     private val modules = ListIngredientsModule.modules
