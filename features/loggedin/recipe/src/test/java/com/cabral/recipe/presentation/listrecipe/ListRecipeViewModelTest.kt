@@ -1,8 +1,8 @@
 package com.cabral.recipe.presentation.listrecipe
 
+import app.cash.turbine.test
 import com.cabral.core.common.domain.usecase.DeleteRecipeUseCase
 import com.cabral.core.common.domain.usecase.GetListRecipeUseCase
-import com.cabral.test_utils.stubs.recipeProfitPriceListStub
 import com.cabral.test_utils.stubs.recipeProfitPriceStub
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -10,29 +10,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ListRecipeViewModelTest {
 
+    private lateinit var viewModel: ListRecipeViewModel
     private val getListRecipeUseCase: GetListRecipeUseCase = mockk(relaxed = true)
     private val deleteRecipeUseCase: DeleteRecipeUseCase = mockk(relaxed = true)
-    private lateinit var viewModel: ListRecipeViewModel
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
-    fun setup() {
+    fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
     }
 
     @After
@@ -41,121 +35,78 @@ class ListRecipeViewModelTest {
     }
 
     @Test
-    fun `getAllRecipe with recipes should update listRecipe and emit ListRecipe`() = runTest {
+    fun `getAllRecipe should emit ListRecipe when use case returns data`() = runTest {
         // Arrange
-        val recipes = recipeProfitPriceListStub()
+        val recipes = listOf(recipeProfitPriceStub())
         coEvery { getListRecipeUseCase() } returns flowOf(recipes)
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch {
-            viewModel.uiState.collect { states.add(it) }
+        viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
+
+        // Act & Assert
+        viewModel.uiState.test {
+            assertEquals(UiState.StartLoading, awaitItem())
+            assertEquals(UiState.ListRecipe(recipes), awaitItem())
         }
-
-        // Act
-        viewModel.getAllRecipe()
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(recipes, viewModel.listRecipe)
-        assertTrue(states.any { it is UiState.ListRecipe })
-        collectJob.cancel()
     }
 
     @Test
-    fun `getAllRecipe with empty list should emit EmptyList`() = runTest {
+    fun `getAllRecipe should emit EmptyList when use case returns empty list`() = runTest {
         // Arrange
         coEvery { getListRecipeUseCase() } returns flowOf(emptyList())
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch {
-            viewModel.uiState.collect { states.add(it) }
+        viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
+
+        // Act & Assert
+        viewModel.uiState.test {
+            assertEquals(UiState.StartLoading, awaitItem())
+            assertEquals(UiState.EmptyList, awaitItem())
         }
-
-        // Act
-        viewModel.getAllRecipe()
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(states.any { it is UiState.EmptyList })
-        collectJob.cancel()
     }
 
     @Test
-    fun `getAllRecipe with error should emit EmptyList`() = runTest {
+    fun `getAllRecipe should emit EmptyList on error`() = runTest {
         // Arrange
         coEvery { getListRecipeUseCase() } returns flow { throw Exception("Error") }
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch {
-            viewModel.uiState.collect { states.add(it) }
+        viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
+
+        // Act & Assert
+        viewModel.uiState.test {
+            assertEquals(UiState.StartLoading, awaitItem())
+            assertEquals(UiState.EmptyList, awaitItem())
         }
-
-        // Act
-        viewModel.getAllRecipe()
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(states.any { it is UiState.EmptyList })
-        collectJob.cancel()
     }
 
     @Test
-    fun `deleteRecipe with valid key should emit SuccessDelete`() = runTest {
+    fun `deleteRecipe should emit SuccessDelete when recipe is deleted`() = runTest {
         // Arrange
         val recipe = recipeProfitPriceStub()
-        coEvery { recipe.keyDocument?.let { deleteRecipeUseCase(it) } } returns flowOf(Unit)
+        coEvery { deleteRecipeUseCase(any()) } returns flowOf(Unit)
 
-        val states = mutableListOf<UiState>()
-        val collectJob = launch {
-            viewModel.uiState.collect { states.add(it) }
+        viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
+
+        // Act & Assert
+        viewModel.uiState.test {
+            viewModel.deleteRecipe(recipe)
+            assertEquals(UiState.StartLoading, awaitItem())
+            assertEquals(UiState.SuccessDelete(recipe), awaitItem())
         }
-
-        // Act
-        viewModel.deleteRecipe(recipe)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(states.any { it is UiState.SuccessDelete })
-        collectJob.cancel()
     }
 
     @Test
-    fun `deleteRecipe with error should emit ErrorDelete`() = runTest {
+    fun `deleteRecipe should emit ErrorDelete when deletion fails`() = runTest {
         // Arrange
         val recipe = recipeProfitPriceStub()
-        coEvery { recipe.keyDocument?.let { deleteRecipeUseCase(it) } } returns flow {
-            throw Exception(
-                "Error"
-            )
+        coEvery { deleteRecipeUseCase(any()) } returns flow { throw Exception("Error") }
+
+        viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
+
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.deleteRecipe(recipe)
+            recipe.name?.let {
+                assertEquals(UiEvent.ErrorDelete(it), awaitItem())
+            }?: assert(false)
         }
-
-        val events = mutableListOf<UiEvent>()
-        val collectJob = launch {
-            viewModel.uiEvent.collect { events.add(it) }
-        }
-
-        // Act
-        viewModel.deleteRecipe(recipe)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertTrue(events.any { it is UiEvent.ErrorDelete })
-        collectJob.cancel()
-    }
-
-    @Test
-    fun `getAllRecipe should emit StartLoading initially`() = runTest {
-        // Arrange
-        val states = mutableListOf<UiState>()
-        val collectJob = launch {
-            viewModel.uiState.collect { states.add(it) }
-        }
-
-        // Act
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // Assert
-        assertEquals(UiState.StartLoading, states.first())
-        collectJob.cancel()
     }
 }
