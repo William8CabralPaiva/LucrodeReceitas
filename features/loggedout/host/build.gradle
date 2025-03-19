@@ -6,6 +6,12 @@ plugins {
 apply from: "$rootDir/plugins/android-build.gradle"
 
 android {
+    buildTypes {
+        debug {
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
+        }
+    }
     namespace 'com.cabral.features.loggedout.host'
     resourcePrefix "loggedout_host"
 }

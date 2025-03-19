@@ -7,6 +7,12 @@ plugins {
 apply from: "$rootDir/plugins/android-build.gradle"
 
 android {
+    buildTypes {
+        debug {
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
+        }
+    }
     namespace Config.applicationId
 
     kotlinOptions {
@@ -31,5 +37,9 @@ dependencies {
     implementation platform(Libs.firebase_bom)
     implementation Libs.firebase_analytics
     implementation Libs.ad_mob
+
+    testImplementation project(Modules.test_utils)
+    testImplementation Libs.mockk
+    testImplementation Libs.kotlin_coroutines_test
 
 }
