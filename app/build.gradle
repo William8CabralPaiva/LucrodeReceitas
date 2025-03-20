@@ -7,12 +7,6 @@ plugins {
 apply from: "$rootDir/plugins/android-build.gradle"
 
 android {
-    buildTypes {
-        debug {
-            enableUnitTestCoverage true
-            enableAndroidTestCoverage true
-        }
-    }
     namespace Config.applicationId
 
     kotlinOptions {
