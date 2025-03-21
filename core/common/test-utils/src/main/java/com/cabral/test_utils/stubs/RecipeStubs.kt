@@ -46,5 +46,12 @@ fun recipeCostsStub(): RecipeCosts {
         volume = 1000.0f,
         profit = 0.5f,
         profitPerUnit = 2.0f,
+        costs = 1.0f,
+        costsPerUnit = 1.0f,
+        totalProfit = 2.0f,
+        totalPerUnit = 2.0f,
+        ingredientList = mutableListOf(),
+        keyDocument = ""
+
     )
 }
