@@ -13,10 +13,58 @@ buildscript {
     }
 }
 
+
 plugins {
     id 'com.android.application' version '8.9.0' apply false
     id 'com.android.library' version '8.9.0' apply false
     id("org.jetbrains.kotlin.android").version '2.0.21' apply false
     id("org.jetbrains.kotlin.plugin.compose").version("2.0.21")
     id 'org.jetbrains.kotlin.jvm' version '1.9.24' apply false
+    id "jacoco"
+}
+tasks.register("jacocoRootReport", JacocoReport) {
+    // Garante que a task de relatório de cada módulo seja executada antes de gerar o consolidado
+    dependsOn subprojects.collect { it.tasks.findByName("jacocoTestReport") }.findAll { it != null }
+
+    // Configuração de saída do relatório HTML e XML
+    reports {
+        xml.required.set(true)
+        xml.outputLocation.set(file("$buildDir/reports/jacoco/jacocoRootReport/report.xml"))
+        html.required.set(true)
+        html.outputLocation.set(file("$buildDir/reports/jacoco/jacocoRootReport"))
+    }
+
+    // Cria o diretório de relatório se não existir
+    doFirst {
+        file("$buildDir/reports/jacoco/jacocoRootReport").mkdirs()
+    }
+
+    // Coleta os arquivos .exec de todos os módulos
+    def allExecutionData = files(subprojects.collect {
+        it.fileTree(dir: it.buildDir, includes: ["jacoco/**/*.exec"]).files
+    })
+
+    // Verifica se há arquivos .exec
+    if (allExecutionData.files.isEmpty()) {
+        throw new GradleException("Nenhum arquivo .exec encontrado! Verifique se os testes foram executados.")
+    }
+
+    // Coleta todos os arquivos de fontes de todos os módulos
+    def allSourceFiles = files(subprojects.collect {
+        it.file("src/main/java")
+    } + subprojects.collect {
+        it.file("src/main/kotlin")
+    })
+
+    // Coleta todos os arquivos de classes de todos os módulos
+    def allClassFiles = files(subprojects.collect {
+        it.fileTree(dir: "${it.buildDir}/intermediates/javac/debug/classes", excludes: ["**/R.class", "**/R\$*.class", "**/BuildConfig.class", "**/Manifest.class"]).files
+    } + subprojects.collect {
+        it.fileTree(dir: "${it.buildDir}/tmp/kotlin-classes/debug", excludes: ["**/R.class", "**/R\$*.class", "**/BuildConfig.class", "**/Manifest.class"]).files
+    })
+
+    // Definindo as propriedades de fontes, classes e execução para o relatório
+    sourceDirectories.setFrom(allSourceFiles)
+    classDirectories.setFrom(allClassFiles)
+    executionData.setFrom(allExecutionData)
 }

@@ -1,7 +1,10 @@
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'jacoco'
 
 apply from: "$rootDir/plugins/config-build.gradle"
+apply from: "$rootDir/plugins/jacoco-build.gradle"
+
 
 android {
 
@@ -31,6 +34,14 @@ android {
     buildFeatures {
         viewBinding true
         buildConfig true
+    }
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                enabled = true // Garante que o Jacoco será ativado para os testes unitários
+            }
+        }
     }
 }
 

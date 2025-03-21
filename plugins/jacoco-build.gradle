@@ -1,0 +1,35 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.8.10" // Use a versão mais recente do Jacoco
+}
+
+tasks.withType(Test).configureEach {
+    finalizedBy jacocoTestReport
+}
+
+tasks.register("jacocoTestReport", JacocoReport) {
+    dependsOn(test)
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    def classFiles = fileTree(
+            dir: "${buildDir}/intermediates/javac/debug/classes",
+            excludes: ["**/R.class", "**/R\$*.class", "**/BuildConfig.class", "**/Manifest.class"]
+    ) + fileTree(
+            dir: "${buildDir}/tmp/kotlin-classes/debug",
+            excludes: ["**/R.class", "**/R\$*.class", "**/BuildConfig.class", "**/Manifest.class"]
+    )
+
+    def sourceFiles = files([
+            "src/main/java",
+            "src/main/kotlin"
+    ])
+
+    sourceDirectories.setFrom(sourceFiles)
+    classDirectories.setFrom(classFiles)
+    executionData.setFrom(fileTree(dir: buildDir, includes: ["jacoco/test.exec"]))
+}
