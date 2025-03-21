@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -21,14 +22,11 @@ class RecipeViewModelTest {
     private lateinit var viewModel: RecipeViewModel
     private val addRecipeUseCase: AddRecipeUseCase = mockk(relaxed = true)
     private val recipeStub = recipeStub()
-
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        coEvery { addRecipeUseCase(any()) } returns flowOf("recipe_key_document")
-        //coEvery { addRecipeUseCase(match { it.name == recipeStub.name && it.volume == recipeStub.volume && it.expectedProfit == recipeStub.expectedProfit }) } returns flowOf("recipe_key_document")
         viewModel = RecipeViewModel(addRecipeUseCase)
     }
 
@@ -38,55 +36,46 @@ class RecipeViewModelTest {
     }
 
     @Test
-    fun `test addRecipe triggers correct uiEvent flow`() = runTest {
+    fun `addRecipe should emit StartLoading, Success, and StopLoading`() = runTest {
         // Arrange
-        viewModel.uiEvent.test {
+        coEvery { addRecipeUseCase(any()) } returns flowOf("recipe_key_document")
 
-            // Act
+        // Act & Assert
+        viewModel.uiEvent.test {
             viewModel.addRecipe(recipeStub.name, recipeStub.volume, recipeStub.expectedProfit)
 
-            // Assert
             assertEquals(UiEvent.StartLoading, awaitItem())
             assertEquals(UiEvent.Success, awaitItem())
             assertEquals(UiEvent.StopLoading, awaitItem())
         }
+        assertTrue(viewModel.recipeAlreadyCreate)
+        assertEquals("recipe_key_document", viewModel.recipe.keyDocument)
     }
 
     @Test
-    fun `test addRecipe handles error state`() = runTest {
-        // Arrange
-        coEvery { addRecipeUseCase(recipeStub) } returns flow {
-            throw Exception()
-        }
-        viewModel = RecipeViewModel(addRecipeUseCase)
-
+    fun `addRecipe should emit StopLoading and Error when name is empty`() = runTest {
+        // Act & Assert
         viewModel.uiEvent.test {
-            // Act
             viewModel.addRecipe("", 10f, 5f)
 
-            // Assert
             assertEquals(UiEvent.StopLoading, awaitItem())
-            assertEquals(
-                UiEvent.Error("Preencha o campo nome da Receita corretamente"),
-                awaitItem()
-            )
-
+            assertEquals(UiEvent.Error("Preencha o campo nome da Receita corretamente"), awaitItem())
         }
     }
 
     @Test
-    fun `test addRecipe with empty name triggers error`() = runTest {
+    fun `addRecipe should emit Error when use case throws exception`() = runTest {
         // Arrange
-        viewModel.uiEvent.test {
-            // Act
-            viewModel.addRecipe("", 10f, 5f)
+        coEvery { addRecipeUseCase(any()) } returns flow { throw Exception("Erro inesperado") }
 
-            // Assert
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.addRecipe(recipeStub.name, recipeStub.volume, recipeStub.expectedProfit)
+
+            assertEquals(UiEvent.StartLoading, awaitItem())
+            assertEquals(UiEvent.Error("Erro inesperado"), awaitItem())
             assertEquals(UiEvent.StopLoading, awaitItem())
-            assertEquals(
-                UiEvent.Error("Preencha o campo nome da Receita corretamente"),
-                awaitItem()
-            )
         }
+        assertTrue(!viewModel.recipeAlreadyCreate)
     }
 }

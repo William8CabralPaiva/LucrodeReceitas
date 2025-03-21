@@ -42,67 +42,85 @@ class RecipeAddEditIngredientViewModelTest {
 
     @Test
     fun `getAllIngredients should emit ListIngredient when use case returns data`() = runTest {
-        // Arrange
         val ingredients = ingredientListStub()
         coEvery { listIngredientUseCase() } returns flowOf(ingredients)
         val states = mutableListOf<UiState>()
         val collectJob = launch { viewModel.uiState.collect { states.add(it) } }
 
-        // Act
         viewModel.getAllIngredients()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         assertTrue(states.any { it is UiState.ListIngredient })
         collectJob.cancel()
     }
 
     @Test
     fun `getAllIngredients should emit Error when use case throws an exception`() = runTest {
-        // Arrange
         coEvery { listIngredientUseCase() } returns flow { throw Exception("Error") }
         val states = mutableListOf<UiState>()
         val collectJob = launch { viewModel.uiState.collect { states.add(it) } }
 
-        // Act
         viewModel.getAllIngredients()
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         assertTrue(states.any { it is UiState.Error })
         collectJob.cancel()
     }
 
     @Test
     fun `addIngredientInList with invalid ingredient name should emit ErrorSpinner`() = runTest {
-        // Arrange
         val states = mutableListOf<UiState>()
         val collectJob = launch { viewModel.uiState.collect { states.add(it) } }
 
-        // Act
         viewModel.addIngredientInList("Invalid Ingredient", 20.0f)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         assertTrue(states.any { it is UiState.ErrorSpinner })
         collectJob.cancel()
     }
 
     @Test
     fun `deleteItemAdd should remove ingredient and emit RemoveIngredient`() = runTest {
-        // Arrange
         val ingredient = ingredientStub()
         viewModel.listAddIngredients.add(ingredient)
         val states = mutableListOf<UiState>()
         val collectJob = launch { viewModel.uiState.collect { states.add(it) } }
 
-        // Act
         viewModel.deleteItemAdd(ingredient)
         testDispatcher.scheduler.advanceUntilIdle()
 
-        // Assert
         assertTrue(states.any { it is UiState.RemoveIngredient })
         assertEquals(0, viewModel.listAddIngredients.size)
+        collectJob.cancel()
+    }
+
+    @Test
+    fun `setEditMode should update state and set correct edit position`() = runTest {
+        val ingredient = ingredientStub()
+        viewModel.listAddIngredients.add(ingredient)
+        val states = mutableListOf<UiState>()
+        val collectJob = launch { viewModel.uiState.collect { states.add(it) } }
+
+        viewModel.setEditMode(true, ingredient)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        assertTrue(states.any { it is UiState.EditMode && it.editMode })
+        collectJob.cancel()
+    }
+
+    @Test
+    fun `addIngredientInList should edit existing ingredient when in edit mode`() = runTest {
+        val ingredient = ingredientStub()
+        viewModel.listAddIngredients.add(ingredient)
+        viewModel.setEditMode(true, ingredient)
+        val states = mutableListOf<UiState>()
+        val collectJob = launch { viewModel.uiState.collect { states.add(it) } }
+
+        viewModel.addIngredientInList("Edited Ingredient", 50.0f)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        assertTrue(states.any { it is UiState.SuccessEdit })
+        assertEquals("Edited Ingredient", viewModel.listAddIngredients[0]?.name)
         collectJob.cancel()
     }
 }

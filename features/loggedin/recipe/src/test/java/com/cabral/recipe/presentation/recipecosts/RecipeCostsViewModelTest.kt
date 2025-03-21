@@ -44,7 +44,6 @@ class RecipeCostsViewModelTest {
     fun `test load updates uiState correctly`() = runTest {
         // Arrange
         viewModel.uiState.test {
-
             // Act
             viewModel.load()
 
@@ -52,6 +51,12 @@ class RecipeCostsViewModelTest {
             assertEquals(UiState.StartLoading, awaitItem())
             val successState = awaitItem() as UiState.Success
             assertEquals(recipeCostStub.name, successState.title)
+            assertEquals(recipeCostStub.ingredientList, successState.ingredients)
+            assertEquals(recipeCostStub.costs, successState.costs)
+            assertEquals(recipeCostStub.totalPerUnit, successState.totalPerUnit)
+            assertEquals(recipeCostStub.profit, successState.profit)
+            assertEquals(recipeCostStub.profitPerUnit, successState.profitPerUnit)
+            assertEquals(recipeCostStub.costsPerUnit, successState.costsPerUnit)
             assertEquals(UiState.StopLoading, awaitItem())
         }
     }

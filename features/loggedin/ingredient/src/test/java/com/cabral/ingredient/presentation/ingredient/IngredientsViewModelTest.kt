@@ -1,16 +1,22 @@
-package com.cabral.ingredient.presentation.ingredient
-
 import app.cash.turbine.test
 import com.cabral.core.common.domain.usecase.AddIngredientUseCase
+import com.cabral.ingredient.presentation.ingredient.IngredientsViewModel
+import com.cabral.ingredient.presentation.ingredient.UiEvent
+import com.cabral.ingredient.presentation.ingredient.UiState
+import com.cabral.test_utils.stubs.ingredientStub
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -88,4 +94,52 @@ class IngredientsViewModelTest {
             assert(awaitItem() is UiState.ErrorAddEdit)
         }
     }
+
+    @Test
+    fun `test addOrEditIngredient with invalid volume triggers error`() = runTest {
+        viewModel.uiState.test {
+            viewModel.addOrEditIngredient("Sugar", "-5", "g", "5")
+            assertEquals(UiState.Default, awaitItem())
+            assert(awaitItem() is UiState.ErrorAddEdit)
+        }
+    }
+
+    @Test
+    fun `test addOrEditIngredient with invalid unit triggers error`() = runTest {
+        viewModel.uiState.test {
+            viewModel.addOrEditIngredient("Sugar", "10", "invalid", "5")
+            assertEquals(UiState.Default, awaitItem())
+            assert(awaitItem() is UiState.ErrorAddEdit)
+        }
+    }
+
+    @Test
+    fun `test addOrEditIngredient with invalid price triggers error`() = runTest {
+        viewModel.uiState.test {
+            viewModel.addOrEditIngredient("Sugar", "10", "g", "-5")
+            assertEquals(UiState.Default, awaitItem())
+            assert(awaitItem() is UiState.ErrorAddEdit)
+        }
+    }
+
+    @Test
+    fun `test setEditMode updates state`() = runTest {
+        viewModel.uiState.test {
+            viewModel.setEditMode(true, null)
+            assertEquals(UiState.Default, awaitItem())
+            assertEquals(UiState.EditMode(true), awaitItem())
+        }
+        assertTrue(viewModel.getEditMode())
+    }
+
+    @Test
+    fun `test changeIngredient updates state`() = runTest {
+        val ingredient = ingredientStub()
+        viewModel.uiState.test {
+            viewModel.changeIngredient(ingredient)
+            assertEquals(UiState.Default, awaitItem())
+            assertEquals(UiState.EditMode(true), awaitItem())
+        }
+    }
+
 }
