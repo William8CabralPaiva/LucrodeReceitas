@@ -14,17 +14,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
-class RecipeServicesImpl(private val db: FirebaseFirestore):RecipeServices {
+class RecipeServicesImpl(private val db: FirebaseFirestore) : RecipeServices {
     override fun getAllRecipes(): Flow<List<RecipeProfitPrice>> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
-        val result = db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).orderBy("name").get().await()
-        val recipes = result.toObjects(RecipeRegister::class.java).mapIndexed { id, it -> it.toRecipe(id) }
+        val result = db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+            .orderBy(DBConstants.NAME).get().await()
+        val recipes = result.toObjects(RecipeRegister::class.java).mapIndexed { index, recipe ->
+            recipe.toRecipe(index)
+        }
         emit(recipes.toListRecipeProfitPrice(emptyList()))
     }
 
+
     override fun addRecipe(recipe: Recipe): Flow<String?> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
-        val newDoc = db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).document()
+        val newDoc =
+            db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).document()
         val id = recipe.keyDocument ?: newDoc.id
         newDoc.set(recipe.toRecipeRegister(id)).await()
         emit(id)
@@ -32,7 +37,8 @@ class RecipeServicesImpl(private val db: FirebaseFirestore):RecipeServices {
 
     override fun deleteRecipe(keyDocument: String): Flow<Unit> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
-        db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).document(keyDocument).delete().await()
+        db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+            .document(keyDocument).delete().await()
         emit(Unit)
     }
 }

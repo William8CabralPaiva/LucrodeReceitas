@@ -2,8 +2,10 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs'
+    id 'io.gitlab.arturbosch.detekt'
 }
 apply from: "$rootDir/plugins/android-build.gradle"
+apply from: "$rootDir/config/detekt/detekt.gradle"
 
 android {
     namespace 'com.cabral.core'
