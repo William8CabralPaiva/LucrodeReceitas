@@ -1,95 +1,81 @@
 package com.cabral.recipe.presentation.recipe
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
 import com.cabral.core.common.domain.usecase.AddRecipeUseCase
-import com.cabral.testing.DispatcherTestRule
-import com.cabral.testing.stubs.recipeStub
-import io.mockk.clearAllMocks
+import com.cabral.test_utils.stubs.recipeStub
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.*
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class RecipeViewModelTest {
-    @get:Rule
-    val executorRule = InstantTaskExecutorRule()
 
-    @get:Rule
-    val dispatcherRule = DispatcherTestRule()
-
-    private val useCase: AddRecipeUseCase = mockk()
-
-    private lateinit var subject: RecipeViewModel
-
-    private val recipe = recipeStub()
-
+    private lateinit var viewModel: RecipeViewModel
+    private val addRecipeUseCase: AddRecipeUseCase = mockk(relaxed = true)
+    private val recipeStub = recipeStub()
+    private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
-        subject = RecipeViewModel(
-            useCase
-        )
+        Dispatchers.setMain(testDispatcher)
+        viewModel = RecipeViewModel(addRecipeUseCase)
     }
 
     @After
     fun tearDown() {
-        clearAllMocks()
+        Dispatchers.resetMain()
     }
 
-
     @Test
-    fun `addRecipe should emit Error when Throwable ocurrs`() = runTest {
+    fun `addRecipe should emit StartLoading, Success, and StopLoading`() = runTest {
         // Arrange
-        val errorMessage = "An error occurred"
-        val throwable = Throwable(errorMessage)
-        coEvery { useCase(recipe) } returns flow { throw throwable }
+        coEvery { addRecipeUseCase(any()) } returns flowOf("recipe_key_document")
 
-        // Act
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.addRecipe(recipeStub.name, recipeStub.volume, recipeStub.expectedProfit)
 
-        subject.addRecipe(recipe.name, recipe.volume, recipe.expectedProfit)
-
-        // Assert
-        subject.uiEvent.test {
-            assertEquals(UiEvent.StartLoading, awaitItem())
-
-            val errorEvent = awaitItem() as UiEvent.Error
-            assertEquals(errorMessage, errorEvent.message)
-
-            assertEquals(UiEvent.StopLoading, awaitItem())
-        }
-
-
-        coVerify { useCase(recipe) }
-    }
-
-    @Test
-    fun `addRecipe should emit Success when recipe is created successfully`() = runTest {
-        //Arrange
-        coEvery { useCase(recipe) } returns flowOf(recipe.keyDocument)
-
-        //Act
-        subject.addRecipe(recipe.name, recipe.volume, recipe.expectedProfit)
-
-        //Assert
-        subject.uiEvent.test {
             assertEquals(UiEvent.StartLoading, awaitItem())
             assertEquals(UiEvent.Success, awaitItem())
             assertEquals(UiEvent.StopLoading, awaitItem())
         }
-
-        coVerify { subject.addRecipe(recipe.name, recipe.volume, recipe.expectedProfit) }
-
+        assertTrue(viewModel.recipeAlreadyCreate)
+        assertEquals("recipe_key_document", viewModel.recipe.keyDocument)
     }
 
-}
+    @Test
+    fun `addRecipe should emit StopLoading and Error when name is empty`() = runTest {
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.addRecipe("", 10f, 5f)
 
+            assertEquals(UiEvent.StopLoading, awaitItem())
+            assertEquals(UiEvent.Error("Preencha o campo nome da Receita corretamente"), awaitItem())
+        }
+    }
+
+    @Test
+    fun `addRecipe should emit Error when use case throws exception`() = runTest {
+        // Arrange
+        coEvery { addRecipeUseCase(any()) } returns flow { throw Exception("Erro inesperado") }
+
+        // Act & Assert
+        viewModel.uiEvent.test {
+            viewModel.addRecipe(recipeStub.name, recipeStub.volume, recipeStub.expectedProfit)
+
+            assertEquals(UiEvent.StartLoading, awaitItem())
+            assertEquals(UiEvent.Error("Erro inesperado"), awaitItem())
+            assertEquals(UiEvent.StopLoading, awaitItem())
+        }
+        assertTrue(!viewModel.recipeAlreadyCreate)
+    }
+}

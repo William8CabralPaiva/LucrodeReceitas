@@ -1,20 +1,20 @@
 package com.cabral.core.common.domain.usecase
 
 import com.cabral.core.common.domain.repository.RecipeRepository
-import com.cabral.stubs.listRecipeProfitPriceStub
+import com.cabral.test_utils.stubs.recipeProfitPriceListStub
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 
 @ExperimentalCoroutinesApi
- class GetListRecipeUseCaseTest {
+class GetListRecipeUseCaseTest {
 
     private val repository: RecipeRepository = mockk()
     private val subject = GetListRecipeUseCase(repository)
@@ -22,7 +22,7 @@ import kotlin.test.assertFailsWith
     @Test
     fun `getAllRecipes Should return recipe list`() = runTest {
         //Arrange
-        val expectedResult = flowOf(listRecipeProfitPriceStub())
+        val expectedResult = flowOf(recipeProfitPriceListStub())
         coEvery { repository.getAllRecipes() } returns expectedResult
 
         //Act

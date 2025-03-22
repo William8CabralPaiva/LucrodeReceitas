@@ -1,8 +1,8 @@
 package com.cabral.registeruser.di
 
 import com.cabral.registeruser.presentation.RegisterUserViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 object RegisterUserModule {

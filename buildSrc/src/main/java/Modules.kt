@@ -1,7 +1,6 @@
 object Modules {
     const val app = ":app"
     const val arch = ":libraries:arch"
-    const val testing = ":libraries:testing"
     const val splash = ":features:splash"
     const val login = ":features:loggedout:login"
     const val config = ":features:loggedin:config"
@@ -9,12 +8,11 @@ object Modules {
     const val ingredients = ":features:loggedin:ingredient"
     const val domain = ":core:common:domain"
     const val navigation = ":core:common:navigation"
+    const val test_utils = ":core:common:test-utils"
     const val design = ":libraries:design"
     const val loggedNavigation = ":features:loggedin:host"
     const val notLoggedNavigation = ":features:loggedout:host"
     const val remote = ":core:data:remote"
-    const val local = ":core:data:local"
     const val hubsrc = ":core:data:hubSrc"
     const val registerUser = ":features:loggedout:registeruser"
-    const val forgotpassword = ":features:loggedout:forgotpassword"
 }

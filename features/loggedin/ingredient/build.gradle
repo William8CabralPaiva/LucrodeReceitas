@@ -16,4 +16,9 @@ dependencies {
     implementation project(Modules.domain)
     implementation project(Modules.navigation)
     implementation Libs.ad_mob
+
+    testImplementation project(Modules.test_utils)
+    testImplementation Libs.mockk
+    testImplementation Libs.kotlin_coroutines_test
+    testImplementation Libs.cash_turbine
 }

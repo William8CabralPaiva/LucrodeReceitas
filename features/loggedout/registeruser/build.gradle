@@ -18,4 +18,9 @@ dependencies {
     implementation Libs.firebase_auth
     implementation Libs.services_auth
     implementation Libs.firebase_store
+
+    testImplementation project(Modules.test_utils)
+    testImplementation Libs.mockk
+    testImplementation Libs.kotlin_coroutines_test
+    testImplementation Libs.cash_turbine
 }

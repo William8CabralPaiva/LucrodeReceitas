@@ -1,8 +1,10 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id "io.gitlab.arturbosch.detekt"
 }
 apply from: "$rootDir/plugins/android-build.gradle"
+//apply from: "$rootDir/config/detekt/detekt.gradle"
 
 android {
     namespace 'com.cabral.features.splash'
@@ -15,4 +17,9 @@ dependencies {
     implementation project(Modules.navigation)
     implementation project(Modules.loggedNavigation)
     implementation project(Modules.domain)
+
+    testImplementation project(Modules.test_utils)
+    testImplementation Libs.mockk
+    testImplementation Libs.kotlin_coroutines_test
+    testImplementation Libs.cash_turbine
 }

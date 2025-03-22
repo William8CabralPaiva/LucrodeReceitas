@@ -4,7 +4,5 @@ android {
     defaultConfig {
         minSdk Config.minSdk
         targetSdk Config.targetSdk
-        versionCode Config.versionCode
-        versionName Config.versionName
     }
 }

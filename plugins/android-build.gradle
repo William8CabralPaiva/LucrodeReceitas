@@ -1,7 +1,10 @@
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'jacoco'
 
 apply from: "$rootDir/plugins/config-build.gradle"
+apply from: "$rootDir/plugins/jacoco-build.gradle"
+
 
 android {
 
@@ -14,6 +17,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug{
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
+        }
     }
 
     compileOptions {
@@ -25,7 +32,16 @@ android {
     }
 
     buildFeatures {
-        viewBinding  true
+        viewBinding true
+        buildConfig true
+    }
+
+    testOptions {
+        unitTests.all {
+            jacoco {
+                enabled = true // Garante que o Jacoco será ativado para os testes unitários
+            }
+        }
     }
 }
 
@@ -33,12 +49,12 @@ dependencies {
 
     //Android Common
     def nav_version = "2.8.4"
-    def koin_version = "2.2.3"
+    def koin_version = "4.0.2"
 
-    implementation 'androidx.core:core-ktx:1.13.1'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
 
     // Java language implementation
     implementation "androidx.navigation:navigation-fragment:$nav_version"
@@ -57,12 +73,15 @@ dependencies {
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
-    implementation "io.insert-koin:koin-androidx-scope:$koin_version"
-    implementation "io.insert-koin:koin-androidx-viewmodel:$koin_version"
+    implementation platform("io.insert-koin:koin-bom:$koin_version")
+    implementation "io.insert-koin:koin-android"
+    implementation "io.insert-koin:koin-androidx-workmanager"
+    testImplementation "io.insert-koin:koin-test"
+    testImplementation "io.insert-koin:koin-test-junit4"
 
     //Tests
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
 }

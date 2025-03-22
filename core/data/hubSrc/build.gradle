@@ -13,10 +13,16 @@ dependencies {
     implementation project(Modules.arch)
     implementation project(Modules.remote)
     implementation project(Modules.domain)
-    testImplementation project(Modules.testing)
     implementation platform(Libs.firebase_bom)
     implementation Libs.services_auth
     implementation Libs.firebase_auth
     implementation Libs.firebase_store
+
+    testImplementation project(Modules.test_utils)
+    testImplementation Libs.mockk
+    testImplementation Libs.kotlin_coroutines_test
+    testImplementation Libs.cash_turbine
+
+
 
 }

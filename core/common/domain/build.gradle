@@ -1,3 +1,4 @@
+
 plugins {
     id 'java-library'
     id 'org.jetbrains.kotlin.jvm'
@@ -8,17 +9,31 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-compileKotlin {
-    kotlinOptions.jvmTarget = "17"
+kotlin {
+    jvmToolchain(17)
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 dependencies {
+
     implementation Libs.coroutines
 
+    testImplementation project(Modules.test_utils)
     testImplementation(Libs.kotlin_coroutines_test)
     testImplementation(Libs.mockito_kotlin)
     testImplementation(Libs.mockito_core)
     testImplementation(Libs.mockito_inline)
     testImplementation(Libs.mockk)
-    testImplementation(Libs.kotlin_test)
+
+    testImplementation(Libs.cash_turbine)
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+
+    //testImplementation(Libs.kotlin_test)
+    //testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.0.21")
+
+//    testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.3"
+//    testImplementation "org.junit.jupiter:junit-jupiter-engine:5.9.3"
 }
