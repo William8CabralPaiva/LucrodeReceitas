@@ -8,8 +8,9 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import app.cash.turbine.test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 @ExperimentalCoroutinesApi
@@ -24,11 +25,13 @@ class AddUserUseCaseTest {
         val user = userStub()
         coEvery { repository.addUser(user) } returns flowOf(Unit)
 
-        // Act
-        subject(user).collect { result ->
+        // Act & Assert
+        subject(user).test {
             // Assert
-            assertEquals(Unit, result)
+            assertEquals(Unit, awaitItem()) // Verifica se o fluxo emitiu Unit
+            awaitComplete() // Verifica que o fluxo foi concluído
         }
+
         coVerify { repository.addUser(user) }
     }
 
