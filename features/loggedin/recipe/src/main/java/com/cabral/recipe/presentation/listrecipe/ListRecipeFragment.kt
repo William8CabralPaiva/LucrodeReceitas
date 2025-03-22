@@ -30,7 +30,7 @@ class ListRecipeFragment :
         initClicks()
         initObservers()
 
-        navigationRecipe.observeRecipeChangeOnListRecipeFragment(this, viewLifecycleOwner) { it ->
+        navigationRecipe.observeRecipeChangeOnListRecipeFragment(this, viewLifecycleOwner) {
             viewModel.getAllRecipe()
         }
     }

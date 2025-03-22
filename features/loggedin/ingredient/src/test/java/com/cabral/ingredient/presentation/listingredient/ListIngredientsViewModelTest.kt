@@ -1,6 +1,7 @@
 package com.cabral.ingredient.presentation.listingredient
 
 import app.cash.turbine.test
+import com.cabral.arch.extensions.IngredientThrowable
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.usecase.DeleteIngredientUseCase
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
@@ -12,7 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -72,7 +76,7 @@ class ListIngredientsViewModelTest {
     @Test
     fun `test getAllIngredients handles error`() = runTest {
         // Arrange
-        coEvery { listIngredientUseCase() } returns flow { throw Exception() }
+        coEvery { listIngredientUseCase() } returns flow { IngredientThrowable.PriceThrowable() }
 
         // Act
         viewModel.getAllIngredients()
@@ -103,7 +107,7 @@ class ListIngredientsViewModelTest {
     fun `test deleteIngredient triggers error event`() = runTest {
         // Arrange
         val ingredient = Ingredient(1, "Salt", 1f, "kg", 5f, "key2")
-        coEvery { deleteIngredientUseCase(ingredient) } returns flow { throw Exception() }
+        coEvery { deleteIngredientUseCase(ingredient) } returns flow { IngredientThrowable.NameThrowable() }
 
         // Act
         viewModel.deleteIngredient(ingredient)

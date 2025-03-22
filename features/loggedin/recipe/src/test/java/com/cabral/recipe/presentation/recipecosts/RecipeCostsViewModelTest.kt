@@ -1,4 +1,5 @@
 import app.cash.turbine.test
+import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.core.common.domain.usecase.CostRecipeUseCase
 import com.cabral.recipe.presentation.recipecosts.RecipeCostsViewModel
 import com.cabral.recipe.presentation.recipecosts.UiState
@@ -10,7 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -65,7 +69,7 @@ class RecipeCostsViewModelTest {
     fun `test load handles error state`() = runTest {
         // Arrange
         coEvery { costRecipeUseCase.invoke(recipeStub) } returns flow {
-            throw Exception("Network Error")
+            throw GenericThrowable.FailThrowable()
         }
         viewModel = RecipeCostsViewModel(costRecipeUseCase).apply {
             recipe = recipeStub
