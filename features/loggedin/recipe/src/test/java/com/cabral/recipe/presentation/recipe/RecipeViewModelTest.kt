@@ -73,14 +73,15 @@ class RecipeViewModelTest {
     @Test
     fun `addRecipe should emit Error when use case throws exception`() = runTest {
         // Arrange
-        coEvery { addRecipeUseCase(any()) } returns flow { throw RecipeThrowable.AddRecipeThrowable() }
+        val error = RecipeThrowable.AddRecipeThrowable()
+        coEvery { addRecipeUseCase(any()) } returns flow { throw error }
 
         // Act & Assert
         viewModel.uiEvent.test {
             viewModel.addRecipe(recipeStub.name, recipeStub.volume, recipeStub.expectedProfit)
 
             assertEquals(UiEvent.StartLoading, awaitItem())
-            assertEquals(UiEvent.Error("Erro inesperado"), awaitItem())
+            assertEquals(UiEvent.Error(error.message), awaitItem())
             assertEquals(UiEvent.StopLoading, awaitItem())
         }
         assertTrue(!viewModel.recipeAlreadyCreate)

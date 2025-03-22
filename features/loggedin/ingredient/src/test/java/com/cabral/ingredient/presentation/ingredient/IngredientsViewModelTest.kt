@@ -1,4 +1,5 @@
 import app.cash.turbine.test
+import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.core.common.domain.usecase.AddIngredientUseCase
 import com.cabral.ingredient.presentation.ingredient.IngredientsViewModel
 import com.cabral.ingredient.presentation.ingredient.UiEvent
@@ -56,7 +57,7 @@ class IngredientsViewModelTest {
     fun `test save handles error`() = runTest {
         // Arrange
         coEvery { addIngredientUseCase(any()) } returns flow {
-            throw Exception()
+            throw GenericThrowable.FailThrowable()
         }
         viewModel = IngredientsViewModel(addIngredientUseCase)
 

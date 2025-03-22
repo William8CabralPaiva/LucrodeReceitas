@@ -42,76 +42,96 @@ class RecipeViewHolder(
     }
 
     private fun setPrices(recipe: RecipeProfitPrice) {
-        var price: Float? = 0f
+        val (price, textInfo, color) = getPriceInfo(recipe)
+
+        setTextViewContent(textInfo, color)
+        setRecipePrice(price, color)
+    }
+
+    private fun getPriceInfo(recipe: RecipeProfitPrice): Triple<Float?, String, Int> {
+        return when {
+            recipe.ingredientList.isNotEmpty() -> calculatePriceFromIngredients(recipe)
+            else -> calculatePriceFromNoIngredients()
+        }
+    }
+
+    private fun calculatePriceFromIngredients(recipe: RecipeProfitPrice): Triple<Float?, String, Int> {
+        var price: Float? = null
         var textInfo = ""
         var color = 0
 
-        if (recipe.ingredientList.size > 0) {
-            if (recipe.profitPrice != null && recipe.profitPrice != 0f && recipe.expectedProfit != null) {
+        when {
+            recipe.profitPrice != null && recipe.profitPrice != 0f && recipe.expectedProfit != null -> {
                 color = context.getColor(DesignR.color.design_orange)
-                if (recipe.profitPriceUnit != null) {
-                    textInfo = context.getString(DesignR.string.design_suggestion_by_unit)
-                    price = recipe.profitPriceUnit
+                price = recipe.profitPriceUnit ?: recipe.profitPrice
+                textInfo = if (recipe.profitPriceUnit != null) {
+                    context.getString(DesignR.string.design_suggestion_by_unit)
                 } else {
-                    textInfo = context.getString(DesignR.string.design_suggestion_total)
-                    price = recipe.profitPrice
+                    context.getString(DesignR.string.design_suggestion_total)
                 }
-            } else if (recipe.volume == null && recipe.costsPerUnit == null) {
+            }
+            recipe.volume == null && recipe.costsPerUnit == null -> {
                 recipe.costs?.let {
                     color = context.getColor(DesignR.color.design_dark_red)
                     textInfo = context.getString(DesignR.string.design_cost_total)
                     price = it
                 }
-            } else if (recipe.costs != 0f) {
+            }
+            recipe.costs != 0f -> {
                 recipe.costsPerUnit?.let {
                     color = context.getColor(DesignR.color.design_dark_red)
                     textInfo = context.getString(DesignR.string.design_cost_unit)
                     price = it
                 }
             }
-        } else {
-            textInfo = context.getString(DesignR.string.design_no_ingredients_register)
-            color = context.getColor(DesignR.color.design_gray_dark)
-            price = null
         }
 
+        return Triple(price, textInfo, color)
+    }
+
+    private fun calculatePriceFromNoIngredients(): Triple<Float?, String, Int> {
+        val textInfo = context.getString(DesignR.string.design_no_ingredients_register)
+        val color = context.getColor(DesignR.color.design_gray_dark)
+        return Triple(null, textInfo, color)
+    }
+
+    private fun setTextViewContent(textInfo: String, color: Int) {
         binding.textView.run {
-            if (price != null) {
-                val content = SpannableString(textInfo)
-                content.setSpan(UnderlineSpan(), 0, content.length, 0)
-                text = content
-            } else {
-                text = textInfo
+            val content = SpannableString(textInfo).apply {
+                setSpan(UnderlineSpan(), 0, length, 0)
             }
+            text = content
             setTextColor(color)
             visibility = View.VISIBLE
         }
+    }
 
-        price?.run {
+    private fun setRecipePrice(price: Float?, color: Int) {
+        if (price != null) {
             val content = SpannableString(
                 String.format(
                     context.getString(com.cabral.design.R.string.design_value_format),
-                    roundingNumber()
+                    price.roundingNumber()
                 )
-            )
-            content.setSpan(UnderlineSpan(), 0, content.length, 0)
+            ).apply {
+                setSpan(UnderlineSpan(), 0, length, 0)
+            }
             binding.recipePrice.run {
                 text = content
                 setTextColor(color)
                 visibility = View.VISIBLE
-                binding.icListBook.visibility = View.VISIBLE
             }
-        } ?: run {
+            binding.icListBook.visibility = View.VISIBLE
+        } else {
             binding.icListBook.visibility = View.GONE
         }
-
     }
+
 
     companion object {
         fun typeViewHolder(
             parent: ViewGroup,
             context: Context,
-            index: Int
         ): RecipeViewHolder {
             val binding = RecipeItemListBinding.inflate(
                 LayoutInflater.from(parent.context),

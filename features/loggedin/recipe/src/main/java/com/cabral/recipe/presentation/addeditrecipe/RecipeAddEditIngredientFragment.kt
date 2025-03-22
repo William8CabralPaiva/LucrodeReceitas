@@ -199,7 +199,8 @@ class RecipeAddEditIngredientFragment :
     private fun BorderInputView.enableButtonVolume() {
         binding.abAdd.run {
             try {
-                if (getText().isNotEmpty() && getText().toFloat() > 0 && !binding.biIngredient.getSpinner().text.isNullOrEmpty()) {
+                if (getText().isNotEmpty() && getText().toFloat() > 0 &&
+                    !binding.biIngredient.getSpinner().text.isNullOrEmpty()) {
                     abSetEnabled(true)
 
                 } else {

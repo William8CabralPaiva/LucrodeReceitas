@@ -1,5 +1,6 @@
 package com.cabral.recipe.presentation.addeditrecipe
 
+import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import com.cabral.test_utils.stubs.ingredientListStub
@@ -56,7 +57,7 @@ class RecipeAddEditIngredientViewModelTest {
 
     @Test
     fun `getAllIngredients should emit Error when use case throws an exception`() = runTest {
-        coEvery { listIngredientUseCase() } returns flow { throw Exception("Error") }
+        coEvery { listIngredientUseCase() } returns flow { throw GenericThrowable.FailThrowable() }
         val states = mutableListOf<UiState>()
         val collectJob = launch { viewModel.uiState.collect { states.add(it) } }
 
