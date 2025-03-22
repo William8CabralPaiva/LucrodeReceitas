@@ -2,6 +2,7 @@ package com.cabral.registeruser.presentation
 
 import app.cash.turbine.test
 import com.cabral.core.common.domain.usecase.AddUserUseCase
+import com.cabral.test_utils.stubs.stubNetWorkException
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -144,9 +146,9 @@ class RegisterUserViewModelTest {
         val email = "test@example.com"
         val password = "Password123!"
         val confirmPassword = "Password123!"
-        val errorMessage = "UseCase Error"
+        val stubException = stubNetWorkException()
 
-        coEvery { addUserUseCase(any()) } returns flow { throw Exception(errorMessage) }
+        coEvery { addUserUseCase(any()) } returns flow { throw stubException }
 
         // Act & Assert
         viewModel.uiEvent.test {

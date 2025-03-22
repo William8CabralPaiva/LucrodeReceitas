@@ -117,5 +117,4 @@ class ListIngredientsViewModelTest {
         }
     }
 
-    open class NetworkException(message: String?, cause: Throwable?) : Exception(message, cause)
 }

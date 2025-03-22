@@ -132,14 +132,15 @@ class LoginFragment : Fragment() {
             ) {
                 viewModel.login(binding.biEmail.getText(), binding.biPassword.getText())
             }
+        } catch (e: UserThrowable.AuthenticateEmailThrowable) {
+            binding.biEmail.setError(e.message)
+        } catch (e: UserThrowable.WrongUserPassword) {
+            binding.biPassword.setError(e.message)
         } catch (e: UserThrowable) {
-            if (e is UserThrowable.AuthenticateEmailThrowable) {
-                binding.biEmail.setError(e.message)
-            } else {
-                binding.biPassword.setError(e.message)
-            }
+            binding.biPassword.setError(e.message)
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
