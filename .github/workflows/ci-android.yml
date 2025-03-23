@@ -25,14 +25,19 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Criar google-services.json
-        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+      - name: Criar google-services.json (se existir)
+        run: |
+          if [[ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]]; then
+            echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+          else
+            echo "⚠️ GOOGLE_SERVICES_JSON não configurado no Secrets!"
+          fi
 
       - name: Dar permissão ao Gradle Wrapper
         run: chmod +x gradlew
 
       - name: Rodar testes unitários
-        run: ./gradlew test
+        run: ./gradlew test --continue
 
       - name: Salvar relatórios de teste
         uses: actions/upload-artifact@v4
