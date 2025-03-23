@@ -24,7 +24,7 @@ jobs:
           java-version: '17'
 
       - name: Criar google-services.json
-        run: printf "%s" "${{ vars.GOOGLE_SERVICES_JSON }}" > google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
 
       - name: Dar permissão ao Gradle Wrapper
         run: chmod +x gradlew
