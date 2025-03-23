@@ -1,12 +1,12 @@
 package com.cabral.ingredient.presentation.listingredient
 
 import app.cash.turbine.test
-import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.usecase.DeleteIngredientUseCase
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import com.cabral.test_utils.stubs.ingredientListStub
 import com.cabral.test_utils.stubs.ingredientStub
+import com.cabral.test_utils.stubs.stubNetWorkException
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +25,6 @@ class ListIngredientsViewModelTest {
     private lateinit var viewModel: ListIngredientsViewModel
     private val listIngredientUseCase: ListIngredientUseCase = mockk()
     private val deleteIngredientUseCase: DeleteIngredientUseCase = mockk(relaxed = true)
-
-    val exception = NetworkException("erro",GenericThrowable.FailThrowable())
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -75,7 +73,7 @@ class ListIngredientsViewModelTest {
     @Test
     fun `test getAllIngredients handles error`() = runTest {
         // Arrange
-        coEvery { listIngredientUseCase() } returns flow { throw exception }
+        coEvery { listIngredientUseCase() } returns flow { throw stubNetWorkException() }
 
         // Act
         viewModel.getAllIngredients()
@@ -106,7 +104,7 @@ class ListIngredientsViewModelTest {
     fun `test deleteIngredient triggers error event`() = runTest {
         // Arrange
         val ingredient = Ingredient(1, "Salt", 1f, "kg", 5f, "key2")
-        coEvery { deleteIngredientUseCase(ingredient) } returns flow { throw exception }
+        coEvery { deleteIngredientUseCase(ingredient) } returns flow { throw stubNetWorkException() }
 
         // Act
         viewModel.deleteIngredient(ingredient)
