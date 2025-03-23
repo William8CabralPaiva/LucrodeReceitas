@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.cabral.core.common.domain.usecase.ForgotPasswordUseCase
 import com.cabral.core.common.domain.usecase.GoogleLoginUseCase
 import com.cabral.core.common.domain.usecase.LoginUseCase
+import com.cabral.test_utils.stubs.stubNetWorkException
 import com.cabral.test_utils.stubs.userStub
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -11,7 +12,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -56,15 +60,16 @@ class LoginViewModelTest {
     @Test
     fun `test login handles error state`() = runTest {
         // Arrange
+        val error = stubNetWorkException()
         val user = userStub()
-        coEvery { loginUseCase(any()) } returns flow { throw Exception("Login failed") }
+        coEvery { loginUseCase(any()) } returns flow { throw error }
 
         // Act & Assert
         viewModel.uiEvent.test {
             viewModel.login(user.email, user.password)
 
             assertEquals(UiState.StartLoading, awaitItem())
-            assertEquals(UiState.Error("Login failed"), awaitItem())
+            assertEquals(UiState.Error(error.message.toString()), awaitItem())
             assertEquals(UiState.StopLoading, awaitItem())
         }
     }

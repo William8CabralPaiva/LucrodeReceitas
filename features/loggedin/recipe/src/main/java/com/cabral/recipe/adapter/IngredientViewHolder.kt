@@ -35,7 +35,6 @@ class IngredientViewHolder(
         fun typeViewHolder(
             parent: ViewGroup,
             context: Context,
-            index: Int
         ): IngredientViewHolder {
             val binding = RecipeIngredientsItemBinding.inflate(
                 LayoutInflater.from(parent.context),

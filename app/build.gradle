@@ -2,9 +2,11 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id "io.gitlab.arturbosch.detekt"
 }
 
 apply from: "$rootDir/plugins/android-build.gradle"
+apply from: "$rootDir/config/detekt/detekt.gradle"
 
 android {
     namespace Config.applicationId

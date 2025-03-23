@@ -1,6 +1,7 @@
 package com.cabral.recipe.presentation.listrecipe
 
 import app.cash.turbine.test
+import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.core.common.domain.usecase.DeleteRecipeUseCase
 import com.cabral.core.common.domain.usecase.GetListRecipeUseCase
 import com.cabral.test_utils.stubs.recipeProfitPriceStub
@@ -10,7 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -66,7 +70,7 @@ class ListRecipeViewModelTest {
     @Test
     fun `getAllRecipe should emit EmptyList on error`() = runTest {
         // Arrange
-        coEvery { getListRecipeUseCase() } returns flow { throw Exception("Error") }
+        coEvery { getListRecipeUseCase() } returns flow { throw GenericThrowable.FailThrowable() }
 
         viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
 
@@ -97,7 +101,7 @@ class ListRecipeViewModelTest {
     fun `deleteRecipe should emit ErrorDelete when deletion fails`() = runTest {
         // Arrange
         val recipe = recipeProfitPriceStub()
-        coEvery { deleteRecipeUseCase(any()) } returns flow { throw Exception("Error") }
+        coEvery { deleteRecipeUseCase(any()) } returns flow { throw GenericThrowable.FailThrowable() }
 
         viewModel = ListRecipeViewModel(getListRecipeUseCase, deleteRecipeUseCase)
 
@@ -106,7 +110,7 @@ class ListRecipeViewModelTest {
             viewModel.deleteRecipe(recipe)
             recipe.name?.let {
                 assertEquals(UiEvent.ErrorDelete(it), awaitItem())
-            }?: assert(false)
+            } ?: assert(false)
         }
     }
 }

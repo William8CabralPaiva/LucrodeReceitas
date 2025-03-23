@@ -14,7 +14,7 @@ class ListIngredientAdapter(private val context: Context) :
     lateinit var onClickTrash: (Ingredient) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListIngredientsViewHolder {
-        return typeViewHolder(parent, context, viewType)
+        return typeViewHolder(parent, context)
     }
 
     override fun onBindViewHolder(holder: ListIngredientsViewHolder, position: Int) {

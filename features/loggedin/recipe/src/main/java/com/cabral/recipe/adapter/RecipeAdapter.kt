@@ -15,7 +15,7 @@ class RecipeAdapter(private val context: Context) :
     lateinit var onClickEdit: (RecipeProfitPrice) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
-        return typeViewHolder(parent, context, viewType)
+        return typeViewHolder(parent, context)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {

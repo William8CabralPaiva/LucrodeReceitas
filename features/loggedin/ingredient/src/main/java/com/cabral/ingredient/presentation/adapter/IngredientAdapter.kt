@@ -14,7 +14,7 @@ class IngredientAdapter(private val context: Context) :
     lateinit var onClickEdit: (Ingredient) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
-        return typeViewHolder(parent, context, viewType)
+        return typeViewHolder(parent, context)
     }
 
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {

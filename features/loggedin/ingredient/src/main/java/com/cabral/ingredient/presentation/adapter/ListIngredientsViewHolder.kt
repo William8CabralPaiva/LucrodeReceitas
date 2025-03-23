@@ -40,7 +40,6 @@ class ListIngredientsViewHolder(
         fun typeViewHolder(
             parent: ViewGroup,
             context: Context,
-            index: Int
         ): ListIngredientsViewHolder {
             val binding = IngredientsItemListBinding.inflate(
                 LayoutInflater.from(parent.context),

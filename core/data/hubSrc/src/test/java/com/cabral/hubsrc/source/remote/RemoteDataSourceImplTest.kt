@@ -24,7 +24,7 @@ import org.koin.test.KoinTest
 import org.koin.test.get
 
 @ExperimentalCoroutinesApi
-class RemoteDataSourceTest : KoinTest {
+class RemoteDataSourceImplTest : KoinTest {
 
     private lateinit var remoteDataSourceImpl: RemoteDataSourceImpl
     private lateinit var userService: UserServices

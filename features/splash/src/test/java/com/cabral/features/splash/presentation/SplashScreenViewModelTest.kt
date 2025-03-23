@@ -1,6 +1,7 @@
 package com.cabral.features.splash.presentation
 
 import app.cash.turbine.test
+import com.cabral.arch.extensions.UserThrowable
 import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.AutoLoginUseCase
@@ -74,7 +75,7 @@ class SplashScreenViewModelTest {
     fun `getUserLogged with invalid key should emit Unlogged`() = runTest {
         // Arrange
         val key = "invalidKey"
-        coEvery { autoLoginUseCase(key) } returns flow { throw Exception("User not found") }
+        coEvery { autoLoginUseCase(key) } returns flow { throw UserThrowable.UnknownUserThrowable() }
 
         // Act & Assert
         viewModel.uiEvent.test {

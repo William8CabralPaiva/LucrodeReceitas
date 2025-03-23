@@ -12,8 +12,6 @@ import com.cabral.model.IngredientArgs
 
 internal class ListIngredientNavigationImpl : ListIngredientNavigation {
 
-    private val CURRENT_INGREDIENT = "currentIngredient"
-
     override fun openIngredient(fragment: Fragment, ingredientsArgs: IngredientArgs?) {
         val directions = bundleOf(CURRENT_INGREDIENT to ingredientsArgs)
         fragment.findNavController()
@@ -56,5 +54,9 @@ internal class ListIngredientNavigationImpl : ListIngredientNavigation {
 
             })
         }
+    }
+
+    companion object{
+        private const val CURRENT_INGREDIENT = "currentIngredient"
     }
 }

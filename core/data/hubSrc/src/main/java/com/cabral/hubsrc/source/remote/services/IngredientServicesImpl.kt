@@ -12,18 +12,26 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
-class IngredientServicesImpl(private val db: FirebaseFirestore): IngredientServices {
+class IngredientServicesImpl(private val db: FirebaseFirestore) : IngredientServices {
     override fun getAllIngredients(): Flow<List<Ingredient>> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
-        val result = db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS).orderBy("name").get().await()
-        emit(result.toObjects(IngredientRegister::class.java).mapIndexed { id, it -> it.toIngredient(id) })
+        val result =
+            db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
+                .orderBy(DBConstants.NAME).get().await()
+        emit(
+            result.toObjects(IngredientRegister::class.java)
+                .mapIndexed { index, ingredient -> ingredient.toIngredient(index) }
+        )
     }
+
 
     override fun addIngredient(ingredientList: List<Ingredient>): Flow<Unit> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
         val batch = db.batch()
         ingredientList.forEach {
-            val doc = db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS).document(it.keyDocument ?: "")
+            val doc =
+                db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
+                    .document(it.keyDocument ?: "")
             batch.set(doc, it.toIngredientRegister())
         }
         batch.commit().await()
@@ -32,7 +40,8 @@ class IngredientServicesImpl(private val db: FirebaseFirestore): IngredientServi
 
     override fun deleteIngredient(ingredient: Ingredient): Flow<Unit> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
-        db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS).document(ingredient.keyDocument!!).delete().await()
+        db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
+            .document(ingredient.keyDocument!!).delete().await()
         emit(Unit)
     }
 }

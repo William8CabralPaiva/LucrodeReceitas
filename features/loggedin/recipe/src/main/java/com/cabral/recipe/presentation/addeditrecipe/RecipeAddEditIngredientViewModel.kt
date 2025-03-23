@@ -3,6 +3,7 @@ package com.cabral.recipe.presentation.addeditrecipe
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cabral.core.common.domain.model.Ingredient
+import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.UnitMeasureType
 import com.cabral.core.common.domain.model.toIngredientRecipeRegisterList
@@ -36,12 +37,13 @@ class RecipeAddEditIngredientViewModel(
     private var editPosition: Int? = null
     private var alreadyPrepareAddList = false
 
-    fun setEditMode(_editMode: Boolean, ingredient: Ingredient?) {
+
+    fun setEditMode(editMode: Boolean, ingredient: Ingredient?) {
         viewModelScope.launch {
             ingredient?.keyDocument?.let {
                 editPosition = listAddIngredients.getPositionIngredient(it)
             }
-            editMode = _editMode
+            this@RecipeAddEditIngredientViewModel.editMode = editMode
             _uiState.emit(UiState.EditMode(editMode))
         }
     }
@@ -49,21 +51,30 @@ class RecipeAddEditIngredientViewModel(
     fun getEditMode(): Boolean = editMode
 
     private fun prepareAddLists() {
-        if(!alreadyPrepareAddList) {
-            recipe.ingredientList?.forEach { ingredient ->
-                listAllIngredients.forEach { itemRecipe ->
-                    itemRecipe?.let {
-                        if (ingredient.keyDocument == it.keyDocument) {
-                            listAddIngredients.add(
-                                it.copy(volume = ingredient.volumeUsed)
-                            )
-                        }
-                    }
-                }
+        if (alreadyPrepareAddList) return
+
+        recipe.ingredientList?.forEach { ingredient ->
+            addMatchingIngredients(ingredient)
+        }
+
+        alreadyPrepareAddList = true
+    }
+
+    private fun addMatchingIngredients(ingredient: IngredientRecipeRegister) {
+        listAllIngredients.forEach { itemRecipe ->
+            itemRecipe?.takeIf { it.keyDocument == ingredient.keyDocument }?.let {
+                addIngredientWithVolume(it, ingredient)
             }
-            alreadyPrepareAddList = true
         }
     }
+
+    private fun addIngredientWithVolume(
+        itemRecipe: Ingredient,
+        ingredient: IngredientRecipeRegister
+    ) {
+        listAddIngredients.add(itemRecipe.copy(volume = ingredient.volumeUsed))
+    }
+
 
     fun getAllIngredients() {
         listIngredientUseCase()
@@ -91,12 +102,12 @@ class RecipeAddEditIngredientViewModel(
         return when (unit) {
             UnitMeasureType.KG.unit -> copy(
                 unit = UnitMeasureType.G.unit,
-                volume = volume?.times(1000)
+                volume = volume?.times(CONVERSION)
             )
 
             UnitMeasureType.L.unit -> copy(
                 unit = UnitMeasureType.ML.unit,
-                volume = volume?.times(1000)
+                volume = volume?.times(CONVERSION)
             )
 
             else -> this
@@ -154,5 +165,9 @@ class RecipeAddEditIngredientViewModel(
 
     private fun MutableList<Ingredient?>.getPositionIngredient(keyDocument: String): Int {
         return indexOfFirst { it?.keyDocument == keyDocument }
+    }
+
+    companion object{
+        const val CONVERSION = 1000
     }
 }

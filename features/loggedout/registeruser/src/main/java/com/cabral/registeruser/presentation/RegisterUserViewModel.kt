@@ -33,10 +33,7 @@ class RegisterUserViewModel(
         name: String?, email: String?, password: String?, confirmPassword: String?
     ) {
         try {
-            if (name.validateName() && EmailUtils.validateEmail(email) && PasswordUtils.validatePassword(
-                    password
-                ) && equalPassword(password, confirmPassword)
-            ) {
+            if (validateFields(name, email, password, confirmPassword)) {
                 val user = User(email, name, password)
                 addUserUseCase(user).onStart {
                     _uiEvent.emit(UiEvent.StartLoading)
@@ -46,30 +43,33 @@ class RegisterUserViewModel(
                     _uiEvent.emit(UiEvent.Success)
                 }.launchIn(viewModelScope)
             }
-        } catch (error: Throwable) {
-            viewModelScope.launch {
-                when (error) {
-                    is UserThrowable.AuthenticatePasswordThrowable -> {
-                        _uiState.emit(UiState.ErrorPassword(error.message))
-                    }
+        } catch (error: UserThrowable) {
+            handleUserThrowable(error)
+        }
 
-                    is UserThrowable.AuthenticateEmailThrowable -> {
-                        _uiState.emit(UiState.ErrorEmail(error.message))
-                    }
+    }
 
-                    is UserThrowable.UsernameRegisterThrowable -> {
-                        _uiState.emit(UiState.ErrorUsername(error.message))
-                    }
+    private fun handleUserThrowable(error: UserThrowable) {
+        viewModelScope.launch {
+            when (error) {
+                is UserThrowable.AuthenticatePasswordThrowable -> {
+                    _uiState.emit(UiState.ErrorPassword(error.message))
+                }
 
-                    else -> {
-                        error.message?.let {
-                            _uiState.emit(UiState.ErrorConfirmPassword(it))
-                        }
-                    }
+                is UserThrowable.AuthenticateEmailThrowable -> {
+                    _uiState.emit(UiState.ErrorEmail(error.message))
+                }
+
+                is UserThrowable.UsernameRegisterThrowable -> {
+                    _uiState.emit(UiState.ErrorUsername(error.message))
+                }
+
+                else -> {
+                    error.message?.let { UiState.ErrorConfirmPassword(it) }
+                        ?.let { _uiState.emit(it) }
                 }
             }
         }
-
     }
 
     private fun String?.validateName(): Boolean {
@@ -79,6 +79,18 @@ class RegisterUserViewModel(
             }
         }
         throw UserThrowable.UsernameRegisterThrowable()
+    }
+
+    private fun validateFields(
+        name: String?,
+        email: String?,
+        password: String?,
+        confirmPassword: String?
+    ): Boolean {
+        return (name.validateName() && EmailUtils.validateEmail(email) && PasswordUtils.validatePassword(
+            password
+        ) && equalPassword(password, confirmPassword)
+                )
     }
 
     private fun equalPassword(password: String?, confirmPassword: String?): Boolean {
