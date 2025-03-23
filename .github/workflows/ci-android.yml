@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - dev
-      - main
   pull_request:
     branches:
       - dev
-      - main
 
 jobs:
   test:
@@ -26,9 +24,7 @@ jobs:
           java-version: '17'
 
       - name: Criar google-services.json
-        run: echo "$GOOGLE_SERVICES_JSON" | base64 --decode > app/google-services.json
-        env:
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: printf "%s" "${{ vars.GOOGLE_SERVICES_JSON }}" > app/google-services.json
 
       - name: Dar permissão ao Gradle Wrapper
         run: chmod +x gradlew
