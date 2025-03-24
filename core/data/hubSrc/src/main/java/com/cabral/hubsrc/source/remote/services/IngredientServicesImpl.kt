@@ -28,14 +28,25 @@ class IngredientServicesImpl(private val db: FirebaseFirestore) : IngredientServ
     override fun addIngredient(ingredientList: List<Ingredient>): Flow<Unit> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
         val batch = db.batch()
+
         ingredientList.forEach {
-            val doc =
+
+            val collectionReference =
                 db.collection(DBConstants.USER).document(key).collection(DBConstants.INGREDIENTS)
-                    .document(it.keyDocument ?: "")
-            batch.set(doc, it.toIngredientRegister())
+
+            val id = it.keyDocument ?: collectionReference.document().id
+
+            val newDoc = collectionReference.document(id)
+
+            batch.set(newDoc, it.toIngredientRegister(id))
         }
-        batch.commit().await()
-        emit(Unit)
+
+        try {
+            batch.commit().await()
+            emit(Unit)
+        } catch (e: Exception) {
+            throw GenericThrowable.FailThrowable(e.message.toString())
+        }
     }
 
     override fun deleteIngredient(ingredient: Ingredient): Flow<Unit> = flow {

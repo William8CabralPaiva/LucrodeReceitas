@@ -10,9 +10,16 @@ data class Ingredient(
     var keyDocument: String? = null,
 )
 
-fun Ingredient.toIngredientRegister(): IngredientRegister {
+fun Ingredient.toIngredientRegister(key: String?): IngredientRegister {
     val enum = getUnitMeasureByUnit(unit)
-    return IngredientRegister(name, volume, enum.type, price, keyDocument)
+
+    val keyId = if (keyDocument == null) {
+        key
+    } else {
+        keyDocument
+    }
+
+    return IngredientRegister(name, volume, enum.type, price, keyId)
 }
 
 fun MutableList<Ingredient?>.toIngredientRecipeRegisterList(): MutableList<IngredientRecipeRegister> {
