@@ -28,9 +28,13 @@ class RecipeServicesImpl(private val db: FirebaseFirestore) : RecipeServices {
 
     override fun addRecipe(recipe: Recipe): Flow<String?> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
-        val newDoc =
-            db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES).document()
-        val id = recipe.keyDocument ?: newDoc.id
+        val collectionReference =
+            db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+
+        val id = recipe.keyDocument ?: collectionReference.document().id
+
+        val newDoc = collectionReference.document(id)
+
         newDoc.set(recipe.toRecipeRegister(id)).await()
         emit(id)
     }
