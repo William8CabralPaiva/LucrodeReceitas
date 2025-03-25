@@ -20,19 +20,19 @@ class SplashScreenViewModel(
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     fun getUserLogged(key: String?) {
-        if (key != null) {
-            autoLoginUseCase(key)
-                .catch {
-                    _uiEvent.emit(UiEvent.Unlogged)
-                }.onEach {
-                    SingletonUser.getInstance().setUser(it)
-                    _uiEvent.emit(UiEvent.Logged)
-                }.launchIn(viewModelScope)
-        } else {
-            viewModelScope.launch {
+        if (key.isNullOrEmpty()) {
+            viewModelScope.launch { _uiEvent.emit(UiEvent.Unlogged) }
+            return
+        }
+
+        autoLoginUseCase(key)
+            .onEach {
+                SingletonUser.getInstance().setUser(it)
+                _uiEvent.emit(UiEvent.Logged)
+            }
+            .catch {
                 _uiEvent.emit(UiEvent.Unlogged)
             }
-        }
+            .launchIn(viewModelScope)
     }
-
 }

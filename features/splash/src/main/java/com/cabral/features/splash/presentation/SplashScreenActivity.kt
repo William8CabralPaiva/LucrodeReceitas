@@ -15,10 +15,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SplashScreenActivity : AppCompatActivity() {
 
     private var _binding: SplashScreenActivityBinding? = null
-
-    private val viewModel: SplashScreenViewModel by viewModel()
     private val binding get() = _binding!!
 
+    private val viewModel: SplashScreenViewModel by viewModel()
     private val navigationLogged: LoggedNavigation by inject()
     private val navigationNotLogged: NotLoggedNavigation by inject()
 
@@ -28,17 +27,31 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initObservers()
-        viewModel.getUserLogged(this.getUserKey())
+        val userKey = getUserKey()
+        if (userKey.isNullOrEmpty()) {
+            navigateToNotLogged()
+        } else {
+            viewModel.getUserLogged(userKey)
+        }
     }
 
     private fun initObservers() {
         viewModel.uiEvent.collectIn(this) {
-            if (it == UiEvent.Logged) {
-                navigationLogged.openActivityLogged(this@SplashScreenActivity)
-            } else {
-                navigationNotLogged.openNotLogged(this@SplashScreenActivity)
+            when (it) {
+                UiEvent.Logged -> navigateToLogged()
+                UiEvent.Unlogged -> navigateToNotLogged()
             }
         }
+    }
+
+    private fun navigateToLogged() {
+        navigationLogged.openActivityLogged(this)
+        finish()
+    }
+
+    private fun navigateToNotLogged() {
+        navigationNotLogged.openNotLogged(this)
+        finish()
     }
 
     override fun onDestroy() {
