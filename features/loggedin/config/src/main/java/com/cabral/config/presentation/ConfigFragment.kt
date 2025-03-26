@@ -6,7 +6,6 @@ import com.cabral.arch.BaseFragment
 import com.cabral.arch.restartApp
 import com.cabral.config.databinding.ConfigFragmentBinding
 import com.cabral.core.common.SingletonUser
-import java.util.prefs.Preferences
 
 class ConfigFragment : BaseFragment<ConfigFragmentBinding>(ConfigFragmentBinding::inflate) {
 

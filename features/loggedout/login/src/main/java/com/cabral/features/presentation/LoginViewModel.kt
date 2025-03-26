@@ -9,7 +9,6 @@ import com.cabral.core.common.domain.model.User
 import com.cabral.core.common.domain.usecase.ForgotPasswordUseCase
 import com.cabral.core.common.domain.usecase.GoogleLoginUseCase
 import com.cabral.core.common.domain.usecase.LoginUseCase
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -18,7 +17,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -50,9 +48,9 @@ class LoginViewModel(
                         _uiEvent.emit(UiState.Error(message))
                     }
                 }.onEach {
-                SingletonUser.getInstance().setUser(it)
-                _uiEvent.emit(UiState.Success(it))
-            }.onCompletion { _uiEvent.emit(UiState.GoogleStopLoading) }
+                    SingletonUser.getInstance().setUser(it)
+                    _uiEvent.emit(UiState.Success(it))
+                }.onCompletion { _uiEvent.emit(UiState.GoogleStopLoading) }
                 .launchIn(viewModelScope)
         }
     }

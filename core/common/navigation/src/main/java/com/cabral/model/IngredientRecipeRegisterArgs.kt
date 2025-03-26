@@ -2,7 +2,6 @@ package com.cabral.model
 
 import android.os.Parcelable
 import androidx.annotation.Keep
-import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import kotlinx.parcelize.Parcelize
 
