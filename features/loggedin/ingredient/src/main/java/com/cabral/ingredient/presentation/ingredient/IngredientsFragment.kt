@@ -238,7 +238,7 @@ class IngredientsFragment :
         CustomToast.Builder(requireContext())
             .message(getString(text))
             .setBackgroundColor(backgroundColor)
-            .build()
+            .build().show()
     }
 
     private fun showAlertDialog(
