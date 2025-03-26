@@ -45,7 +45,7 @@ object HubModule {
                 FirebaseAuth.getInstance()
             )
         }
-        single<RecipeServices> { RecipeServicesImpl(FirebaseFirestore.getInstance()) }
+        single<RecipeServices> { RecipeServicesImpl(FirebaseFirestore.getInstance(),get()) }
         single<IngredientServices> { IngredientServicesImpl(FirebaseFirestore.getInstance()) }
 
 

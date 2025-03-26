@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
-class RecipeServicesImpl(private val db: FirebaseFirestore) : RecipeServices {
+class RecipeServicesImpl(
+    private val db: FirebaseFirestore,
+    private val ingredientServices: IngredientServices
+) : RecipeServices {
     override fun getAllRecipes(): Flow<List<RecipeProfitPrice>> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
         val result = db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
@@ -22,7 +25,12 @@ class RecipeServicesImpl(private val db: FirebaseFirestore) : RecipeServices {
         val recipes = result.toObjects(RecipeRegister::class.java).mapIndexed { index, recipe ->
             recipe.toRecipe(index)
         }
-        emit(recipes.toListRecipeProfitPrice(emptyList()))
+
+        ingredientServices.getAllIngredients().collect {
+            emit(recipes.toListRecipeProfitPrice(it))
+        }
+
+
     }
 
 
