@@ -128,7 +128,13 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
     private fun validateFields(): Boolean {
         binding.apply {
             if (biRecipe.getText().isEmpty()) {
+                abSave.stopLoading()
                 biRecipe.setError()
+                return false
+            }
+            if (biUnit.getText().isEmpty()) {
+                abSave.stopLoading()
+                biUnit.setError()
                 return false
             }
             return true
