@@ -29,8 +29,6 @@ class RecipeServicesImpl(
         ingredientServices.getAllIngredients().collect {
             emit(recipes.toListRecipeProfitPrice(it))
         }
-
-
     }
 
 

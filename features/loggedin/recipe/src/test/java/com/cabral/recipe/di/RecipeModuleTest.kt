@@ -14,11 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.setMain
-import net.bytebuddy.agent.VirtualMachine.ForOpenJ9.Dispatcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
