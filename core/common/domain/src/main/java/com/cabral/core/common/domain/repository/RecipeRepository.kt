@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository {
     fun getAllRecipes(): Flow<List<RecipeProfitPrice>>
+    fun getRecipeByKeyDocument(keyDocument: String): Flow<Recipe>
     fun addRecipe(recipe: Recipe): Flow<String?>
     fun deleteRecipe(keyDocument: String): Flow<Unit>
 }

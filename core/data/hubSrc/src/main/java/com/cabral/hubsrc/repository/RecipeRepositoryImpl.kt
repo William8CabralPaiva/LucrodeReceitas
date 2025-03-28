@@ -11,6 +11,10 @@ class RecipeRepositoryImpl(private val remoteDataSource: RemoteDataSource) : Rec
         return remoteDataSource.getAllRecipes()
     }
 
+    override fun getRecipeByKeyDocument(keyDocument: String): Flow<Recipe> {
+        return remoteDataSource.getRecipeByKeyDocument(keyDocument)
+    }
+
     override fun addRecipe(recipe: Recipe): Flow<String?> {
         return remoteDataSource.addRecipe(recipe)
     }

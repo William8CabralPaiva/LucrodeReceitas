@@ -13,6 +13,7 @@ interface RemoteDataSource {
     fun googleLogin(email: String, name: String): Flow<User>
     suspend fun forgotPassword(email: String)
     fun getAllRecipes(): Flow<List<RecipeProfitPrice>>
+    fun getRecipeByKeyDocument(keyDocument: String): Flow<Recipe>
     fun addRecipe(recipe: Recipe): Flow<String?>
     fun deleteRecipe(keyDocument: String): Flow<Unit>
     fun getAllIngredients(): Flow<List<Ingredient>>

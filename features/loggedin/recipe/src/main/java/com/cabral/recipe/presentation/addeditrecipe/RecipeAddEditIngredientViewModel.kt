@@ -7,6 +7,7 @@ import com.cabral.core.common.domain.model.IngredientRecipeRegister
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.UnitMeasureType
 import com.cabral.core.common.domain.model.toIngredientRecipeRegisterList
+import com.cabral.core.common.domain.usecase.GetRecipeByKeyDocumentUseCase
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,7 @@ import com.cabral.design.R as DesignR
 
 class RecipeAddEditIngredientViewModel(
     private val listIngredientUseCase: ListIngredientUseCase,
+    private val getRecipeByKeyDocumentUseCase: GetRecipeByKeyDocumentUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Default)
@@ -32,10 +34,10 @@ class RecipeAddEditIngredientViewModel(
 
     var listAllIngredients = mutableListOf<Ingredient?>()
     var listAddIngredients = mutableListOf<Ingredient?>()
-    lateinit var recipe: Recipe
+
+    lateinit var recipe: Recipe// rever para deixar privado
     private var editMode = false
     private var editPosition: Int? = null
-    private var alreadyPrepareAddList = false
 
 
     fun setEditMode(editMode: Boolean, ingredient: Ingredient?) {
@@ -51,13 +53,10 @@ class RecipeAddEditIngredientViewModel(
     fun getEditMode(): Boolean = editMode
 
     private fun prepareAddLists() {
-        if (alreadyPrepareAddList) return
-
+        listAddIngredients = mutableListOf()
         recipe.ingredientList?.forEach { ingredient ->
             addMatchingIngredients(ingredient)
         }
-
-        alreadyPrepareAddList = true
     }
 
     private fun addMatchingIngredients(ingredient: IngredientRecipeRegister) {
@@ -75,7 +74,6 @@ class RecipeAddEditIngredientViewModel(
         listAddIngredients.add(itemRecipe.copy(volume = ingredient.volumeUsed))
     }
 
-
     fun getAllIngredients() {
         listIngredientUseCase()
             .catch { exception ->
@@ -92,6 +90,20 @@ class RecipeAddEditIngredientViewModel(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    fun getRecipeByKeyDocument(keyDocument: String) {
+        getRecipeByKeyDocumentUseCase(keyDocument)
+            .catch { exception ->
+                val error = exception.message
+                _uiState.emit(UiState.Error(error))
+            }.onEach {
+                recipe = it
+                if (listAddIngredients.isNotEmpty()) {
+                    recipe.ingredientList = listAddIngredients.toIngredientRecipeRegisterList()
+                }
+                getAllIngredients()
+            }.launchIn(viewModelScope)
     }
 
     private fun List<Ingredient>.convertToGOrMl(): MutableList<Ingredient?> {
@@ -167,7 +179,7 @@ class RecipeAddEditIngredientViewModel(
         return indexOfFirst { it?.keyDocument == keyDocument }
     }
 
-    companion object{
+    companion object {
         const val CONVERSION = 1000
     }
 }

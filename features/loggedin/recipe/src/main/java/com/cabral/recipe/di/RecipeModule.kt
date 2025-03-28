@@ -13,7 +13,7 @@ object RecipeModule {
     val modules get() = listOf(viewModelModules)
 
     private val viewModelModules: Module = module {
-        viewModel { RecipeAddEditIngredientViewModel(get()) }
+        viewModel { RecipeAddEditIngredientViewModel(get(), get()) }
         viewModel { ListRecipeViewModel(get(), get()) }
         viewModel { RecipeViewModel(get()) }
         viewModel { RecipeCostsViewModel(get()) }

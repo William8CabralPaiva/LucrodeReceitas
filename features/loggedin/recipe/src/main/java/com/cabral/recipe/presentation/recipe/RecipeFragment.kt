@@ -83,7 +83,7 @@ class RecipeFragment : BaseFragment<RecipeFragmentBinding>(RecipeFragmentBinding
                 if (viewModel.recipe.ingredientList == null) {
                     viewModel.recipe.ingredientList = mutableListOf()
                 }
-                navigation.openAddEditIngredient(this, viewModel.recipe.toRecipeArgs())
+                navigation.openAddEditIngredient(this, viewModel.recipe.keyDocument)
 
             } else {
                 showToast(R.string.recipe_save_before_add)

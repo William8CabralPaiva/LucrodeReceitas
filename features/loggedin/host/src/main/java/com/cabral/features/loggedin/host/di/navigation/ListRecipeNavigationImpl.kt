@@ -85,8 +85,8 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
         }
     }
 
-    override fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?) {
-        val directions = bundleOf(CURRENT_RECIPE to recipeArgs)
+    override fun openAddEditIngredient(fragment: Fragment, recipeKeyDocument: String?) {
+        val directions = bundleOf(CURRENT_RECIPE_KEY_DOCUMENT to recipeKeyDocument)
         fragment.findNavController().navigate(
             com.cabral.recipe.R.id.loggedin_hostRecipeaddeditingredientfragment, directions
         )
@@ -102,6 +102,7 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
     companion object {
         private const val SAVE_RECIPE = "SAVE_RECIPE"
         private const val UPDATE_LIST_RECIPE = "UPDATE_LIST_RECIPE"
+        private const val CURRENT_RECIPE_KEY_DOCUMENT = "currentRecipeKeyDocument"
         private const val CURRENT_RECIPE = "currentRecipe"
         private const val CURRENT_INGREDIENT = "currentIngredient"
     }

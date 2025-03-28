@@ -83,7 +83,6 @@
                     android:id="@+id/ab_add_ingredient"
                     android:layout_width="64dp"
                     android:layout_height="0dp"
-                    android:visibility="gone"
                     android:layout_marginTop="@dimen/arch_default_margin"
                     app:arch_ab_text="@string/design_plus"
                     app:layout_constraintBottom_toBottomOf="@id/bi_ingredient"

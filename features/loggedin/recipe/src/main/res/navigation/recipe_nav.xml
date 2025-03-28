@@ -45,9 +45,10 @@
         tools:layout="@layout/recipe_add_edit_ingredient_fragment" >
 
         <argument
-            android:name="currentRecipe"
-            app:argType="com.cabral.model.RecipeArgs"
-            app:nullable="true" />
+            android:name="currentRecipeKeyDocument"
+            app:argType="string"
+            app:nullable="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/recipeCostsrecipefragment"

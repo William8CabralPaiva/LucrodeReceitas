@@ -29,6 +29,9 @@ class RemoteDataSourceImpl(
     override fun getAllRecipes(): Flow<List<RecipeProfitPrice>> =
         recipeService.getAllRecipes().flowOn(dispatcher)
 
+    override fun getRecipeByKeyDocument(keyDocument: String): Flow<Recipe> =
+        recipeService.getRecipeByKeyDocument(keyDocument)
+
     override fun addRecipe(recipe: Recipe): Flow<String?> =
         recipeService.addRecipe(recipe).flowOn(dispatcher)
 

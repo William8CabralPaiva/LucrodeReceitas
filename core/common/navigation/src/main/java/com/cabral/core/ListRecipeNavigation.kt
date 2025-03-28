@@ -25,7 +25,7 @@ interface ListRecipeNavigation {
         fragment: Fragment
     )
 
-    fun openAddEditIngredient(fragment: Fragment, recipeArgs: RecipeArgs?)
+    fun openAddEditIngredient(fragment: Fragment, recipeKeyDocument: String?)
 
     fun openCostsFragment(fragment: Fragment, recipeArgs: RecipeArgs?)
 }

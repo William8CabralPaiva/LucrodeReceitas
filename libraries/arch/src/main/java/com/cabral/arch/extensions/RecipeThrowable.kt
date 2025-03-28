@@ -7,4 +7,9 @@ sealed class RecipeThrowable(cause: Throwable?) : Throwable(cause) {
         throwable: Throwable? = null
     ) : RecipeThrowable(throwable)
 
+    class RecipeNotFoundThrowable(
+        override val message: String = "Receita não encontrada",
+        throwable: Throwable? = null
+    ) : RecipeThrowable(throwable)
+
 }

@@ -1,6 +1,7 @@
 package com.cabral.hubsrc.source.remote.services
 
 import com.cabral.arch.extensions.GenericThrowable
+import com.cabral.arch.extensions.RecipeThrowable
 import com.cabral.core.common.SingletonUser
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.core.common.domain.model.RecipeProfitPrice
@@ -31,6 +32,25 @@ class RecipeServicesImpl(
         }
     }
 
+    override fun getRecipeByKeyDocument(keyDocument: String): Flow<Recipe> = flow {
+        val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()
+        val result = db.collection(DBConstants.USER).document(key).collection(DBConstants.RECIPES)
+            .whereEqualTo(DBConstants.KEY_DOCUMENT, keyDocument)
+            .limit(1)
+            .get().await()
+
+        val recipe = result.toObjects(RecipeRegister::class.java).mapIndexed { index, recipe ->
+            recipe.toRecipe(index)
+        }.firstOrNull()
+
+
+        if (recipe == null) {
+            throw RecipeThrowable.RecipeNotFoundThrowable()
+        } else {
+            emit(recipe)
+        }
+
+    }
 
     override fun addRecipe(recipe: Recipe): Flow<String?> = flow {
         val key = SingletonUser.getInstance().getKey() ?: throw GenericThrowable.FailThrowable()

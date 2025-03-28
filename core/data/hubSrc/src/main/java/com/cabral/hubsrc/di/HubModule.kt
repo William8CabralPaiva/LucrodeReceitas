@@ -15,6 +15,7 @@ import com.cabral.core.common.domain.usecase.LoginUseCase
 import com.cabral.core.common.domain.usecase.DeleteIngredientUseCase
 import com.cabral.core.common.domain.usecase.DeleteRecipeUseCase
 import com.cabral.core.common.domain.usecase.GetListRecipeUseCase
+import com.cabral.core.common.domain.usecase.GetRecipeByKeyDocumentUseCase
 import com.cabral.hubsrc.repository.IngredientRepositoryImpl
 import com.cabral.hubsrc.repository.RecipeRepositoryImpl
 import com.cabral.hubsrc.repository.UserRepositoryImpl
@@ -45,7 +46,7 @@ object HubModule {
                 FirebaseAuth.getInstance()
             )
         }
-        single<RecipeServices> { RecipeServicesImpl(FirebaseFirestore.getInstance(),get()) }
+        single<RecipeServices> { RecipeServicesImpl(FirebaseFirestore.getInstance(), get()) }
         single<IngredientServices> { IngredientServicesImpl(FirebaseFirestore.getInstance()) }
 
 
@@ -53,18 +54,19 @@ object HubModule {
         factory<IngredientRepository> { IngredientRepositoryImpl(get()) }
         factory<RecipeRepository> { RecipeRepositoryImpl(get()) }
 
-        factory<AddUserUseCase> { AddUserUseCase(get()) }
-        factory<LoginUseCase> { LoginUseCase(get()) }
-        factory<AutoLoginUseCase> { AutoLoginUseCase(get()) }
-        factory<GoogleLoginUseCase> { GoogleLoginUseCase(get()) }
-        factory<ForgotPasswordUseCase> { ForgotPasswordUseCase(get()) }
-        factory<GetListRecipeUseCase> { GetListRecipeUseCase(get()) }
-        factory<DeleteRecipeUseCase> { DeleteRecipeUseCase(get()) }
+        factory { AddUserUseCase(get()) }
+        factory { LoginUseCase(get()) }
+        factory { AutoLoginUseCase(get()) }
+        factory { GoogleLoginUseCase(get()) }
+        factory { ForgotPasswordUseCase(get()) }
+        factory { GetListRecipeUseCase(get()) }
+        factory { GetRecipeByKeyDocumentUseCase(get()) }
+        factory { DeleteRecipeUseCase(get()) }
 
-        factory<AddIngredientUseCase> { AddIngredientUseCase(get()) }
-        factory<AddRecipeUseCase> { AddRecipeUseCase(get()) }
-        factory<DeleteIngredientUseCase> { DeleteIngredientUseCase(get()) }
-        factory<ListIngredientUseCase> { ListIngredientUseCase(get()) }
-        factory<CostRecipeUseCase> { CostRecipeUseCase(get()) }
+        factory { AddIngredientUseCase(get()) }
+        factory { AddRecipeUseCase(get()) }
+        factory { DeleteIngredientUseCase(get()) }
+        factory { ListIngredientUseCase(get()) }
+        factory { CostRecipeUseCase(get()) }
     }
 }

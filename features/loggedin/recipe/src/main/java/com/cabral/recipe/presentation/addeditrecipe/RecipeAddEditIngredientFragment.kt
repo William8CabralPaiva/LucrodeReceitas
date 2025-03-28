@@ -14,11 +14,9 @@ import com.cabral.arch.extensions.removeEndZero
 import com.cabral.arch.widget.BorderInputView
 import com.cabral.arch.widget.CustomAlertDialog
 import com.cabral.arch.widget.CustomToast
-import com.cabral.core.ListIngredientNavigation
 import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Ingredient
 import com.cabral.design.R
-import com.cabral.model.toRecipe
 import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.adapter.IngredientAdapter
 import com.cabral.recipe.databinding.RecipeAddEditIngredientFragmentBinding
@@ -38,13 +36,6 @@ class RecipeAddEditIngredientFragment :
 
     private val navigation: ListRecipeNavigation by inject()
 
-    private val navigationIngredient: ListIngredientNavigation by inject()
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getAllIngredients()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
@@ -63,12 +54,11 @@ class RecipeAddEditIngredientFragment :
         Glide.with(requireActivity()).asGif()
             .load(com.cabral.recipe.R.drawable.listrecipe_hand_down)
             .into(binding.ivHand)
-
     }
 
     private fun initArgs() {
-        args.currentRecipe?.let {
-            viewModel.recipe = it.toRecipe()
+        args.currentRecipeKeyDocument?.let {
+            viewModel.getRecipeByKeyDocument(it)
         }
     }
 
@@ -191,16 +181,14 @@ class RecipeAddEditIngredientFragment :
             navigation.openIngredient(this)
         }
 
-        navigationIngredient.hasItemAddOnIngredient(this, viewLifecycleOwner) {
-            viewModel.getAllIngredients()
-        }
     }
 
     private fun BorderInputView.enableButtonVolume() {
         binding.abAdd.run {
             try {
                 if (getText().isNotEmpty() && getText().toFloat() > 0 &&
-                    !binding.biIngredient.getSpinner().text.isNullOrEmpty()) {
+                    !binding.biIngredient.getSpinner().text.isNullOrEmpty()
+                ) {
                     abSetEnabled(true)
 
                 } else {
