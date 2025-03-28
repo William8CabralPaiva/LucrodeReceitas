@@ -4,6 +4,7 @@ import com.cabral.core.common.domain.usecase.AddRecipeUseCase
 import com.cabral.core.common.domain.usecase.CostRecipeUseCase
 import com.cabral.core.common.domain.usecase.DeleteRecipeUseCase
 import com.cabral.core.common.domain.usecase.GetListRecipeUseCase
+import com.cabral.core.common.domain.usecase.GetRecipeByKeyDocumentUseCase
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import com.cabral.recipe.presentation.addeditrecipe.RecipeAddEditIngredientViewModel
 import com.cabral.recipe.presentation.listrecipe.ListRecipeViewModel
@@ -33,6 +34,8 @@ class RecipeModuleTest : KoinTest {
 
     private val mockListIngredientUseCase: ListIngredientUseCase = mockk(relaxed = true)
     private val mockGetListRecipeUseCase: GetListRecipeUseCase = mockk(relaxed = true)
+    private val mockGetRecipeByKeyDocumentUseCase: GetRecipeByKeyDocumentUseCase =
+        mockk(relaxed = true)
     private val mockDeleteRecipeUseCase: DeleteRecipeUseCase = mockk(relaxed = true)
     private val mockAddRecipeUseCase: AddRecipeUseCase = mockk(relaxed = true)
     private val mockCostRecipeUseCase: CostRecipeUseCase = mockk(relaxed = true)
@@ -40,6 +43,7 @@ class RecipeModuleTest : KoinTest {
 
     private val mockViewModelModules = module {
         factory { mockListIngredientUseCase }
+        factory { mockGetRecipeByKeyDocumentUseCase }
         factory { mockGetListRecipeUseCase }
         factory { mockDeleteRecipeUseCase }
         factory { mockAddRecipeUseCase }
