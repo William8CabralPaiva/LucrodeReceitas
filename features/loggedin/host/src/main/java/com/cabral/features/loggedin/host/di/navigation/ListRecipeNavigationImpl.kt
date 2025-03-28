@@ -48,7 +48,6 @@ internal class ListRecipeNavigationImpl : ListRecipeNavigation {
         backScreenAction(fragment, insideFunction, lifecycleOwner, UPDATE_LIST_RECIPE)
     }
 
-
     private fun <T> backScreenAction(
         fragment: Fragment,
         insideFunction: (objectParam: T?) -> Unit,

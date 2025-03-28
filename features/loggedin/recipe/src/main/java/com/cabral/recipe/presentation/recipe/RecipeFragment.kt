@@ -12,7 +12,6 @@ import com.cabral.core.ListRecipeNavigation
 import com.cabral.core.common.domain.model.Recipe
 import com.cabral.model.RecipeArgs
 import com.cabral.model.toRecipe
-import com.cabral.model.toRecipeArgs
 import com.cabral.recipe.R
 import com.cabral.recipe.databinding.RecipeFragmentBinding
 import com.google.android.gms.ads.AdRequest
