@@ -2,6 +2,7 @@ package com.cabral.recipe.presentation.addeditrecipe
 
 import com.cabral.arch.extensions.GenericThrowable
 import com.cabral.core.common.domain.model.Recipe
+import com.cabral.core.common.domain.usecase.GetRecipeByKeyDocumentUseCase
 import com.cabral.core.common.domain.usecase.ListIngredientUseCase
 import com.cabral.test_utils.stubs.ingredientListStub
 import com.cabral.test_utils.stubs.ingredientStub
@@ -26,13 +27,15 @@ import org.junit.Test
 class RecipeAddEditIngredientViewModelTest {
 
     private val listIngredientUseCase: ListIngredientUseCase = mockk(relaxed = true)
+    private val getRecipeByKeyDocumentUseCase: GetRecipeByKeyDocumentUseCase = mockk(relaxed = true)
     private lateinit var viewModel: RecipeAddEditIngredientViewModel
     private val testDispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = RecipeAddEditIngredientViewModel(listIngredientUseCase)
+        viewModel =
+            RecipeAddEditIngredientViewModel(listIngredientUseCase, getRecipeByKeyDocumentUseCase)
         viewModel.recipe = Recipe(id = 1, name = "Recipe Test")
     }
 
