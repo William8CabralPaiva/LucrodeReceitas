@@ -113,3 +113,36 @@ jobs:
         with:
           name: gradle-build-log
           path: gradle_build_log.txt
+
+  firebase_deploy:
+    name: Deploy APK to Firebase
+    runs-on: ubuntu-latest
+    needs: build_apk  # Só roda após a construção do APK
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Instalar Firebase CLI
+        run: |
+          curl -sL https://firebase.tools | bash
+
+      # Etapa para decodificar as credenciais base64 e criar o arquivo firebase-credentials.json
+      - name: Decodificar credenciais do Firebase
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 --decode > firebase-credentials.json
+
+      # Etapa para fazer login no Firebase usando o arquivo de credenciais
+      - name: Fazer login no Firebase
+        run: firebase auth:import firebase-credentials.json --token ${{ secrets.FIREBASE_TOKEN }}
+
+      # Etapa para fazer o deploy do APK para o Firebase App Distribution
+      # grupo-de-teste é o nome do grupo de testes que você deseja usar
+      # app é o id do projeto do Firebase que você deseja usar
+      - name: Distribuir APK para Firebase App Distribution
+        run: |
+          firebase appdistribution:distribute app/build/outputs/apk/release/app-release.apk \
+            --app 816571225632 \
+            --groups "grupo-de-teste" \
+            --token ${{ secrets.FIREBASE_TOKEN }} \
+            --release-notes "Release notes da versão"
