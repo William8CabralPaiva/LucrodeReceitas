@@ -127,25 +127,20 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      - name: Fazer login no Firebase
-        run: |
-          firebase login --token ${{ secrets.FIREBASE_TOKEN }}
-
-      - name: Configurar projeto Firebase
-        run: |
-          firebase use --add ${{ secrets.FIREBASE_PROJECT_ID }}
-
+      # Etapa para decodificar as credenciais base64 e criar o arquivo firebase-credentials.json
       - name: Decodificar credenciais do Firebase
         run: |
           echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 --decode > firebase-credentials.json
 
-      - name: Fazer login no Firebase com o arquivo de credenciais
-        run: firebase auth:import firebase-credentials.json --token ${{ secrets.FIREBASE_TOKEN }}
+      # Usar o token do Firebase para login no ambiente não interativo
+      - name: Fazer login no Firebase com token
+        run: firebase use --token ${{ secrets.FIREBASE_TOKEN }}
 
+      # Etapa para fazer o deploy do APK para o Firebase App Distribution
       - name: Distribuir APK para Firebase App Distribution
         run: |
           firebase appdistribution:distribute app/build/outputs/apk/release/app-release.apk \
-            --app ${{ secrets.FIREBASE_APP_ID }} \
+            --app 816571225632 \
             --groups "grupo-de-teste" \
             --token ${{ secrets.FIREBASE_TOKEN }} \
             --release-notes "Release notes da versão"
