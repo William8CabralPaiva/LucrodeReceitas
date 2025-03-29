@@ -7,8 +7,14 @@ apply from: "$rootDir/plugins/jacoco-build.gradle"
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
+
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    // No ambiente do GitHub Actions, usa as variáveis de ambiente
+    keystoreProperties["storePassword"] = System.getenv("KEYSTORE_PASSWORD") ?: ""
+    keystoreProperties["keyAlias"] = System.getenv("KEY_ALIAS") ?: ""
+    keystoreProperties["keyPassword"] = System.getenv("KEY_PASSWORD") ?: ""
 }
 
 
