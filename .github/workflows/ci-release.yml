@@ -43,8 +43,8 @@ jobs:
           name: junit-results
           path: app/build/test-results/**/*.xml
 
-  build_aab:
-    name: Build & Sign AAB
+  build_apk:
+    name: Build & Sign APK
     runs-on: ubuntu-latest
     needs: test  # Só roda se os testes passarem
 
@@ -79,23 +79,23 @@ jobs:
       - name: Ajustar permissões da keystore
         run: chmod 600 app/keystore.jks
 
+      - name: Verificar integridade da keystore
+        run: keytool -list -keystore app/keystore.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}"
+
       - name: Exportar credenciais para assinatura
         run: |
           echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
           echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
           echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
 
-      - name: Verificar credenciais
-        run: |
-          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" | sed 's/./& /g'
-          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" | sed 's/./& /g'
-          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" | sed 's/./& /g'
+      - name: Limpar cache do Gradle
+        run: ./gradlew clean
 
-      - name: Gerar AAB (Android App Bundle)
-        run: ./gradlew bundleRelease --stacktrace --info
+      - name: Gerar APK
+        run: ./gradlew assembleRelease --stacktrace --info
 
-      - name: Salvar AAB gerado
+      - name: Salvar APK gerado
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: app/build/outputs/bundle/release/app-release.aab
+          path: app/build/outputs/apk/release/app-release.apk
