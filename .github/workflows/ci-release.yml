@@ -53,7 +53,7 @@ jobs:
   build_apk:
     name: Build & Sign APK
     runs-on: ubuntu-latest
-    needs: test  # Só roda se os testes passarem
+    needs: test
 
     steps:
       - name: Checkout código
@@ -80,20 +80,8 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/keystore.jks
 
-      - name: Verificar se a keystore foi criada corretamente
-        run: ls -l app/keystore.jks
-
       - name: Ajustar permissões da keystore
         run: chmod 600 app/keystore.jks
-
-      - name: Verificar integridade da keystore
-        run: keytool -list -keystore app/keystore.jks -storepass "${{ secrets.KEYSTORE_PASSWORD }}"
-
-      - name: Exportar credenciais para assinatura
-        run: |
-          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
-          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
-          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Limpar cache do Gradle
         run: ./gradlew clean
@@ -101,6 +89,16 @@ jobs:
       - name: Gerar APK
         run: |
           ./gradlew assembleRelease --stacktrace --info | tee gradle_build_log.txt
+
+      - name: Verificar arquivos gerados
+        run: ls -R app/build/outputs/apk/release/
+
+      - name: Verificar existência do APK
+        run: |
+          if [ ! -f "app/build/outputs/apk/release/app-release.apk" ]; then
+            echo "❌ Erro: O arquivo app-release.apk não foi encontrado!"
+            exit 1
+          fi
 
       - name: Salvar APK gerado
         uses: actions/upload-artifact@v4
@@ -117,7 +115,7 @@ jobs:
   firebase_deploy:
     name: Deploy APK to Firebase
     runs-on: ubuntu-latest
-    needs: build_apk  # Só roda após a construção do APK
+    needs: build_apk
 
     steps:
       - name: Checkout código
@@ -127,16 +125,18 @@ jobs:
         run: |
           curl -sL https://firebase.tools | bash
 
-      # Etapa para decodificar as credenciais base64 e criar o arquivo firebase-credentials.json
       - name: Decodificar credenciais do Firebase
         run: |
           echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 --decode > firebase-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=firebase-credentials.json
 
-      # Usar o token do Firebase para login no ambiente não interativo
-      - name: Fazer login no Firebase com token
-        run: firebase use --token ${{ secrets.FIREBASE_TOKEN }}
+      - name: Verificar existência do APK
+        run: |
+          if [ ! -f "app/build/outputs/apk/release/app-release.apk" ]; then
+            echo "❌ Erro: O arquivo app-release.apk não foi encontrado!"
+            exit 1
+          fi
 
-      # Etapa para fazer o deploy do APK para o Firebase App Distribution
       - name: Distribuir APK para Firebase App Distribution
         run: |
           firebase appdistribution:distribute app/build/outputs/apk/release/app-release.apk \
