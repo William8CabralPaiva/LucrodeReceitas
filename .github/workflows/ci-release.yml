@@ -104,7 +104,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: app/build/outputs/apk/**/*.apk
+          path: app/build/outputs/apk/release/**/*.apk
 
       - name: Salvar log de build
         uses: actions/upload-artifact@v4
@@ -121,6 +121,11 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
+      - name: Baixar artefato do APK
+        uses: actions/download-artifact@v4
+        with:
+          name: app-release  # Nome do artefato que você carregou na etapa build_apk
+
       - name: Instalar Firebase CLI
         run: |
           curl -sL https://firebase.tools | bash
@@ -132,14 +137,14 @@ jobs:
 
       - name: Verificar existência do APK
         run: |
-          if [ ! -f "app/build/outputs/apk/release/app-release.apk" ]; then
+          if [ ! -f "app-release.apk" ]; then  # Agora buscamos o APK no diretório de artefatos baixados
             echo "❌ Erro: O arquivo app-release.apk não foi encontrado!"
             exit 1
           fi
 
       - name: Distribuir APK para Firebase App Distribution
         run: |
-          firebase appdistribution:distribute app/build/outputs/apk/release/app-release.apk \
+          firebase appdistribution:distribute app-release.apk \
             --app 816571225632 \
             --groups "grupo-de-teste" \
             --token ${{ secrets.FIREBASE_TOKEN }} \
