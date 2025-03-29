@@ -1,0 +1,151 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Criar google-services.json (se existir)
+        run: |
+          if [[ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]]; then
+            echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+          else
+            echo "⚠️ GOOGLE_SERVICES_JSON não configurado no Secrets!"
+          fi
+
+      - name: Dar permissão ao Gradle Wrapper
+        run: chmod +x gradlew
+
+      - name: Rodar testes unitários
+        run: |
+          ./gradlew test --continue | tee gradle_test_log.txt
+
+      - name: Salvar relatórios de teste
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: app/build/test-results/**/*.xml
+
+      - name: Salvar log dos testes
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-test-log
+          path: gradle_test_log.txt
+
+  build_apk:
+    name: Build & Sign APK
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Criar google-services.json (se existir)
+        run: |
+          if [[ -n "${{ secrets.GOOGLE_SERVICES_JSON }}" ]]; then
+            echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+          else
+            echo "⚠️ GOOGLE_SERVICES_JSON não configurado no Secrets!"
+          fi
+
+      - name: Dar permissão ao Gradle Wrapper
+        run: chmod +x gradlew
+
+      - name: Restaurar Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/keystore.jks
+
+      - name: Ajustar permissões da keystore
+        run: chmod 600 app/keystore.jks
+
+      - name: Limpar cache do Gradle
+        run: ./gradlew clean
+
+      - name: Gerar APK
+        run: |
+          ./gradlew assembleRelease --stacktrace --info | tee gradle_build_log.txt
+
+      - name: Verificar arquivos gerados
+        run: ls -R app/build/outputs/apk/release/
+
+      - name: Verificar existência do APK
+        run: |
+          if [ ! -f "app/build/outputs/apk/release/app-release.apk" ]; then
+            echo "❌ Erro: O arquivo app-release.apk não foi encontrado!"
+            exit 1
+          fi
+
+      - name: Salvar qualquer APK gerado
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/**/*.apk
+
+      - name: Salvar log de build
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-build-log
+          path: gradle_build_log.txt
+
+  firebase_deploy:
+    name: Deploy APK to Firebase
+    runs-on: ubuntu-latest
+    needs: build_apk
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Baixar artefato do APK
+        uses: actions/download-artifact@v4
+        with:
+          name: app-release  # Nome do artefato que você carregou na etapa build_apk
+
+      - name: Instalar Firebase CLI
+        run: |
+          curl -sL https://firebase.tools | bash
+
+      - name: Decodificar credenciais do Firebase
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 --decode > firebase-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=firebase-credentials.json
+
+      - name: Verificar existência do APK
+        run: |
+          if [ ! -f "app-release/app-release.apk" ]; then  # agora verificamos o arquivo baixado.
+            echo "❌ Erro: O arquivo app-release.apk não foi encontrado no diretorio de artefatos baixados!"
+            exit 1
+          fi
+
+      - name: Distribuir APK para Firebase App Distribution
+        run: |
+          firebase appdistribution:distribute app-release/app-release.apk \
+            --app 816571225632 \
+            --groups "grupo-de-teste" \
+            --token ${{ secrets.FIREBASE_TOKEN }} \
+            --release-notes "Release notes da versão"
