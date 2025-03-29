@@ -73,14 +73,26 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/keystore.jks
 
+      - name: Verificar se a keystore foi criada corretamente
+        run: ls -l app/keystore.jks
+
+      - name: Ajustar permissões da keystore
+        run: chmod 600 app/keystore.jks
+
       - name: Exportar credenciais para assinatura
         run: |
           echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
           echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
           echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
 
+      - name: Verificar credenciais
+        run: |
+          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" | sed 's/./& /g'
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" | sed 's/./& /g'
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" | sed 's/./& /g'
+
       - name: Gerar AAB (Android App Bundle)
-        run: ./gradlew bundleRelease
+        run: ./gradlew bundleRelease --stacktrace --info
 
       - name: Salvar AAB gerado
         uses: actions/upload-artifact@v4
