@@ -137,14 +137,14 @@ jobs:
 
       - name: Verificar existência do APK
         run: |
-          if [ ! -f "app-release.apk" ]; then  # Agora buscamos o APK no diretório de artefatos baixados
-            echo "❌ Erro: O arquivo app-release.apk não foi encontrado!"
+          if [ ! -f "app-release/app-release.apk" ]; then  # agora verificamos o arquivo baixado.
+            echo "❌ Erro: O arquivo app-release.apk não foi encontrado no diretorio de artefatos baixados!"
             exit 1
           fi
 
       - name: Distribuir APK para Firebase App Distribution
         run: |
-          firebase appdistribution:distribute app-release.apk \
+          firebase appdistribution:distribute app-release/app-release.apk \
             --app 816571225632 \
             --groups "grupo-de-teste" \
             --token ${{ secrets.FIREBASE_TOKEN }} \
